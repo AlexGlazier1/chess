@@ -1,5 +1,6 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -11,6 +12,7 @@ import java.util.Collection;
 public class ChessPiece {
 
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+
     }
 
     /**
@@ -29,14 +31,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        throw new RuntimeException("Not implemented");
+        return ChessGame.TeamColor;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        throw new RuntimeException("Not implemented");
+        return ChessPiece.PieceType;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
