@@ -31,16 +31,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        return ChessGame.TeamColor;
-        //throw new RuntimeException("Not implemented");
+        //return ChessGame.TeamColor;
+        throw new RuntimeException("Not implemented");
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        return ChessPiece.PieceType;
-        //throw new RuntimeException("Not implemented");
+        //return ChessPiece.PieceType;
+        throw new RuntimeException("Not implemented");
     }
 
     /**
