@@ -11,8 +11,12 @@ import java.util.Collection;
  */
 public class ChessPiece {
 
-    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+    private ChessGame.TeamColor pieceColor;
+    private PieceType type;
 
+    public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
+        this.pieceColor = pieceColor;
+        this.type = type;
     }
 
     /**
@@ -31,16 +35,16 @@ public class ChessPiece {
      * @return Which team this chess piece belongs to
      */
     public ChessGame.TeamColor getTeamColor() {
-        //return ChessGame.TeamColor;
-        throw new RuntimeException("Not implemented");
+        return pieceColor;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
      * @return which type of chess piece this piece is
      */
     public PieceType getPieceType() {
-        //return ChessPiece.PieceType;
-        throw new RuntimeException("Not implemented");
+        return type;
+        //throw new RuntimeException("Not implemented");
     }
 
     /**
@@ -52,6 +56,19 @@ public class ChessPiece {
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
         //throw new RuntimeException("Not implemented");
+
+
+        //ArrayList<Integer> testy = new ArrayList<Integer>();
+        //testy.add(1);
+        ArrayList<ChessMove> moves = new ArrayList<>();
+
+        ChessMove Test = new ChessMove(new ChessPosition(1,1), new ChessPosition(5,4), PieceType.PAWN);
+        moves.add(Test);
+
+        if (board.getPiece(myPosition).type == PieceType.PAWN)
+            PawnRules.moveCalc();
+            return moves;
+
         return new ArrayList<>();
     }
 }
