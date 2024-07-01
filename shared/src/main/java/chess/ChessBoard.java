@@ -10,7 +10,7 @@ import java.util.Objects;
  * signature of the existing methods.
  */
 public class ChessBoard {
-    private ChessPiece[][] squares = new ChessPiece[8][8];
+    private static ChessPiece[][] squares = new ChessPiece[8][8];
     public ChessBoard() {
         
     }
@@ -37,7 +37,7 @@ public class ChessBoard {
     public void addPiece(ChessPosition position, ChessPiece piece) {
 
         //throw new RuntimeException("Not implemented");
-        squares[position.getRow()][position.getColumn()] = piece;
+        squares[position.getRow()-1][position.getColumn()-1] = piece;
     }
 
     /**
@@ -47,10 +47,10 @@ public class ChessBoard {
      * @return Either the piece at the position, or null if no piece is at that
      * position
      */
-    public ChessPiece getPiece(ChessPosition position) {
+    public static ChessPiece getPiece(ChessPosition position) {
 
         //throw new RuntimeException("Not implemented");
-        return squares[position.getRow()][position.getColumn()];
+        return squares[position.getRow()-1][position.getColumn()-1];
     }
 
     /**

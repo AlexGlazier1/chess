@@ -11,7 +11,10 @@ public class PawnRules {
     //}
 
     public static Collection<ChessMove> moveCalc(ChessBoard board, ChessPosition myPosition, ArrayList<ChessMove> possibleMoves) {
-        possibleMoves.add(myPosition.)
+        //if board.getPiece()
+
+        new ChessMove(new ChessPosition(1,1), new ChessPosition(5,4), ChessPiece.PieceType.PAWN);
+        //possibleMoves.add(myPosition.get)
         return possibleMoves;
     }
 }

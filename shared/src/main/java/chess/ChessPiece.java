@@ -62,13 +62,39 @@ public class ChessPiece {
         //testy.add(1);
         ArrayList<ChessMove> moves = new ArrayList<>();
 
-        ChessMove Test = new ChessMove(new ChessPosition(1,1), new ChessPosition(5,4), PieceType.PAWN);
-        moves.add(Test);
+        //ChessMove Test = new ChessMove(new ChessPosition(4,4), new ChessPosition(5,4), null);
+        //moves.add(Test);
 
-        if (board.getPiece(myPosition).type == PieceType.PAWN)
-            PawnRules.moveCalc();
+        if (board.getPiece(myPosition).type == PieceType.PAWN) {
+            PawnRules.moveCalc(board, myPosition, moves);
             return moves;
+        }
 
+        if (board.getPiece(myPosition).type == PieceType.BISHOP) {
+            BishopRules.moveCalc(board, myPosition, moves, pieceColor);
+            return moves;
+        }
+        /*
+        if (board.getPiece(myPosition).type == PieceType.ROOK) {
+            RookRules.moveCalc(board, myPosition, moves);
+            return moves;
+        }
+
+        if (board.getPiece(myPosition).type == PieceType.KNIGHT) {
+            KnightRules.moveCalc(board, myPosition, moves);
+            return moves;
+        }
+
+        if (board.getPiece(myPosition).type == PieceType.QUEEN) {
+            QueenRules.moveCalc(board, myPosition, moves);
+            return moves;
+        }
+
+        if (board.getPiece(myPosition).type == PieceType.KING) {
+            KingRules.moveCalc(board, myPosition, moves);
+            return moves;
+        }
+        */
         return new ArrayList<>();
     }
 }
