@@ -83,17 +83,17 @@ public class ChessPiece {
             RookRules.moveCalc(board, myPosition, moves, pieceColor);
             return moves;
         }
-        /*
-        if (board.getPiece(myPosition).type == PieceType.KNIGHT) {
-            KnightRules.moveCalc(board, myPosition, moves);
-            return moves;
-        }
+
+        //if (board.getPiece(myPosition).type == PieceType.KNIGHT) {
+        //    KnightRules.moveCalc(board, myPosition, moves);
+        //    return moves;
+        //}
 
         if (board.getPiece(myPosition).type == PieceType.QUEEN) {
-            QueenRules.moveCalc(board, myPosition, moves);
+            QueenRules.moveCalc(board, myPosition, moves, pieceColor);
             return moves;
         }
-
+        /*
         if (board.getPiece(myPosition).type == PieceType.KING) {
             KingRules.moveCalc(board, myPosition, moves);
             return moves;
