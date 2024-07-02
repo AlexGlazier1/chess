@@ -36,11 +36,11 @@ public class RookRules {
         if (edgeChecker(board, D)){
 
 
-            if(ChessBoard.getPiece(D) == null){
+            if(board.getPiece(D) == null){
                 possibleMoves.add(new ChessMove(moveFrom, D, null));
                 Down(board,moveFrom, D, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(D).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(D).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, D, null));
             }
         }
@@ -58,11 +58,11 @@ public class RookRules {
 
             //possibleMoves.add(new ChessMove(moveFrom, DR, null));
 
-            if(ChessBoard.getPiece(R) == null){
+            if(board.getPiece(R) == null){
                 possibleMoves.add(new ChessMove(moveFrom, R, null));
                 Right(board,moveFrom, R, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(R).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(R).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, R, null));
             }
         }
@@ -79,11 +79,11 @@ public class RookRules {
         if (edgeChecker(board, L)){
 
 
-            if(ChessBoard.getPiece(L) == null){
+            if(board.getPiece(L) == null){
                 possibleMoves.add(new ChessMove(moveFrom, L, null));
                 Left(board,moveFrom, L, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(L).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(L).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, L, null));
             }
         }
@@ -101,11 +101,11 @@ public class RookRules {
 
 
 
-            if(ChessBoard.getPiece(U) == null){
+            if(board.getPiece(U) == null){
                 possibleMoves.add(new ChessMove(moveFrom, U, null));
                 Up(board,moveFrom, U, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(U).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(U).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, U, null));
             }
         }

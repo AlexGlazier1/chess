@@ -14,10 +14,14 @@ public class ChessPiece {
     private ChessGame.TeamColor pieceColor;
     private PieceType type;
 
+
     public ChessPiece(ChessGame.TeamColor pieceColor, ChessPiece.PieceType type) {
         this.pieceColor = pieceColor;
         this.type = type;
+
     }
+
+
 
     /**
      * The various different chess piece options
@@ -66,7 +70,7 @@ public class ChessPiece {
         //moves.add(Test);
 
         if (board.getPiece(myPosition).type == PieceType.PAWN) {
-            PawnRules.moveCalc(board, myPosition, moves);
+            PawnRules.moveCalc(board, myPosition, moves, pieceColor);
             return moves;
         }
 

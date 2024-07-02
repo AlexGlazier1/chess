@@ -34,14 +34,9 @@ public class BishopRules {
             }
         }
 
-
-
-
-
         //DownLeft(board, myPosition, myPosition, possibleMoves, myColor);
         //DownRight(board, myPosition, myPosition, possibleMoves, myColor);
         //UpLeft(board, myPosition, myPosition, possibleMoves, myColor);
-
 
         //return possibleMoves;
     }
@@ -56,11 +51,11 @@ public class BishopRules {
 
         if (edgeChecker(board, tempPosition)){
 
-            if(ChessBoard.getPiece(DL) == null){
+            if(board.getPiece(DL) == null){
                 possibleMoves.add(new ChessMove(moveFrom, DL, null));
                 DownLeft(board,moveFrom, DL, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(DL).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(DL).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, DL, null));
         }
         }
@@ -76,11 +71,11 @@ public class BishopRules {
 
         if (edgeChecker(board, DR)){
 
-            if(ChessBoard.getPiece(DR) == null){
+            if(board.getPiece(DR) == null){
                 possibleMoves.add(new ChessMove(moveFrom, DR, null));
                 DownRight(board,moveFrom, DR, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(DR).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(DR).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, DR, null));
             }
         }
@@ -96,11 +91,11 @@ public class BishopRules {
 
         if (edgeChecker(board, UL)){
 
-            if(ChessBoard.getPiece(UL) == null){
+            if(board.getPiece(UL) == null){
                 possibleMoves.add(new ChessMove(moveFrom, UL, null));
                 UpLeft(board,moveFrom, UL, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(UL).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(UL).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, UL, null));
             }
         }
@@ -116,11 +111,11 @@ public class BishopRules {
 
         if (edgeChecker(board, UR)){
 
-            if(ChessBoard.getPiece(UR) == null){
+            if(board.getPiece(UR) == null){
                 possibleMoves.add(new ChessMove(moveFrom, UR, null));
                 UpRight(board,moveFrom, UR, possibleMoves, myColor);
 
-            }else if(ChessBoard.getPiece(UR).getTeamColor() != ChessBoard.getPiece(moveFrom).getTeamColor()){
+            }else if(board.getPiece(UR).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
                 possibleMoves.add(new ChessMove(moveFrom, UR, null));
             }
         }
