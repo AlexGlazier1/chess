@@ -84,10 +84,10 @@ public class ChessPiece {
             return moves;
         }
 
-        //if (board.getPiece(myPosition).type == PieceType.KNIGHT) {
-        //    KnightRules.moveCalc(board, myPosition, moves);
-        //    return moves;
-        //}
+        if (board.getPiece(myPosition).type == PieceType.KNIGHT) {
+            KnightRules.moveCalc(board, myPosition, moves, pieceColor);
+            return moves;
+        }
 
         if (board.getPiece(myPosition).type == PieceType.QUEEN) {
             QueenRules.moveCalc(board, myPosition, moves, pieceColor);
