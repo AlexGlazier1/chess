@@ -93,12 +93,12 @@ public class ChessPiece {
             QueenRules.moveCalc(board, myPosition, moves, pieceColor);
             return moves;
         }
-        /*
+
         if (board.getPiece(myPosition).type == PieceType.KING) {
-            KingRules.moveCalc(board, myPosition, moves);
+            KingRules.moveCalc(board, myPosition, moves, pieceColor);
             return moves;
         }
-        */
+
         return new ArrayList<>();
     }
 }
