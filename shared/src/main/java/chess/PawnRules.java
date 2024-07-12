@@ -122,7 +122,7 @@ public class PawnRules {
 
     }
 
-    private static boolean edgeChecker(ChessBoard board, ChessPosition myPosition){
+    public static boolean edgeChecker(ChessBoard board, ChessPosition myPosition){
         if ((myPosition.getColumn() >= 1 && myPosition.getColumn() <= 8 ) && (myPosition.getRow() >= 1 && myPosition.getRow() <= 8)){
             return true;
         }else{
