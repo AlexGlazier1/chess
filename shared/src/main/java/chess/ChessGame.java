@@ -15,13 +15,18 @@ public class ChessGame {
     private TeamColor teamColor;
 
     public ChessGame() {
-
+        this.board = new ChessBoard();
+        board.resetBoard();
+        teamColor = TeamColor.WHITE;
     }
 
     public ChessGame(ChessBoard board, TeamColor teamColor) {
         this.board = board;
         this.teamColor = teamColor;
     }
+
+
+
 
     /**
      * @return Which team's turn it is
@@ -83,6 +88,70 @@ public class ChessGame {
      * @return True if the specified team is in check
      */
     public boolean isInCheck(TeamColor teamColor) {
+        //if(this.board == null)
+        //    return false;
+        //X get board
+        //X get square with team color king on it
+        //X Get list of moves available from each type of piece
+        // For each move list see if that type of piece is in range from the king's position
+        // if any piece from opp side is in range for a matching move, king is in check
+        ChessPosition kingSquare = getKingPosition(teamColor);
+
+        ArrayList<ChessMove> queenMoves = new ArrayList<>();
+        ArrayList<ChessMove> kingMoves = new ArrayList<>();
+        ArrayList<ChessMove> rookMoves = new ArrayList<>();
+        ArrayList<ChessMove> bishopMoves = new ArrayList<>();
+        ArrayList<ChessMove> knightMoves = new ArrayList<>();
+        ArrayList<ChessMove> pawnMoves = new ArrayList<>();
+
+        ChessPosition UR = new ChessPosition(0,0);
+        ChessPosition UL = new ChessPosition(0,0);
+        if(teamColor == TeamColor.WHITE) {
+            UR = new ChessPosition(kingSquare.getRow()+1,kingSquare.getColumn()+1);
+            UL = new ChessPosition(kingSquare.getRow()+1,kingSquare.getColumn()-1);
+
+        }
+        if(teamColor == TeamColor.BLACK) {
+            UR = new ChessPosition(kingSquare.getRow()-1,kingSquare.getColumn()+1);
+            UL = new ChessPosition(kingSquare.getRow()-1,kingSquare.getColumn()-1);
+
+        }
+        if(PawnRules.edgeChecker(board, UR)) {
+            ChessMove UpRight = new ChessMove(kingSquare, UR, ChessPiece.PieceType.PAWN);
+            pawnMoves.add(UpRight);
+        }
+        if(PawnRules.edgeChecker(board, UL)) {
+            ChessMove UpLeft = new ChessMove(kingSquare, UL, ChessPiece.PieceType.PAWN);
+            pawnMoves.add(UpLeft);
+        }
+
+        QueenRules.moveCalc(board, kingSquare, queenMoves, teamColor);
+        KingRules.moveCalc(board, kingSquare, kingMoves, teamColor);
+        RookRules.moveCalc(board, kingSquare, rookMoves, teamColor);
+        BishopRules.moveCalc(board, kingSquare, bishopMoves, teamColor);
+        KnightRules.moveCalc(board, kingSquare, knightMoves, teamColor);
+
+        if(isPieceTypeChecking(queenMoves, ChessPiece.PieceType.QUEEN, teamColor))
+            return true;
+        if(isPieceTypeChecking(kingMoves, ChessPiece.PieceType.KING, teamColor))
+            return true;
+        if(isPieceTypeChecking(rookMoves, ChessPiece.PieceType.ROOK, teamColor))
+            return true;
+        if(isPieceTypeChecking(bishopMoves, ChessPiece.PieceType.BISHOP, teamColor))
+            return true;
+        if(isPieceTypeChecking(knightMoves, ChessPiece.PieceType.KNIGHT, teamColor))
+            return true;
+        if(isPieceTypeChecking(pawnMoves, ChessPiece.PieceType.PAWN, teamColor))
+            return true;
+
+        return false;
+
+        //throw new RuntimeException("Not implemented");
+    }
+
+    public boolean isInCheck(TeamColor teamColor, ChessBoard board) {
+        //if(this.board == null)
+        //    return false;
         //X get board
         //X get square with team color king on it
         //X Get list of moves available from each type of piece
@@ -149,6 +218,14 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
+        //make new chessboard and see if that chessboard is still in check for a
+        Collection<ChessMove> myTeamMoves = getAllMoves(teamColor);
+
+        for(ChessMove move : myTeamMoves) {
+            ChessBoard testForCheckMate = board;
+
+        }
+
         return false;
 
         //throw new RuntimeException("Not implemented");
@@ -208,10 +285,36 @@ public class ChessGame {
 
     public boolean isPieceTypeChecking(ArrayList<ChessMove> moves, ChessPiece.PieceType pieceType, TeamColor teamColor){
         for(ChessMove move: moves){
+            if(board.getPiece(move.getEndPosition()) == null)
+                continue;
             if(board.getPiece(move.getEndPosition()).getPieceType() == pieceType && board.getPiece(move.getEndPosition()).getTeamColor() != teamColor){
                 return true;
             }
         }
         return false;
+    }
+
+    public Collection<ChessMove> getAllMoves(TeamColor teamColor) {
+        //Collection<ChessPiece> teamPieces = new ArrayList<>();
+        Collection<ChessMove> teamMoves = new ArrayList<>();
+
+        int row = 1;
+        for(ChessPiece place[]: board.squares){
+            int column = 1;
+            for(ChessPiece piece: place){
+                if(piece != null && piece.getTeamColor().equals(teamColor)){
+                    //teamPieces.add(piece);
+                    teamMoves.addAll(piece.pieceMoves(board, new ChessPosition(row, column)));
+                }else{
+                    column++;
+                }
+            }
+            row++;
+        }
+
+        //for(ChessPiece piece: teamPieces){
+        //    teamMoves.add(piece.pieceMoves(board, ));
+        //}
+        return null;
     }
 }
