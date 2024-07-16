@@ -25,9 +25,6 @@ public class ChessGame {
         this.teamColor = teamColor;
     }
 
-
-
-
     /**
      * @return Which team's turn it is
      */
@@ -218,15 +215,31 @@ public class ChessGame {
      * @return True if the specified team is in checkmate
      */
     public boolean isInCheckmate(TeamColor teamColor) {
-        //make new chessboard and see if that chessboard is still in check for a
-        Collection<ChessMove> myTeamMoves = getAllMoves(teamColor);
+        //Check if team is currently in check
+        //if yes:
+        //Get collection of every move possible to make
+        //for each move make new chessboard
+        // set move on new chessboard
+        // check if team is currently in check
+        //if team is not in check after doing one move, then team is not in checkmate
 
-        for(ChessMove move : myTeamMoves) {
-            ChessBoard testForCheckMate = board;
 
-        }
+        if(isInCheck(teamColor)){
+            Collection<ChessMove> myTeamMoves = getAllMoves(teamColor);
 
-        return false;
+            for(ChessMove move : myTeamMoves) {
+                ChessBoard testForCheckMate = board;
+                ChessPiece temp = testForCheckMate.getPiece(move.getStartPosition());
+                testForCheckMate.addPiece(move.getStartPosition(), null);
+                testForCheckMate.addPiece(move.getEndPosition(), temp);
+                if(!isInCheck(teamColor, testForCheckMate))
+                    return false;
+            }
+
+            return true;
+        }else
+            return false;
+
 
         //throw new RuntimeException("Not implemented");
     }
@@ -311,10 +324,6 @@ public class ChessGame {
             }
             row++;
         }
-
-        //for(ChessPiece piece: teamPieces){
-        //    teamMoves.add(piece.pieceMoves(board, ));
-        //}
-        return null;
-    }
+        return teamMoves;
+        }
 }
