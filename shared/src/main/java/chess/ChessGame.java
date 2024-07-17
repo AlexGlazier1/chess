@@ -91,6 +91,26 @@ public class ChessGame {
      */
     public void makeMove(ChessMove move) throws InvalidMoveException {
 
+        if(board.getPiece(move.getStartPosition()) != null) {
+            if (board.getPiece(move.getStartPosition()).getTeamColor() == this.getTeamTurn()) {
+                if (validMoves(move.getStartPosition()).contains(move)) {
+                    ChessPiece temp = board.getPiece(move.getStartPosition());
+                    board.addPiece(move.getStartPosition(), null);
+                    if(move.getPromotionPiece() != null){
+                        ChessPiece promo;
+                    }else {
+                        board.addPiece(move.getEndPosition(), temp);
+                    }
+                } else {
+                    throw new InvalidMoveException();
+                }
+            } else {
+                throw new InvalidMoveException();
+            }
+        }else{
+            throw new InvalidMoveException();
+        }
+
 
         //throw new RuntimeException("Not implemented");
     }
@@ -254,6 +274,22 @@ public class ChessGame {
      * @return True if the specified team is in stalemate, otherwise false
      */
     public boolean isInStalemate(TeamColor teamColor) {
+        Collection<ChessMove> teamMoves = new ArrayList<>();
+
+        int row = 1;
+        for(ChessPiece place[]: board.squares){
+            int column = 1;
+            for(ChessPiece piece: place){
+                if(piece != null && piece.getTeamColor() == teamColor) {
+                    teamMoves.addAll(validMoves(new ChessPosition(row, column)));
+                }
+                column++;
+            }
+            row++;
+        }
+        if(!isInCheck(teamColor, board) && teamMoves.isEmpty()){
+            return true;
+        }
         return false;
 
         //throw new RuntimeException("Not implemented");
@@ -327,6 +363,7 @@ public class ChessGame {
         }
         return teamMoves;
         }
+
 
     public TeamColor getOppositeTeamColor(TeamColor teamColor) {
         if (teamColor == TeamColor.WHITE) {
