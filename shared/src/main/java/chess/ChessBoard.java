@@ -15,6 +15,17 @@ public class ChessBoard {
         
     }
 
+    public ChessBoard(ChessBoard board){
+        this.squares = new ChessPiece[8][8];
+
+        for (int i = 0; i < squares.length; i++) {
+            for (int j = 0; j < squares.length; j++) {
+                this.squares[i][j] = board.squares[i][j];
+
+            }
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {
