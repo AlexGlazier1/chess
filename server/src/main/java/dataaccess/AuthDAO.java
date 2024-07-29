@@ -7,7 +7,7 @@ import model.GameData;
 public interface AuthDAO {
 
 
-    public void createAuth(AuthData auth);
+    public void createAuth(AuthData auth) ;
 
     public boolean readAuth(int authToken);
 

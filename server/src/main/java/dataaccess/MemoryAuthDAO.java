@@ -3,16 +3,21 @@ package dataaccess;
 import server.Server;
 import model.AuthData;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class MemoryAuthDAO implements AuthDAO {
 
+    public Map<String, AuthData> memoryAuthMap = new HashMap<>();
+
     public void createAuth(AuthData auth){
-        Server.memoryAuthMap.put(auth.authToken(), auth.username());
+        memoryAuthMap.put(auth.authToken(), auth);
     }
 
     public boolean readAuth(int authToken){
 
-        if(Server.memoryAuthMap.containsKey(authToken)){
+        if(memoryAuthMap.containsKey(authToken)){
             return true;
         }
         return false;
@@ -20,14 +25,14 @@ public class MemoryAuthDAO implements AuthDAO {
     }
 
     public void updateAuth(AuthData auth){
-        Server.memoryAuthMap.put(auth.authToken(), auth.username());
+        memoryAuthMap.put(auth.authToken(), auth);
     }
 
     public void deleteAuth(AuthData auth){
-        Server.memoryAuthMap.remove(auth.authToken());
+        memoryAuthMap.remove(auth.authToken());
     }
 
     public void clearAllAuth(){
-        Server.memoryAuthMap.clear();
+        memoryAuthMap.clear();
     }
 }

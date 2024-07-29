@@ -1,5 +1,7 @@
 package handler;
 
+import dataaccess.AuthDAO;
+import dataaccess.GameDAO;
 import spark.*;
 import dataaccess.UserDAO;
 import model.GameData;
@@ -7,13 +9,27 @@ import service.ClearService;
 
 public class clearHandler {
 
+    GameDAO gameDAO;
+    AuthDAO authDAO;
+    UserDAO userDAO;
+
+    public clearHandler(GameDAO gameData, AuthDAO authData, UserDAO userData) {
+        this.gameDAO = gameData;
+        this.authDAO = authData;
+        this.userDAO = userData;
+    }
 
 
-
-    ClearService Clear = new ClearService();
-
-    public void clear(Response res){
-
+    public String clearDAOS(Request req, Response res){
+        ClearService Clear = new ClearService(gameDAO, authDAO, userDAO);
+        try {
+            Clear.clearService();
+            res.status(200);
+            return "";
+        }catch (Exception e){
+            res.status(500);
+        }
+        return "";
 
     }
 }

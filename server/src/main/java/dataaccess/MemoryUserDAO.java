@@ -3,31 +3,37 @@ package dataaccess;
 import model.UserData;
 import server.Server;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MemoryUserDAO implements UserDAO {
+
+        public Map<String, UserData> memoryUserMap = new HashMap<>();
+
 
 
         public void createUser(UserData user){
-                Server.memoryUserMap.put(user.username(), user);
+                memoryUserMap.put(user.username(), user);
         }
 
         public boolean readUser(String username){
 
-                if(Server.memoryUserMap.containsKey(username)){
+                if(memoryUserMap.containsKey(username)){
                         return true;
                 }
                 return false;
         }
 
         public void updateUser(UserData user){
-                Server.memoryUserMap.put(user.username(), user);
+                memoryUserMap.put(user.username(), user);
         }
 
         public void deleteUser(UserData user){
-                Server.memoryUserMap.remove(user.username());
+                memoryUserMap.remove(user.username());
         }
 
         public void clearAllUsers(){
-                Server.memoryUserMap.clear();
+                memoryUserMap.clear();
         }
 
 
