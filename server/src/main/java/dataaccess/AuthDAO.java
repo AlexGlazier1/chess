@@ -4,16 +4,16 @@ import model.UserData;
 import model.AuthData;
 import model.GameData;
 
-public class AuthDAO {
+public interface AuthDAO {
 
 
-    void createAuth(AuthData auth){}
+    public void createAuth(AuthData auth);
 
-    AuthData readAuth(int authToken){}
+    public boolean readAuth(int authToken);
 
-    void updateAuth(AuthData authOld, AuthData authNew){}
+    public void updateAuth(AuthData auth);
 
-    void deleteAuth(AuthData auth){}
+    public void deleteAuth(AuthData auth);
 
-    void clearAllAuth(){}
+    public void clearAllAuth();
 }

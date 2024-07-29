@@ -3,17 +3,19 @@ import model.UserData;
 import model.AuthData;
 import model.GameData;
 
-public class GameDAO {
+import java.util.Map;
 
-    void createGame(GameData game){}
+public interface GameDAO {
 
-    GameData readGame(int gameID){}
+    public void createGame(GameData game);
 
-    GameData listGames(){}
+    public boolean readGame(GameData Game);
 
-    void updateGame(GameData gameOld, GameData gameNew){}
+    public Map<Integer, GameData> listGames();
 
-    void deleteGame(GameData game){}
+    public void updateGame(GameData Game);
 
-    void clearAllGames(){}
+    public void deleteGame(GameData game);
+
+    public void clearAllGames();
 }

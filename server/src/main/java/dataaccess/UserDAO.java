@@ -3,15 +3,16 @@ package dataaccess;
 import model.UserData;
 import model.AuthData;
 import model.GameData;
-public class UserDAO {
+public interface UserDAO {
 
-    void createUser(UserData user){}
+    public void createUser(UserData user);
 
-    UserData readUser(String username){}
+    public boolean readUser(String username);
 
-    void updateUser(UserData userOld, UserData userNew){}
+    public void updateUser(UserData user);
 
-    void deleteUser(UserData user){}
+    public void deleteUser(UserData user);
 
-    void clearAllUsers(){}
+    public void clearAllUsers();
 }
+

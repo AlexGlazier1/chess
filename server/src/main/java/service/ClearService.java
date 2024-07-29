@@ -1,8 +1,19 @@
 package service;
 
+import dataaccess.UserDAO;
+
 public class ClearService {
 
-    public void clear(){
+    GameDAO gameData;
+    AuthDAO authData;
+    UserDAO userData;
 
+    //needs constructor
+
+    clearService(){
+        .clearAllAuth()
     }
+
+
+
 }
