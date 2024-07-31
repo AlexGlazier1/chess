@@ -2,7 +2,7 @@ package dataaccess;
 
 import server.Server;
 import model.AuthData;
-
+import dataaccess.DataAccessException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +15,7 @@ public class MemoryAuthDAO implements AuthDAO {
         memoryAuthMap.put(auth.authToken(), auth);
     }
 
-    public boolean readAuth(int authToken){
+    public boolean readAuth(int authToken) {
 
         if(memoryAuthMap.containsKey(authToken)){
             return true;
@@ -24,11 +24,11 @@ public class MemoryAuthDAO implements AuthDAO {
         //returns true if the auth toekn exists in the userbase
     }
 
-    public void updateAuth(AuthData auth){
-        memoryAuthMap.put(auth.authToken(), auth);
+    public void updateAuth(AuthData auth) throws DataAccessException{
+            memoryAuthMap.put(auth.authToken(), auth);
     }
 
-    public void deleteAuth(AuthData auth){
+    public void deleteAuth(AuthData auth) throws DataAccessException {
         memoryAuthMap.remove(auth.authToken());
     }
 

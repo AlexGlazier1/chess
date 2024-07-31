@@ -6,6 +6,7 @@ import java.util.HashMap;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
+import handler.RegisterHandler;
 import handler.clearHandler;
 import model.GameData;
 import model.UserData;
@@ -32,8 +33,8 @@ public class Server {
         clearHandler clearHandler = new clearHandler(memoryGameDAO, memoryAuthDAO, memoryUserDAO);
         Spark.delete("/db", clearHandler::clearDAOS);
 
-
-        Spark.post("/user", )
+        RegisterHandler registerHandler = new RegisterHandler(memoryUserDAO);
+        Spark.post("/user", registerHandler::Register);
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();
