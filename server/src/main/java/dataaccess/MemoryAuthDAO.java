@@ -15,7 +15,7 @@ public class MemoryAuthDAO implements AuthDAO {
         memoryAuthMap.put(auth.authToken(), auth);
     }
 
-    public boolean readAuth(int authToken) {
+    public boolean readAuth(String authToken) {
 
         if(memoryAuthMap.containsKey(authToken)){
             return true;

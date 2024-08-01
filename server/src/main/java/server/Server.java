@@ -8,6 +8,7 @@ import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
 import handler.RegisterHandler;
 import handler.clearHandler;
+import handler.listGamesHandler;
 import model.GameData;
 import model.UserData;
 import model.AuthData;
@@ -35,6 +36,11 @@ public class Server {
 
         RegisterHandler registerHandler = new RegisterHandler(memoryUserDAO);
         Spark.post("/user", registerHandler::Register);
+
+
+
+        listGamesHandler listgamesHandler = new listGamesHandler(memoryGameDAO, memoryAuthDAO);
+        Spark.get("/game", listgamesHandler::listGames);
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();
