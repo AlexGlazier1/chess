@@ -1,6 +1,8 @@
 package service;
 
+import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
+import dataaccess.MemoryUserDAO;
 import dataaccess.UserDAO;
 import model.UserData;
 import model.AuthData;
@@ -9,9 +11,11 @@ import model.GameData;
 public class UserService {
 
     UserDAO userDAO;
+    AuthDAO authDAO;
 
-    public UserService(UserDAO userDAO) {
+    public UserService(UserDAO userDAO, AuthDAO authDAO) {
         this.userDAO = userDAO;
+        this.authDAO = authDAO;
     }
 
 
@@ -24,10 +28,22 @@ public class UserService {
             return new AuthData(stringMaker(8), user.username());
         }
     }
-    public AuthData loginService(UserData user) {
-        return null;
+    public AuthData loginService(UserData user) throws DataAccessException{
+
+        if(userDAO.getMemoryUserMap().containsKey(user.username()) && userDAO.getMemoryUserMap().get(user.username()).equals(user.password())     ){
+            return new AuthData(stringMaker(8), user.username());
+        }else{
+            throw new DataAccessException("Username or password is incorrect");
+        }
     }
-    public void logoutService(UserData user) {}
+
+    public void logoutService(AuthData authData) throws DataAccessException {
+        if(!authDAO.readAuth(authData.authToken())){
+            throw new DataAccessException("Error: unauthorized");
+        }else{
+            authDAO.deleteAuth(authData);
+        }
+    }
 
     static String stringMaker(int n)
     {

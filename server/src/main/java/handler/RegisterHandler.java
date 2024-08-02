@@ -1,6 +1,7 @@
 package handler;
 
 import dataaccess.UserDAO;
+import dataaccess.AuthDAO;
 import model.UserData;
 import service.UserService;
 import com.google.gson.Gson;
@@ -11,14 +12,16 @@ public class RegisterHandler {
 
 
     UserDAO userDAO;
+    AuthDAO authDAO;
 
-    public RegisterHandler(UserDAO userDAO) {
+    public RegisterHandler(UserDAO userDAO, AuthDAO authDAO) {
         this.userDAO = userDAO;
+        this.authDAO = authDAO;
     }
 
     public Object Register(Request req, Response res){
         var userData = new Gson().fromJson(req.body(), UserData.class);
-        UserService register = new UserService(userDAO);
+        UserService register = new UserService(userDAO, authDAO);
         try {
             //register.registerService(userData);
             res.status(200);

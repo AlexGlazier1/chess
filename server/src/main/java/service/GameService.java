@@ -21,11 +21,28 @@ public class GameService {
     }
 
 
-    public GameData joinGame(UserData user) {
-        return null;
+    public void joinGame(AuthData auth) throws dataaccess.DataAccessException {
+        if(!authDAO.readAuth(auth.authToken())){
+            throw new DataAccessException("Error: unauthorized");
+        }else{try {
+            gameDAO.getGame();
+            GameData update = new GameData();
+            gameDAO.updateGame(update);
+            }catch(Exception e){
+                throw new DataAccessException("Error: Game not found");
+            }
+        }
     }
-    public GameData createGame(UserData user) {
-        return null;
+    public GameData createGame(AuthData auth, GameData game) throws dataaccess.DataAccessException{
+        if(!authDAO.readAuth(auth.authToken())){
+            throw new DataAccessException("Error: unauthorized");
+        }else{try{
+            gameDAO.createGame(game);
+            return game;
+        }catch(Exception e){
+            throw new DataAccessException("Error: unauthorized");
+        }
+        }
     }
     public ArrayList<GameData> listGames(AuthData auth) throws dataaccess.DataAccessException {
         if(!authDAO.readAuth(auth.authToken())){

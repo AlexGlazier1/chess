@@ -35,6 +35,10 @@ public class MemoryGameDAO implements GameDAO {
         memoryGameMap.remove(Game.gameID());
     }
 
+    public GameData getGame(int GameID){
+        return memoryGameMap.get(GameID);
+    }
+
     public void clearAllGames(){
         memoryGameMap.clear();
     }

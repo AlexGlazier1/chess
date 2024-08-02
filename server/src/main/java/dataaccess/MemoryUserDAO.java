@@ -1,5 +1,6 @@
 package dataaccess;
 
+import model.GameData;
 import model.UserData;
 import server.Server;
 
@@ -30,6 +31,10 @@ public class MemoryUserDAO implements UserDAO {
 
         public void deleteUser(UserData user){
                 memoryUserMap.remove(user.username());
+        }
+
+        public Map<String, UserData> getMemoryUserMap(){
+                return memoryUserMap;
         }
 
         public void clearAllUsers(){

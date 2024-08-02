@@ -17,5 +17,7 @@ public interface GameDAO {
 
     public void deleteGame(GameData game);
 
+    public GameData getGame(int GameID);
+
     public void clearAllGames();
 }
