@@ -3,6 +3,7 @@ package server;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.google.gson.Gson;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
@@ -49,6 +50,32 @@ public class Server {
 
         joinGameHandler joinGameHandler = new joinGameHandler(memoryAuthDAO, memoryGameDAO);
         Spark.put("/game", joinGameHandler::joinGame);
+
+        Spark.exception(Exception.class, (exception, req, res) -> {
+            res.body(new Gson().toJson(Map.of("message", "Error: " + exception.getMessage())));
+            switch (exception.getMessage()){
+                case "Error: bad request":
+                    res.status(400);
+                    break;
+
+                case "Error: unauthorized":
+                    res.status(401);
+                    break;
+
+                case "Error: already taken":
+                    res.status(403);
+                    break;
+
+                case "Error: unknown":
+                    res.status(500);
+                    break;
+            }
+
+
+            res.status(500);
+
+
+        });
 
         //This line initializes the server and can be removed once you have a functioning endpoint 
         Spark.init();

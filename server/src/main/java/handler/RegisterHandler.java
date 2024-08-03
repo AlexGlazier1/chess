@@ -1,5 +1,6 @@
 package handler;
 
+import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import dataaccess.AuthDAO;
 import model.UserData;
@@ -19,9 +20,11 @@ public class RegisterHandler {
         this.authDAO = authDAO;
     }
 
-    public Object Register(Request req, Response res){
+    public Object Register(Request req, Response res) throws DataAccessException {
         var userData = new Gson().fromJson(req.body(), UserData.class);
         UserService register = new UserService(userDAO, authDAO);
+        return new Gson().toJson(register.registerService(userData));
+        /*
         try {
             //register.registerService(userData);
             res.status(200);
@@ -30,6 +33,8 @@ public class RegisterHandler {
             res.status(500);
         }
         return "";
+
+         */
 
     }
 

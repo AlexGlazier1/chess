@@ -13,6 +13,8 @@ public interface AuthDAO {
 
     public void updateAuth(AuthData auth) throws DataAccessException;
 
+    public String getUsername(String authToken) throws DataAccessException;
+
     public void deleteAuth(AuthData auth) throws DataAccessException;
 
     public void clearAllAuth();

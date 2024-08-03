@@ -24,17 +24,21 @@ public class listGamesHandler {
     }
 
 
-    public Object listGames(Request req, Response res) {
+    public Object listGames(Request req, Response res) throws DataAccessException {
         var authData = new Gson().fromJson(req.body(), AuthData.class);
         var gameData = new Gson().fromJson(req.body(), GameData.class);
         GameService listGames = new GameService(authDAO, gameDAO);
+
+        return new Gson().toJson(listGames.listGames(authData));
+        /*
         try {
             //register.registerService(userData);
             res.status(200);
-            return new Gson().toJson(listGames.listGames(authData));
+
         } catch (Exception e) {
             res.status(500);
         }
         return "";
+         */
     }
 }

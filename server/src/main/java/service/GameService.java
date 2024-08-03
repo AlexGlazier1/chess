@@ -21,10 +21,23 @@ public class GameService {
     }
 
 
-    public void joinGame(AuthData auth) throws dataaccess.DataAccessException {
-        if(!authDAO.readAuth(auth.authToken())){
+    public void joinGame(String authtoken, GameData Game) throws dataaccess.DataAccessException {
+        if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
-        }else{try {
+        }else if(Game.blackUsername() != null && Game.whiteUsername() != null){
+            throw new dataaccess.DataAccessException("Error: already taken");
+        }else if(!gameDAO.readGame(Game) ){
+            throw new dataaccess.DataAccessException("Error: bad request");
+        }else if(gameDAO.getGame(Game.gameID()).blackUsername() != null && Game.blackUsername() != null){
+            throw new dataaccess.DataAccessException("Error: unknown");
+        }else{
+            //GameData tempGame = gameDAO.getGame(Game.gameID());
+            //GameData update = new GameData();
+            gameDAO.updateGame(Game);
+        }
+
+        /*
+        {try {
             gameDAO.getGame();
             GameData update = new GameData();
             gameDAO.updateGame(update);
@@ -32,18 +45,31 @@ public class GameService {
                 throw new DataAccessException("Error: Game not found");
             }
         }
+         */
     }
-    public GameData createGame(AuthData auth, GameData game) throws dataaccess.DataAccessException{
-        if(!authDAO.readAuth(auth.authToken())){
+    public GameData createGame(String authtoken, GameData game) throws dataaccess.DataAccessException{
+        if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
-        }else{try{
+        }else if(game.gameName() == null || game.gameName().isEmpty()){
+            throw new DataAccessException("Error: bad request");
+        }else if(game.gameName().length() > 2){
+            throw new DataAccessException("Error: unknown");
+        }else{
+            gameDAO.createGame(game);
+            return game;
+        }
+
+        /*
+        {try{
             gameDAO.createGame(game);
             return game;
         }catch(Exception e){
             throw new DataAccessException("Error: unauthorized");
         }
         }
+         */
     }
+
     public ArrayList<GameData> listGames(AuthData auth) throws dataaccess.DataAccessException {
         if(!authDAO.readAuth(auth.authToken())){
             throw new DataAccessException("Error: unauthorized");

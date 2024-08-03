@@ -21,7 +21,11 @@ public class UserService {
 
     public AuthData registerService(UserData user) throws DataAccessException {
         if(userDAO.readUser(user.username())){
-            throw new DataAccessException("Username is already in use");
+            throw new DataAccessException("Error: already taken");
+        }else if(!user.email().contains("@")){
+            throw new DataAccessException("Error: bad request");
+        }else if(user.username() == null || user.username().isEmpty()){
+            throw new DataAccessException("Error: unknown");
         }else{
             userDAO.createUser(user);
 
@@ -37,12 +41,16 @@ public class UserService {
         }
     }
 
-    public void logoutService(AuthData authData) throws DataAccessException {
-        if(!authDAO.readAuth(authData.authToken())){
+    public void logoutService(String authtoken, AuthData authData) throws DataAccessException {
+
+        if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
+        }else if(authtoken.length() != 8){
+            throw new DataAccessException("Error: unknown");
         }else{
             authDAO.deleteAuth(authData);
         }
+
     }
 
     static String stringMaker(int n)

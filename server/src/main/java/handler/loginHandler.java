@@ -2,6 +2,7 @@ package handler;
 
 import com.google.gson.Gson;
 import dataaccess.AuthDAO;
+import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
@@ -20,9 +21,12 @@ public class loginHandler {
         this.authDAO = authDAO;
     }
 
-    public String Login(Request req, Response res){
+    public String Login(Request req, Response res) throws DataAccessException {
         var userData = new Gson().fromJson(req.body(), UserData.class);
         UserService login = new UserService(userDAO, authDAO);
+        login.loginService(userData);
+        return "";
+        /*
         try {
             login.loginService(userData);
             res.status(200);
@@ -31,5 +35,6 @@ public class loginHandler {
             res.status(500);
         }
         return "";
+         */
     }
 }

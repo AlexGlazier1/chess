@@ -21,9 +21,14 @@ public class logoutHandler {
         this.authDAO = authDAO;
     }
 
-    public String Logout(Request req, Response res){
+    public String Logout(Request req, Response res) throws DataAccessException {
+        String authtoken = req.headers("authorization");
+
         var authData = new Gson().fromJson(req.body(), AuthData.class);
         UserService logout = new UserService(userDAO, authDAO);
+        logout.logoutService(authtoken, authData);
+        return "";
+        /*
         try {
             logout.logoutService(authData);
             res.status(200);
@@ -31,6 +36,6 @@ public class logoutHandler {
         }catch (Exception e){
             res.status(500);
         }
-        return "";
+        return ""; */
     }
 }
