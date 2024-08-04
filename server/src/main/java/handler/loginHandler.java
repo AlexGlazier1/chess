@@ -23,6 +23,7 @@ public class loginHandler {
 
     public String Login(Request req, Response res) throws DataAccessException {
         var userData = new Gson().fromJson(req.body(), UserData.class);
+        // might need to individually extract data here
         UserService login = new UserService(userDAO, authDAO);
         login.loginService(userData);
         return "";

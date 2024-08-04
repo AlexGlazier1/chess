@@ -24,9 +24,9 @@ public class logoutHandler {
     public String Logout(Request req, Response res) throws DataAccessException {
         String authtoken = req.headers("authorization");
 
-        var authData = new Gson().fromJson(req.body(), AuthData.class);
+        //var authData = new Gson().fromJson(req.body(), AuthData.class);
         UserService logout = new UserService(userDAO, authDAO);
-        logout.logoutService(authtoken, authData);
+        logout.logoutService(authtoken);
         return "";
         /*
         try {

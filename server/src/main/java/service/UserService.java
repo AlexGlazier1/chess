@@ -28,8 +28,10 @@ public class UserService {
             throw new DataAccessException("Error: unknown");
         }else{
             userDAO.createUser(user);
+            AuthData userAuth = new AuthData(stringMaker(8), user.username());
+            authDAO.createAuth(userAuth);
 
-            return new AuthData(stringMaker(8), user.username());
+            return userAuth;
         }
     }
     public AuthData loginService(UserData user) throws DataAccessException{
@@ -41,14 +43,14 @@ public class UserService {
         }
     }
 
-    public void logoutService(String authtoken, AuthData authData) throws DataAccessException {
+    public void logoutService(String authtoken) throws DataAccessException {
 
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
         }else if(authtoken.length() != 8){
             throw new DataAccessException("Error: unknown");
         }else{
-            authDAO.deleteAuth(authData);
+            authDAO.deleteAuth(authDAO.getAuth(authtoken));
         }
 
     }

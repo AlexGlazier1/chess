@@ -37,7 +37,7 @@ public class Server {
         Spark.post("/user", registerHandler::Register);
 
         loginHandler loginHandler = new loginHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.delete("/session", loginHandler::Login);
+        Spark.post("/session", loginHandler::Login);
 
         logoutHandler logoutHandler = new logoutHandler(memoryUserDAO, memoryAuthDAO);
         Spark.delete("/session", logoutHandler::Logout);

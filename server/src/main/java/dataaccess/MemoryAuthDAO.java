@@ -32,6 +32,10 @@ public class MemoryAuthDAO implements AuthDAO {
         return memoryAuthMap.get(authToken).username();
     }
 
+    public AuthData getAuth(String authToken) throws DataAccessException{
+        return memoryAuthMap.get(authToken);
+    }
+
     public void deleteAuth(AuthData auth) throws DataAccessException {
         memoryAuthMap.remove(auth.authToken());
     }
