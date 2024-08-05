@@ -25,11 +25,12 @@ public class listGamesHandler {
 
 
     public Object listGames(Request req, Response res) throws DataAccessException {
-        var authData = new Gson().fromJson(req.body(), AuthData.class);
-        var gameData = new Gson().fromJson(req.body(), GameData.class);
+        //var authData = new Gson().fromJson(req.body(), AuthData.class);
+        //var gameData = new Gson().fromJson(req.body(), GameData.class);
+        String authtoken = req.headers("authorization");
         GameService listGames = new GameService(authDAO, gameDAO);
 
-        return new Gson().toJson(listGames.listGames(authData));
+        return new Gson().toJson(listGames.listGames(authtoken));
         /*
         try {
             //register.registerService(userData);

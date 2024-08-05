@@ -30,6 +30,8 @@ public class GameService {
             throw new dataaccess.DataAccessException("Error: bad request");
         }else if(gameDAO.getGame(Game.gameID()).blackUsername() != null && Game.blackUsername() != null){
             throw new dataaccess.DataAccessException("Error: unknown");
+        }else if(gameDAO.getGame(Game.gameID()).whiteUsername() != null && Game.whiteUsername() != null){
+            throw new dataaccess.DataAccessException("Error: unknown");
         }else{
             //GameData tempGame = gameDAO.getGame(Game.gameID());
             //GameData update = new GameData();
@@ -52,7 +54,7 @@ public class GameService {
             throw new DataAccessException("Error: unauthorized");
         }else if(game.gameName() == null || game.gameName().isEmpty()){
             throw new DataAccessException("Error: bad request");
-        }else if(game.gameName().length() > 2){
+        }else if(game.gameName().length() < 2){
             throw new DataAccessException("Error: unknown");
         }else{
             gameDAO.createGame(game);
@@ -69,20 +71,27 @@ public class GameService {
         }
          */
     }
-
-    public ArrayList<GameData> listGames(AuthData auth) throws dataaccess.DataAccessException {
-        if(!authDAO.readAuth(auth.authToken())){
+    /////////MAKE SURE IT IS RECIEVING THE ACTUAL AUTHTOKEN STRING AND LOSE THE TRY CATCH BLOCK
+    public ArrayList<GameData> listGames(String authtoken) throws dataaccess.DataAccessException {
+        if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
-        }else{try{
-            ArrayList<GameData> Games  = new ArrayList<>();
-            for(GameData game: gameDAO.listGames().values() ){
+        }else if(authtoken == null) {
+            throw new DataAccessException("Error: unknown");
+        }else {
+            ArrayList<GameData> Games = new ArrayList<>();
+            for (GameData game : gameDAO.listGames().values()) {
                 Games.add(game);
             }
             return Games;
+        }
+
+            /*
+            try{
+
         }catch(Exception e){
             throw new DataAccessException("Error: unauthorized");
             }
-        }
+        }*/
 
     }
 

@@ -39,7 +39,7 @@ public class UserService {
         if(userDAO.getMemoryUserMap().containsKey(username) && userDAO.getMemoryUserMap().get(username).password().equals(password)   ){
             return new AuthData(stringMaker(8), username);
         }else{
-            throw new DataAccessException("Username or password is incorrect ");
+            throw new DataAccessException("Error: unauthorized");
         }
     }
 
