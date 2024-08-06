@@ -1,5 +1,6 @@
 package handler;
 
+import chess.ChessGame;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,26 +26,31 @@ public class joinGameHandler {
         this.gameDAO = gameDAO;
     }
 
-    public String joinGame(Request req, Response res) throws DataAccessException {
+    public Object joinGame(Request req, Response res) throws DataAccessException {
         String authtoken = req.headers("authorization");
 
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
+
+        if (req.headers("authorization") == null || !authDAO.readAuth(authtoken)) {
+            throw new DataAccessException("Error: unauthorized");
+        }
+        if(jsonObject.get("playerColor") == null){
+            throw new DataAccessException("Error: bad request");
+        //}else if(jsonObject.get("playerColor").getAsString() == "WHITE" || jsonObject.get("playerColor").getAsString() == "BLACK" ) {
+        //    throw new DataAccessException("Error: hmmm");
+        }
+        if(jsonObject.get("gameID") == null){
+            throw new DataAccessException("Error: bad request");
+        }
+
         String playerColor = jsonObject.get("playerColor").getAsString();
         int gameID = jsonObject.get("gameID").getAsInt();
 
-        String gameName = gameDAO.getGame(gameID).gameName();
-
-        GameData gameData;
-        if(playerColor.equals("WHITE")) {
-            gameData = new GameData(gameID, authDAO.getUsername(authtoken), gameDAO.getGame(gameID).blackUsername(), gameName, null);
-        }else {
-            gameData = new GameData(gameID, gameDAO.getGame(gameID).whiteUsername(), authDAO.getUsername(authtoken), gameName, null);
-        }
+        //String gameName = gameDAO.getGame(gameID).gameName();
 
 
         GameService joinGame = new GameService(authDAO, gameDAO);
-
-        joinGame.joinGame(authtoken, gameData);
+        joinGame.joinGame(authtoken, playerColor, gameID);
         return "";
         /*
         try{

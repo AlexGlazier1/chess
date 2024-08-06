@@ -22,10 +22,10 @@ public class UserService {
     public AuthData registerService(UserData user) throws DataAccessException {
         if(userDAO.readUser(user.username())){
             throw new DataAccessException("Error: already taken");
-        }else if(!user.email().contains("@")){
+        }/*else if(!user.email().contains("@")){
+            //throw new DataAccessException("Error: bad request");
+        }*/else if(user.username() == null || user.username().isEmpty() || user.password() == null || user.password().isEmpty() || user.email() == null || user.email().isEmpty()){
             throw new DataAccessException("Error: bad request");
-        }else if(user.username() == null || user.username().isEmpty()){
-            throw new DataAccessException("Error: unknown");
         }else{
             userDAO.createUser(user);
             AuthData userAuth = new AuthData(stringMaker(8), user.username());

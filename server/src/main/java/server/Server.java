@@ -53,7 +53,7 @@ public class Server {
 
         Spark.exception(Exception.class, (exception, req, res) -> {
             res.body(new Gson().toJson(Map.of("message", "Error: " + exception.getMessage())));
-            switch (exception.getMessage()){
+            switch (exception.getMessage()) {
                 case "Error: bad request":
                     res.status(400);
                     break;
@@ -66,13 +66,10 @@ public class Server {
                     res.status(403);
                     break;
 
-                case "Error: unknown":
+                default:
                     res.status(500);
                     break;
             }
-
-
-            res.status(500);
 
 
         });

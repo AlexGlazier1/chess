@@ -1,4 +1,5 @@
 package service;
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 
 import dataaccess.GameDAO;
@@ -21,21 +22,44 @@ public class GameService {
     }
 
 
-    public void joinGame(String authtoken, GameData Game) throws dataaccess.DataAccessException {
+    public void joinGame(String authtoken, String playerColor, int gameID) throws dataaccess.DataAccessException {
+
+        GameData oldGame = gameDAO.getGame(gameID);
+        String username = authDAO.getUsername(authtoken);
+        String blackName = gameDAO.getGame(gameID).blackUsername();
+        String whiteName = gameDAO.getGame(gameID).whiteUsername();
+        String gameName = gameDAO.getGame(gameID).gameName();
+        ChessGame chessGame = gameDAO.getGame(gameID).game();
+
+        GameData newGame = new GameData(gameID, null, null, gameName, chessGame);
+
+        if(playerColor.equals("BLACK")){
+            newGame = new GameData(gameID, whiteName, username, gameName, chessGame);
+        }
+        if(playerColor.equals("WHITE")){
+            newGame = new GameData(gameID, username, blackName, gameName, chessGame);
+        }
+
+
+
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
-        }else if(Game.blackUsername() != null && Game.whiteUsername() != null){
+
+        }else if(oldGame.blackUsername() != null && oldGame.whiteUsername() != null){
             throw new dataaccess.DataAccessException("Error: already taken");
-        }else if(!gameDAO.readGame(Game) ){
+
+        }else if(playerColor.equals("BLACK") && oldGame.blackUsername() != null){
+            throw new dataaccess.DataAccessException("Error: already taken");
+
+        }else if(playerColor.equals("WHITE") && oldGame.whiteUsername() != null){
+            throw new dataaccess.DataAccessException("Error: already taken");
+
+        }else if(!gameDAO.readGame(oldGame) ){
             throw new dataaccess.DataAccessException("Error: bad request");
-        }else if(gameDAO.getGame(Game.gameID()).blackUsername() != null && Game.blackUsername() != null){
-            throw new dataaccess.DataAccessException("Error: unknown");
-        }else if(gameDAO.getGame(Game.gameID()).whiteUsername() != null && Game.whiteUsername() != null){
-            throw new dataaccess.DataAccessException("Error: unknown");
         }else{
             //GameData tempGame = gameDAO.getGame(Game.gameID());
             //GameData update = new GameData();
-            gameDAO.updateGame(Game);
+            gameDAO.updateGame(newGame);
         }
 
         /*

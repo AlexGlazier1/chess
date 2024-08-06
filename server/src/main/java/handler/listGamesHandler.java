@@ -1,6 +1,7 @@
 package handler;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import model.UserData;
@@ -12,12 +13,15 @@ import dataaccess.UserDAO;
 import model.GameData;
 import model.AuthData;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class listGamesHandler {
 
     AuthDAO authDAO;
     GameDAO gameDAO;
-
+    Gson gson = new Gson();
     public listGamesHandler(GameDAO gameDAO, AuthDAO authDAO) {
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
@@ -29,8 +33,14 @@ public class listGamesHandler {
         //var gameData = new Gson().fromJson(req.body(), GameData.class);
         String authtoken = req.headers("authorization");
         GameService listGames = new GameService(authDAO, gameDAO);
+        ArrayList<GameData> temp = listGames.listGames(authtoken);
 
-        return new Gson().toJson(listGames.listGames(authtoken));
+        String data = gson.toJson(temp);
+        JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
+
+        JsonObject json = new JsonObject();
+        json.add("games", jsonArray);
+        return new Gson().toJson(json);
         /*
         try {
             //register.registerService(userData);
