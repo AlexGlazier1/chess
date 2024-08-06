@@ -26,6 +26,12 @@ public class loginHandler {
     public String Login(Request req, Response res) throws DataAccessException {
 
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
+        if(jsonObject.get("username").getAsString() == null){
+            throw new DataAccessException("Error: unauthorized");
+        }
+        if(jsonObject.get("password").getAsString() == null){
+            throw new DataAccessException("Error: unauthorized");
+        }
         String username = jsonObject.get("username").getAsString();
         String password = jsonObject.get("password").getAsString();
 
@@ -33,6 +39,7 @@ public class loginHandler {
         //var userData = new Gson().fromJson(req.body(), UserData.class);
         // might need to individually extract data here
         UserService login = new UserService(userDAO, authDAO);
+
         return new Gson().toJson(login.loginService(username, password));
         /*
         try {

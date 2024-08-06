@@ -36,8 +36,11 @@ public class UserService {
     }
     public AuthData loginService(String username, String password) throws DataAccessException{
 
+
         if(userDAO.getMemoryUserMap().containsKey(username) && userDAO.getMemoryUserMap().get(username).password().equals(password)   ){
-            return new AuthData(stringMaker(8), username);
+            AuthData userAuth = new AuthData(stringMaker(8), username);
+            authDAO.createAuth(userAuth);
+            return userAuth;
         }else{
             throw new DataAccessException("Error: unauthorized");
         }
@@ -47,8 +50,6 @@ public class UserService {
 
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
-        }else if(authtoken.length() != 8){
-            throw new DataAccessException("Error: unknown");
         }else{
             authDAO.deleteAuth(authDAO.getAuth(authtoken));
         }
