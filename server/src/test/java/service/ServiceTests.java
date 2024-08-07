@@ -43,7 +43,7 @@ public class ServiceTests {
     }
 
     @Test
-    void badRegister(){
+    void badRegister() throws DataAccessException {
         UserData testUser = new UserData("", "password", "email");
 
         assertThrows(DataAccessException.class, ()->{
@@ -80,13 +80,17 @@ public class ServiceTests {
     }
 
     @Test
-    void goodLogout() throws DataAccessException {
+    void goodLogout() {
         UserData testUser = new UserData("username", "password", "email");
-        AuthData testAuth =  userService.registerService(testUser);
+        try {
+            AuthData testAuth = userService.registerService(testUser);
 
-        userService.logoutService(testAuth.authToken());
+            userService.logoutService(testAuth.authToken());
 
-        assertTrue(testserver.memoryAuthDAO.memoryAuthMap.isEmpty());
+            assertTrue(testserver.memoryAuthDAO.memoryAuthMap.isEmpty());
+        }catch(DataAccessException e){
+            assertTrue(false);
+        }
 
     }
 
