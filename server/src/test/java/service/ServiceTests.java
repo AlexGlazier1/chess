@@ -1,8 +1,11 @@
 package service;
 
+import chess.ChessGame;
 import dataaccess.DataAccessException;
 import model.AuthData;
+import model.GameData;
 import model.UserData;
+import org.junit.jupiter.api.BeforeEach;
 import server.Server;
 import service.ClearService;
 import service.GameService;
@@ -13,17 +16,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ServiceTests {
 
-    @Test
-    void addition() {
-        assertEquals(2, add(1, 1));
+    Server testserver;
+
+    UserService userService;
+    GameService gameService;
+    ClearService clearService;
+
+    @BeforeEach
+    void setUp() {
+        testserver = new Server();
+
+        userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
+        gameService = new GameService(testserver.memoryAuthDAO, testserver.memoryGameDAO);
+        clearService = new ClearService(testserver.memoryGameDAO, testserver.memoryAuthDAO, testserver.memoryUserDAO);
     }
 
 
     @Test
     void goodRegister() throws DataAccessException {
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
-
         UserData testUser = new UserData("username", "password", "email");
 
         AuthData testAuth =  userService.registerService(testUser);
@@ -34,9 +44,6 @@ public class ServiceTests {
 
     @Test
     void badRegister(){
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
-
         UserData testUser = new UserData("", "password", "email");
 
         assertThrows(DataAccessException.class, ()->{
@@ -46,8 +53,6 @@ public class ServiceTests {
 
     @Test
     void goodLogin() throws DataAccessException {
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
         UserData testUser = new UserData("username", "password", "email");
         AuthData testAuth =  userService.registerService(testUser);
 
@@ -62,8 +67,6 @@ public class ServiceTests {
 
     @Test
     void badLogin() throws DataAccessException {
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
         UserData testUser = new UserData("username", "password", "email");
         AuthData testAuth =  userService.registerService(testUser);
 
@@ -77,70 +80,160 @@ public class ServiceTests {
     }
 
     @Test
-    void goodLogout(){
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
+    void goodLogout() throws DataAccessException {
         UserData testUser = new UserData("username", "password", "email");
         AuthData testAuth =  userService.registerService(testUser);
 
         userService.logoutService(testAuth.authToken());
 
+        assertTrue(testserver.memoryAuthDAO.memoryAuthMap.isEmpty());
 
     }
 
     @Test
-    void badLogout(){
-        Server testserver = new Server();
-        UserService userService = new UserService(testserver.memoryUserDAO, testserver.memoryAuthDAO);
+    void badLogout() throws DataAccessException {
+        UserData testUser = new UserData("username", "password", "email");
+        userService.registerService(testUser);
+
+        assertThrows(DataAccessException.class, ()->{
+            userService.logoutService("1298339842");
+        });
+
+    }
+
+    @Test
+    void goodCreateGame() throws DataAccessException {
+        UserData testUser = new UserData("username", "password", "email");
+        AuthData testAuth = userService.registerService(testUser);
+
+        GameData gameData = new GameData(1234, null, null, "testGame", new ChessGame());
+
+        assertEquals(gameService.createGame(testAuth.authToken(), gameData).gameID(), 1234);
+
+
+
 
 
     }
 
     @Test
-    void goodCreateGame(){
-        Server testserver = new Server();
+    void badCreateGame() throws DataAccessException {
+        UserData testUser = new UserData("username", "password", "email");
+        AuthData testAuth = userService.registerService(testUser);
+
+        GameData gameData = new GameData(1234, null, null, null, new ChessGame());
+
+        assertThrows(DataAccessException.class, ()->{
+            gameService.createGame(testAuth.authToken(), gameData);
+        });
+    }
+
+    @Test
+    void goodJoinGame() throws DataAccessException {
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        UserData testUser2 = new UserData("user2", "pass2", "email2");
+        AuthData testAuth1 = userService.registerService(testUser1);
+        AuthData testAuth2 = userService.registerService(testUser2);
+
+        GameData gameData = new GameData(1234, null, null, "testGame", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData);
+
+        gameService.joinGame(testAuth1.authToken(),"WHITE", 1234);
+        gameService.joinGame(testAuth2.authToken(),"BLACK", 1234);
+
+        assertEquals(testserver.memoryGameDAO.memoryGameMap.size(), 1);
+        assertEquals(testserver.memoryGameDAO.memoryGameMap.get(1234).whiteUsername(), "user1");
+        assertEquals(testserver.memoryGameDAO.memoryGameMap.get(1234).blackUsername(), "user2");
+
+
 
     }
 
     @Test
-    void badCreateGame(){
-        Server testserver = new Server();
+    void badJoinGame() throws DataAccessException {
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        UserData testUser2 = new UserData("user2", "pass2", null);
+        AuthData testAuth1 = userService.registerService(testUser1);
+
+        GameData gameData = new GameData(1234, null, null, "testGame", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData);
+
+
+        gameService.joinGame(testAuth1.authToken(),"WHITE", 1234);
+
+        assertThrows(DataAccessException.class, ()->{
+            AuthData testAuth2 = userService.registerService(testUser2);
+            gameService.joinGame(testAuth2.authToken(),"BLACK", 1234);
+
+        });
 
     }
 
     @Test
-    void goodJoinGame(){
-        Server testserver = new Server();
+    void goodListGame() throws DataAccessException {
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        AuthData testAuth1 = userService.registerService(testUser1);
+
+        GameData gameData1 = new GameData(1234, null, null, "testGame1", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData1);
+
+        GameData gameData2 = new GameData(5678, null, null, "testGame2", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData2);
+
+        GameData gameData3 = new GameData(0001, null, null, "testGame3", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData3);
+
+        GameData gameData4 = new GameData(1000, null, null, "testGame4", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData4);
+
+
+        assertEquals(testserver.memoryGameDAO.memoryGameMap.size(), 4);
 
     }
 
     @Test
-    void badJoinGame(){
-        Server testserver = new Server();
+    void badListGame()throws DataAccessException {
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        AuthData testAuth1 = userService.registerService(testUser1);
+
+        GameData gameData1 = new GameData(1234, null, null, "testGame1", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData1);
+
+        GameData gameData2 = new GameData(5678, null, null, "testGame2", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData2);
+
+        GameData gameData3 = new GameData(0001, null, null, "testGame3", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData3);
+
+        GameData gameData4 = new GameData(1000, null, null, "testGame4", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData4);
+
+
+        assertEquals(testserver.memoryGameDAO.memoryGameMap.size(), 4);
+
 
     }
 
     @Test
-    void goodListGame(){
-        Server testserver = new Server();
+    void goodClear() throws DataAccessException {
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        AuthData testAuth1 = userService.registerService(testUser1);
 
-    }
+        GameData gameData1 = new GameData(1234, null, null, "testGame1", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData1);
 
-    @Test
-    void badListGame(){
-        Server testserver = new Server();
+        GameData gameData2 = new GameData(5678, null, null, "testGame2", new ChessGame());
+        gameService.createGame(testAuth1.authToken(), gameData2);
 
-    }
+        assertTrue(!testserver.memoryGameDAO.memoryGameMap.isEmpty());
+        assertTrue(!testserver.memoryAuthDAO.memoryAuthMap.isEmpty());
+        assertTrue(!testserver.memoryUserDAO.memoryUserMap.isEmpty());
 
-    @Test
-    void goodClear(){
+        clearService.clearService();
 
-    }
-
-
-
-    public int add(int i, int j){
-        return i + j;
+        assertTrue(testserver.memoryGameDAO.memoryGameMap.isEmpty());
+        assertTrue(testserver.memoryAuthDAO.memoryAuthMap.isEmpty());
+        assertTrue(testserver.memoryUserDAO.memoryUserMap.isEmpty());
     }
 }
 
