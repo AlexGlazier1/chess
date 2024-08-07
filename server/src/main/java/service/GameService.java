@@ -41,7 +41,6 @@ public class GameService {
         }
 
 
-
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
 
@@ -57,21 +56,8 @@ public class GameService {
         }else if(!gameDAO.readGame(oldGame) ){
             throw new dataaccess.DataAccessException("Error: bad request");
         }else{
-            //GameData tempGame = gameDAO.getGame(Game.gameID());
-            //GameData update = new GameData();
             gameDAO.updateGame(newGame);
         }
-
-        /*
-        {try {
-            gameDAO.getGame();
-            GameData update = new GameData();
-            gameDAO.updateGame(update);
-            }catch(Exception e){
-                throw new DataAccessException("Error: Game not found");
-            }
-        }
-         */
     }
     public GameData createGame(String authtoken, GameData game) throws dataaccess.DataAccessException{
         if(!authDAO.readAuth(authtoken)){
@@ -85,15 +71,6 @@ public class GameService {
             return game;
         }
 
-        /*
-        {try{
-            gameDAO.createGame(game);
-            return game;
-        }catch(Exception e){
-            throw new DataAccessException("Error: unauthorized");
-        }
-        }
-         */
     }
     /////////MAKE SURE IT IS RECIEVING THE ACTUAL AUTHTOKEN STRING AND LOSE THE TRY CATCH BLOCK
     public ArrayList<GameData> listGames(String authtoken) throws dataaccess.DataAccessException {
@@ -108,14 +85,6 @@ public class GameService {
             }
             return Games;
         }
-
-            /*
-            try{
-
-        }catch(Exception e){
-            throw new DataAccessException("Error: unauthorized");
-            }
-        }*/
 
     }
 

@@ -25,10 +25,6 @@ public class Server {
 
         // Register your endpoints and handle exceptions here.
 
-        //memoryAuthDAO.createAuth(new AuthData("Token", "Username"));
-        //memoryGameDAO.createGame(new GameData(1, null, null, "temp", null));
-        //memoryUserDAO.createUser(new UserData("User", "temp","temp"));
-
 
         clearHandler clearHandler = new clearHandler(memoryGameDAO, memoryAuthDAO, memoryUserDAO);
         Spark.delete("/db", clearHandler::clearDAOS);

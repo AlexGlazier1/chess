@@ -4,7 +4,6 @@ import dataaccess.AuthDAO;
 import dataaccess.GameDAO;
 import spark.*;
 import dataaccess.UserDAO;
-import model.GameData;
 import service.ClearService;
 
 public class clearHandler {

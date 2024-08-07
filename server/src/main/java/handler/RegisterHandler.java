@@ -24,21 +24,7 @@ public class RegisterHandler {
         var userData = new Gson().fromJson(req.body(), UserData.class);
         UserService register = new UserService(userDAO, authDAO);
         return new Gson().toJson(register.registerService(userData));
-        /*
-        try {
-            //register.registerService(userData);
-            res.status(200);
-            return new Gson().toJson(register.registerService(userData));
-        }catch (Exception e){
-            res.status(500);
-        }
-        return "";
-
-         */
 
     }
 
-    //var pet = new Gson().fromJson(req.body(), Pet.class);
-    //pet = service.addPet(pet);
-    //return new Gson().toJson(pet);
 }

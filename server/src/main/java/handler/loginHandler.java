@@ -6,8 +6,6 @@ import com.google.gson.JsonParser;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
-import model.AuthData;
-import model.UserData;
 import service.UserService;
 import spark.Request;
 import spark.Response;
@@ -41,15 +39,6 @@ public class loginHandler {
         UserService login = new UserService(userDAO, authDAO);
 
         return new Gson().toJson(login.loginService(username, password));
-        /*
-        try {
-            login.loginService(userData);
-            res.status(200);
-            return "";
-        }catch (Exception e){
-            res.status(500);
-        }
-        return "";
-         */
+
     }
 }

@@ -2,11 +2,9 @@ package service;
 
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
-import dataaccess.MemoryUserDAO;
 import dataaccess.UserDAO;
 import model.UserData;
 import model.AuthData;
-import model.GameData;
 
 public class UserService {
 
@@ -22,13 +20,11 @@ public class UserService {
     public AuthData registerService(UserData user) throws DataAccessException {
         if(userDAO.readUser(user.username())){
             throw new DataAccessException("Error: already taken");
-        }/*else if(!user.email().contains("@")){
-            //throw new DataAccessException("Error: bad request");
-        }*/else if(user.username() == null || user.username().isEmpty() || user.password() == null || user.password().isEmpty() || user.email() == null || user.email().isEmpty()){
+        }else if(user.username() == null || user.username().isEmpty() || user.password() == null || user.password().isEmpty() || user.email() == null || user.email().isEmpty()){
             throw new DataAccessException("Error: bad request");
         }else{
             userDAO.createUser(user);
-            AuthData userAuth = new AuthData(stringMaker(8), user.username());
+            AuthData userAuth = new AuthData(makeString(8), user.username());
             authDAO.createAuth(userAuth);
 
             return userAuth;
@@ -38,7 +34,7 @@ public class UserService {
 
 
         if(userDAO.getMemoryUserMap().containsKey(username) && userDAO.getMemoryUserMap().get(username).password().equals(password)   ){
-            AuthData userAuth = new AuthData(stringMaker(8), username);
+            AuthData userAuth = new AuthData(makeString(8), username);
             authDAO.createAuth(userAuth);
             return userAuth;
         }else{
@@ -56,14 +52,13 @@ public class UserService {
 
     }
 
-    static String stringMaker(int n)
+    static String makeString(int n)
     {
         String characterList = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvxyz";
 
         // create StringBuffer size of AlphaNumericString
-        String sb = "";// = new StringBuilder(n);
+        StringBuilder sb = new StringBuilder();// = new StringBuilder(n);
 
-        char s = characterList.charAt(2);
 
         for (int i = 0; i < n; i++) {
 
@@ -72,7 +67,7 @@ public class UserService {
             int index = (int)(characterList.length() * Math.random());
 
             // add Character one by one in end of sb
-            sb = sb + (characterList.charAt(index));
+            sb.append(characterList.charAt(index));
         }
 
         return sb.toString();
