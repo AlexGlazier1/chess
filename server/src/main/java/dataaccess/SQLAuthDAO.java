@@ -7,7 +7,7 @@ public class SQLAuthDAO implements AuthDAO {
     }
 
     public boolean readAuth(String authToken) {
-]
+
     }
 
     public void updateAuth(AuthData auth) throws DataAccessException{

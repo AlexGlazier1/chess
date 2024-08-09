@@ -1,5 +1,7 @@
 package dataaccess;
 
+import chess.ChessGame;
+
 import java.sql.*;
 import java.util.Properties;
 
@@ -68,5 +70,35 @@ public class DatabaseManager {
         } catch (SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
+    }
+
+    void CreateTables() throws DataAccessException {
+
+        conn.setCatalog(DATABASE_NAME);//check that set catalog is used for setting database and not table
+
+
+        var createAuthTable = """
+            CREATE TABLE IF NOT EXISTS AuthData (
+            authToken VARCHAR (255) NOT NULL,
+            username VARCHAR (255) NOT NULL,
+            PRIMARY KEY (id))""";
+
+        var createGameTable = """
+            CREATE TABLE IF NOT EXISTS GameData (
+            gameID INT NOT NULL AUTO_INCREMENT,
+            whiteUsername VARCHAR (255) NOT NULL,
+            blackUsername VARCHAR (255) NOT NULL,
+            gameName VARCHAR (255) NOT NULL,
+            game longtext NOT NULL,
+            
+            PRIMARY KEY (id))""";
+
+        var createUserTable = """
+            CREATE TABLE IF NOT EXISTS GameData (
+            username VARCHAR (255) NOT NULL,
+            password VARCHAR (255) NOT NULL,
+            email VARCHAR (255) NOT NULL,
+            
+            PRIMARY KEY (id))""";
     }
 }
