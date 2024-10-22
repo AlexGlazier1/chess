@@ -2,6 +2,8 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static chess.ChessPiece.edgeChecker;
+
 
 public class QueenRules {
     public static Collection<ChessMove> moveCalc(ChessBoard board,
@@ -205,15 +207,4 @@ public class QueenRules {
         }
     }
 
-
-
-
-
-    private static boolean edgeChecker(ChessBoard board, ChessPosition myPosition){
-        if ((myPosition.getColumn() >= 1 && myPosition.getColumn() <= 8 ) && (myPosition.getRow() >= 1 && myPosition.getRow() <= 8)){
-            return true;
-        }else{
-            return false;
-        }
-    }
 }

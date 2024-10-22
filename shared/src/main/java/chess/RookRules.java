@@ -2,7 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import static chess.ChessPiece.edgeChecker;
 
 public class RookRules {
 
@@ -110,14 +110,5 @@ public class RookRules {
             }
         }
     }
-    //Need to rewrite the edge checker. It does not account for if a piece is on the edge but wants to move inward or parallel
-    private static boolean edgeChecker(ChessBoard board, ChessPosition myPosition){
-        if ((myPosition.getColumn() >= 1 && myPosition.getColumn() <= 8 ) && (myPosition.getRow() >= 1 && myPosition.getRow() <= 8)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
 
 }

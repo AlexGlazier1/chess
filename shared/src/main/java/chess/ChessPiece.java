@@ -115,4 +115,12 @@ public class ChessPiece {
 
         return new ArrayList<>();
     }
+
+    public static boolean edgeChecker(ChessBoard board, ChessPosition myPosition){
+        if ((myPosition.getColumn() >= 1 && myPosition.getColumn() <= 8 ) && (myPosition.getRow() >= 1 && myPosition.getRow() <= 8)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
