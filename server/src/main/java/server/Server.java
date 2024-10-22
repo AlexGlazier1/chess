@@ -1,16 +1,12 @@
 package server;
 
 import java.util.Map;
-import java.util.HashMap;
 
 import com.google.gson.Gson;
 import dataaccess.MemoryAuthDAO;
 import dataaccess.MemoryGameDAO;
 import dataaccess.MemoryUserDAO;
 import handler.*;
-import model.GameData;
-import model.UserData;
-import model.AuthData;
 import spark.*;
 
 public class Server {
@@ -26,25 +22,25 @@ public class Server {
         // Register your endpoints and handle exceptions here.
 
 
-        clearHandler clearHandler = new clearHandler(memoryGameDAO, memoryAuthDAO, memoryUserDAO);
+        ClearHandler clearHandler = new ClearHandler(memoryGameDAO, memoryAuthDAO, memoryUserDAO);
         Spark.delete("/db", clearHandler::clearDAOS);
 
         RegisterHandler registerHandler = new RegisterHandler(memoryUserDAO, memoryAuthDAO);
         Spark.post("/user", registerHandler::Register);
 
-        loginHandler loginHandler = new loginHandler(memoryUserDAO, memoryAuthDAO);
+        LoginHandler loginHandler = new LoginHandler(memoryUserDAO, memoryAuthDAO);
         Spark.post("/session", loginHandler::Login);
 
-        logoutHandler logoutHandler = new logoutHandler(memoryUserDAO, memoryAuthDAO);
+        LogoutHandler logoutHandler = new LogoutHandler(memoryUserDAO, memoryAuthDAO);
         Spark.delete("/session", logoutHandler::Logout);
 
-        createGameHandler creategame = new createGameHandler(memoryGameDAO, memoryAuthDAO);
+        CreateGameHandler creategame = new CreateGameHandler(memoryGameDAO, memoryAuthDAO);
         Spark.post("/game", creategame::createGame);
 
-        listGamesHandler listgamesHandler = new listGamesHandler(memoryGameDAO, memoryAuthDAO);
+        ListGamesHandler listgamesHandler = new ListGamesHandler(memoryGameDAO, memoryAuthDAO);
         Spark.get("/game", listgamesHandler::listGames);
 
-        joinGameHandler joinGameHandler = new joinGameHandler(memoryAuthDAO, memoryGameDAO);
+        JoinGameHandler joinGameHandler = new JoinGameHandler(memoryAuthDAO, memoryGameDAO);
         Spark.put("/game", joinGameHandler::joinGame);
 
         Spark.exception(Exception.class, (exception, req, res) -> {

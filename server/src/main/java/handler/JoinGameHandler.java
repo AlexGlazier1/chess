@@ -9,12 +9,12 @@ import service.GameService;
 import spark.Request;
 import spark.Response;
 
-public class joinGameHandler {
+public class JoinGameHandler {
 
     AuthDAO authDAO;
     GameDAO gameDAO;
 
-    public joinGameHandler(AuthDAO authDAO, GameDAO gameDAO) {
+    public JoinGameHandler(AuthDAO authDAO, GameDAO gameDAO) {
         this.authDAO = authDAO;
         this.gameDAO = gameDAO;
     }

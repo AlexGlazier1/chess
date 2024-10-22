@@ -12,13 +12,13 @@ import spark.Response;
 
 import java.sql.SQLException;
 
-public class loginHandler {
+public class LoginHandler {
 
     UserDAO userDAO;
     AuthDAO authDAO;
 
 
-    public loginHandler(UserDAO userDAO, AuthDAO authDAO) {
+    public LoginHandler(UserDAO userDAO, AuthDAO authDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;
     }

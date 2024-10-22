@@ -7,13 +7,13 @@ import service.ClearService;
 import spark.Request;
 import spark.Response;
 
-public class clearHandler {
+public class ClearHandler {
 
     GameDAO gameDAO;
     AuthDAO authDAO;
     UserDAO userDAO;
 
-    public clearHandler(GameDAO gameData, AuthDAO authData, UserDAO userData) {
+    public ClearHandler(GameDAO gameData, AuthDAO authData, UserDAO userData) {
         this.gameDAO = gameData;
         this.authDAO = authData;
         this.userDAO = userData;

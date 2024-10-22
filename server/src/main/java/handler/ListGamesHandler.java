@@ -15,12 +15,12 @@ import spark.Response;
 import java.util.ArrayList;
 
 
-public class listGamesHandler {
+public class ListGamesHandler {
 
     AuthDAO authDAO;
     GameDAO gameDAO;
     Gson gson = new Gson();
-    public listGamesHandler(GameDAO gameDAO, AuthDAO authDAO) {
+    public ListGamesHandler(GameDAO gameDAO, AuthDAO authDAO) {
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
     }

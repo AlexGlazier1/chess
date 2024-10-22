@@ -7,13 +7,13 @@ import service.UserService;
 import spark.Request;
 import spark.Response;
 
-public class logoutHandler {
+public class LogoutHandler {
 
     UserDAO userDAO;
     AuthDAO authDAO;
 
 
-    public logoutHandler(UserDAO userDAO, AuthDAO authDAO) {
+    public LogoutHandler(UserDAO userDAO, AuthDAO authDAO) {
         this.userDAO = userDAO;
         this.authDAO = authDAO;
     }

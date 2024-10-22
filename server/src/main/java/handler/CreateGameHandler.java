@@ -14,11 +14,11 @@ import spark.Response;
 
 import java.sql.SQLException;
 
-public class createGameHandler {
+public class CreateGameHandler {
     AuthDAO authDAO;
     GameDAO gameDAO;
     int gameID = 1;
-    public createGameHandler(GameDAO gameDAO, AuthDAO authDAO) {
+    public CreateGameHandler(GameDAO gameDAO, AuthDAO authDAO) {
         this.gameDAO = gameDAO;
         this.authDAO = authDAO;
     }
