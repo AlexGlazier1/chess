@@ -17,7 +17,7 @@ public class KnightRules {
 
         up(board, myPosition, myPosition, possibleMoves, myColor);
         down(board, myPosition, myPosition, possibleMoves, myColor);
-        Right(board, myPosition, myPosition, possibleMoves, myColor);
+        right(board, myPosition, myPosition, possibleMoves, myColor);
         left(board, myPosition, myPosition, possibleMoves, myColor);
 
 
@@ -55,7 +55,7 @@ public class KnightRules {
 
     }
 
-    public static void Right(ChessBoard board,
+    public static void right(ChessBoard board,
                              ChessPosition moveFrom,
                              ChessPosition tempPosition,
                              ArrayList<ChessMove> possibleMoves,

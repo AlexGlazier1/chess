@@ -108,18 +108,18 @@ public class QueenRules {
                           ArrayList<ChessMove> possibleMoves,
                           ChessGame.TeamColor myColor){
 
-        ChessPosition U = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn());
+        ChessPosition u = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn());
 
-        if (edgeChecker(board, U)){
+        if (edgeChecker(board, u)){
 
 
 
-            if(board.getPiece(U) == null){
-                possibleMoves.add(new ChessMove(moveFrom, U, null));
-                up(board,moveFrom, U, possibleMoves, myColor);
+            if(board.getPiece(u) == null){
+                possibleMoves.add(new ChessMove(moveFrom, u, null));
+                up(board,moveFrom, u, possibleMoves, myColor);
 
-            }else if(board.getPiece(U).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, U, null));
+            }else if(board.getPiece(u).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
+                possibleMoves.add(new ChessMove(moveFrom, u, null));
             }
         }
     }
