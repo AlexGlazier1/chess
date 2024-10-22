@@ -26,13 +26,13 @@ public class Server {
         Spark.delete("/db", clearHandler::clearDAOS);
 
         RegisterHandler registerHandler = new RegisterHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.post("/user", registerHandler::Register);
+        Spark.post("/user", registerHandler::register);
 
         LoginHandler loginHandler = new LoginHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.post("/session", loginHandler::Login);
+        Spark.post("/session", loginHandler::login);
 
         LogoutHandler logoutHandler = new LogoutHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.delete("/session", logoutHandler::Logout);
+        Spark.delete("/session", logoutHandler::logout);
 
         CreateGameHandler creategame = new CreateGameHandler(memoryGameDAO, memoryAuthDAO);
         Spark.post("/game", creategame::createGame);

@@ -60,12 +60,12 @@ public class PawnRules {
                     }
                 }
 
-                ChessPosition FPlus = new ChessPosition(moveFrom.getRow() + (direction * 2), moveFrom.getColumn());
-                if (moveFrom.getRow() == 2 && myColor == ChessGame.TeamColor.WHITE && board.getPiece(FPlus) == null) {
-                    possibleMoves.add(new ChessMove(moveFrom, FPlus, null));
+                ChessPosition fPlus = new ChessPosition(moveFrom.getRow() + (direction * 2), moveFrom.getColumn());
+                if (moveFrom.getRow() == 2 && myColor == ChessGame.TeamColor.WHITE && board.getPiece(fPlus) == null) {
+                    possibleMoves.add(new ChessMove(moveFrom, fPlus, null));
                 }
-                if (moveFrom.getRow() == 7 && myColor == ChessGame.TeamColor.BLACK && board.getPiece(FPlus) == null) {
-                    possibleMoves.add(new ChessMove(moveFrom, FPlus, null));
+                if (moveFrom.getRow() == 7 && myColor == ChessGame.TeamColor.BLACK && board.getPiece(fPlus) == null) {
+                    possibleMoves.add(new ChessMove(moveFrom, fPlus, null));
                 }
             }
         }

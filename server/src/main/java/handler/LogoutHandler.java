@@ -18,7 +18,7 @@ public class LogoutHandler {
         this.authDAO = authDAO;
     }
 
-    public String Logout(Request req, Response res) throws DataAccessException {
+    public String logout(Request req, Response res) throws DataAccessException {
         String authtoken = req.headers("authorization");
 
         UserService logout = new UserService(userDAO, authDAO);

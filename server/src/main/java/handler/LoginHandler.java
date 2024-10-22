@@ -23,7 +23,7 @@ public class LoginHandler {
         this.authDAO = authDAO;
     }
 
-    public String Login(Request req, Response res) throws DataAccessException, SQLException {
+    public String login(Request req, Response res) throws DataAccessException, SQLException {
 
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();
         if(jsonObject.get("username").getAsString() == null){

@@ -77,11 +77,11 @@ public class GameService {
         }else if(authtoken == null) {
             throw new DataAccessException("Error: unknown");
         }else {
-            ArrayList<GameData> Games = new ArrayList<>();
+            ArrayList<GameData> games = new ArrayList<>();
             for (GameData game : gameDAO.listGames().values()) {
-                Games.add(game);
+                games.add(game);
             }
-            return Games;
+            return games;
         }
 
     }

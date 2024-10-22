@@ -22,7 +22,7 @@ public class RegisterHandler {
         this.authDAO = authDAO;
     }
 
-    public Object Register(Request req, Response res) throws DataAccessException, SQLException {
+    public Object register(Request req, Response res) throws DataAccessException, SQLException {
         var userData = new Gson().fromJson(req.body(), UserData.class);
         UserService register = new UserService(userDAO, authDAO);
         return new Gson().toJson(register.registerService(userData));

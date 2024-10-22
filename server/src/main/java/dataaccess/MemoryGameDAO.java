@@ -10,13 +10,13 @@ public class MemoryGameDAO implements GameDAO {
     public Map<Integer, GameData> memoryGameMap = new HashMap<>();
 
 
-    public void createGame(GameData Game){
-        memoryGameMap.put(Game.gameID(), Game);
+    public void createGame(GameData game){
+        memoryGameMap.put(game.gameID(), game);
     }
 
-    public boolean readGame(GameData Game){
+    public boolean readGame(GameData game){
 
-        if(memoryGameMap.containsKey(Game.gameID())){
+        if(memoryGameMap.containsKey(game.gameID())){
             return true;
         }
         return false;
@@ -26,16 +26,16 @@ public class MemoryGameDAO implements GameDAO {
         return memoryGameMap;
     }
 
-    public void updateGame(GameData Game){
-        memoryGameMap.put(Game.gameID(), Game);
+    public void updateGame(GameData game){
+        memoryGameMap.put(game.gameID(), game);
     }
 
-    public void deleteGame(GameData Game){
-        memoryGameMap.remove(Game.gameID());
+    public void deleteGame(GameData game){
+        memoryGameMap.remove(game.gameID());
     }
 
-    public GameData getGame(int GameID){
-        return memoryGameMap.get(GameID);
+    public GameData getGame(int gameID){
+        return memoryGameMap.get(gameID);
     }
 
     public void clearAllGames(){

@@ -9,15 +9,15 @@ public interface GameDAO {
 
     public void createGame(GameData game) throws SQLException, DataAccessException;
 
-    public boolean readGame(GameData Game);
+    public boolean readGame(GameData game);
 
     public Map<Integer, GameData> listGames();
 
-    public void updateGame(GameData Game);
+    public void updateGame(GameData game);
 
     public void deleteGame(GameData game);
 
-    public GameData getGame(int GameID);
+    public GameData getGame(int gameID);
 
     public void clearAllGames();
 }

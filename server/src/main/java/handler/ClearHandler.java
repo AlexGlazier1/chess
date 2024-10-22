@@ -21,9 +21,9 @@ public class ClearHandler {
 
 
     public String clearDAOS(Request req, Response res){
-        ClearService Clear = new ClearService(gameDAO, authDAO, userDAO);
+        ClearService clear = new ClearService(gameDAO, authDAO, userDAO);
         try {
-            Clear.clearService();
+            clear.clearService();
             res.status(200);
             return "";
         }catch (Exception e){
