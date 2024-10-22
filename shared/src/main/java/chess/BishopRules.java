@@ -16,16 +16,16 @@ public class BishopRules {
 
         ChessPosition moveFrom = new ChessPosition(myPosition.getRow(), myPosition.getColumn());
         try{
-            UpRight(board, myPosition, myPosition, possibleMoves, myColor);
+            upRight(board, myPosition, myPosition, possibleMoves, myColor);
         }finally {
             try {
-                DownLeft(board, myPosition, myPosition, possibleMoves, myColor);
+                downLeft(board, myPosition, myPosition, possibleMoves, myColor);
             } finally {
                 try {
-                    DownRight(board, myPosition, myPosition, possibleMoves, myColor);
+                    downRight(board, myPosition, myPosition, possibleMoves, myColor);
                 } finally {
                     try {
-                        UpLeft(board, myPosition, myPosition, possibleMoves, myColor);
+                        upLeft(board, myPosition, myPosition, possibleMoves, myColor);
                     } finally {
                         return possibleMoves;
 
@@ -41,82 +41,82 @@ public class BishopRules {
         //return possibleMoves;
     }
 
-    public static void DownLeft(ChessBoard board,
+    public static void downLeft(ChessBoard board,
                                 ChessPosition moveFrom,
                                 ChessPosition tempPosition,
                                 ArrayList<ChessMove> possibleMoves,
                                 ChessGame.TeamColor myColor){
 
-        ChessPosition DL = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()-1);
+        ChessPosition dl = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()-1);
 
         if (edgeChecker(board, tempPosition)){
 
-            if(board.getPiece(DL) == null){
-                possibleMoves.add(new ChessMove(moveFrom, DL, null));
-                DownLeft(board,moveFrom, DL, possibleMoves, myColor);
+            if(board.getPiece(dl) == null){
+                possibleMoves.add(new ChessMove(moveFrom, dl, null));
+                downLeft(board,moveFrom, dl, possibleMoves, myColor);
 
-            }else if(board.getPiece(DL).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, DL, null));
+            }else if(board.getPiece(dl).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
+                possibleMoves.add(new ChessMove(moveFrom, dl, null));
             }
         }
     }
 
-    public static void DownRight(ChessBoard board,
+    public static void downRight(ChessBoard board,
                                  ChessPosition moveFrom,
                                  ChessPosition tempPosition,
                                  ArrayList<ChessMove> possibleMoves,
                                  ChessGame.TeamColor myColor){
 
-        ChessPosition DR = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()+1);
+        ChessPosition dr = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()+1);
 
-        if (edgeChecker(board, DR)){
+        if (edgeChecker(board, dr)){
 
-            if(board.getPiece(DR) == null){
-                possibleMoves.add(new ChessMove(moveFrom, DR, null));
-                DownRight(board,moveFrom, DR, possibleMoves, myColor);
+            if(board.getPiece(dr) == null){
+                possibleMoves.add(new ChessMove(moveFrom, dr, null));
+                downRight(board,moveFrom, dr, possibleMoves, myColor);
 
-            }else if(board.getPiece(DR).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, DR, null));
+            }else if(board.getPiece(dr).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
+                possibleMoves.add(new ChessMove(moveFrom, dr, null));
             }
         }
     }
 
-    public static void UpLeft(ChessBoard board,
+    public static void upLeft(ChessBoard board,
                               ChessPosition moveFrom,
                               ChessPosition tempPosition,
                               ArrayList<ChessMove> possibleMoves,
                               ChessGame.TeamColor myColor){
 
-        ChessPosition UL = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn()-1);
+        ChessPosition ul = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn()-1);
 
-        if (edgeChecker(board, UL)){
+        if (edgeChecker(board, ul)){
 
-            if(board.getPiece(UL) == null){
-                possibleMoves.add(new ChessMove(moveFrom, UL, null));
-                UpLeft(board,moveFrom, UL, possibleMoves, myColor);
+            if(board.getPiece(ul) == null){
+                possibleMoves.add(new ChessMove(moveFrom, ul, null));
+                upLeft(board,moveFrom, ul, possibleMoves, myColor);
 
-            }else if(board.getPiece(UL).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, UL, null));
+            }else if(board.getPiece(ul).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
+                possibleMoves.add(new ChessMove(moveFrom, ul, null));
             }
         }
     }
 
-    public static void UpRight(ChessBoard board,
+    public static void upRight(ChessBoard board,
                                ChessPosition moveFrom,
                                ChessPosition tempPosition,
                                ArrayList<ChessMove> possibleMoves,
                                ChessGame.TeamColor myColor){
 
-        ChessPosition UR = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn()+1);
+        ChessPosition ur = new ChessPosition((tempPosition.getRow()+1), tempPosition.getColumn()+1);
 
-        if (edgeChecker(board, UR)){
+        if (edgeChecker(board, ur)){
 
-            if(board.getPiece(UR) == null){
-                possibleMoves.add(new ChessMove(moveFrom, UR, null));
-                UpRight(board,moveFrom, UR, possibleMoves, myColor);
+            if(board.getPiece(ur) == null){
+                possibleMoves.add(new ChessMove(moveFrom, ur, null));
+                upRight(board,moveFrom, ur, possibleMoves, myColor);
 
-            }else if(board.getPiece(UR).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, UR, null));
+            }else if(board.getPiece(ur).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
+                possibleMoves.add(new ChessMove(moveFrom, ur, null));
             }
         }
     }
