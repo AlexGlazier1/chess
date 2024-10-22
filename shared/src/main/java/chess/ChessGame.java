@@ -73,8 +73,9 @@ public class ChessGame {
             ChessPiece temp =  testForValid.getPiece(move.getStartPosition());
             testForValid.addPiece(move.getStartPosition(), null);
             testForValid.addPiece(move.getEndPosition(), temp);
-            if(!isInCheck(board.getPiece(startPosition).getTeamColor(), testForValid))
+            if(!isInCheck(board.getPiece(startPosition).getTeamColor(), testForValid)) {
                 validMoves.add(move);
+            }
         }
 
 
@@ -110,12 +111,15 @@ public class ChessGame {
                         board.addPiece(move.getEndPosition(), pieceToBeMoved);
                         setTeamTurn(getOppositeTeamColor(pieceToBeMoved.getTeamColor()));
                     }
-                } else
+                } else {
                     throw new InvalidMoveException();
-            } else
+                }
+            } else {
                 throw new InvalidMoveException();
-        }else
+            }
+        }else {
             throw new InvalidMoveException();
+        }
 
 
 
@@ -184,13 +188,15 @@ public class ChessGame {
                 ChessPiece temp =  testForCheckMate.getPiece(move.getStartPosition());
                 testForCheckMate.addPiece(move.getStartPosition(), null);
                 testForCheckMate.addPiece(move.getEndPosition(), temp);
-                if(!isInCheck(teamColor, testForCheckMate))
+                if(!isInCheck(teamColor, testForCheckMate)) {
                     return false;
+                }
             }
 
             return true;
-        }else
+        }else {
             return false;
+        }
 
 
         //throw new RuntimeException("Not implemented");
@@ -268,8 +274,9 @@ public class ChessGame {
     //Takes list of moves, type of piece, and team color and sees if player's king is being checked by piece
     public boolean isPieceTypeChecking(ArrayList<ChessMove> moves, ChessPiece.PieceType pieceType, TeamColor teamColor){
         for(ChessMove move: moves){
-            if(board.getPiece(move.getEndPosition()) == null)
+            if(board.getPiece(move.getEndPosition()) == null) {
                 continue;
+            }
             if(board.getPiece(move.getEndPosition()).getPieceType() == pieceType && board.getPiece(move.getEndPosition()).getTeamColor() != teamColor){
                 return true;
             }

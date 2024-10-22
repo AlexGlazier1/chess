@@ -6,11 +6,6 @@ import static chess.ChessPiece.edgeChecker;
 
 
 public class PawnRules {
-    //private boolean firstTurn = true;
-
-    //public PawnRules(boolean firstTurn) {
-    //this.firstTurn = firstTurn;
-    //}
 
 
     public static Collection<ChessMove> moveCalc(ChessBoard board,

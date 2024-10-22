@@ -73,15 +73,8 @@ public class ChessPiece {
      * @return Collection of valid moves
      */
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        //throw new RuntimeException("Not implemented");
 
-
-        //ArrayList<Integer> testy = new ArrayList<Integer>();
-        //testy.add(1);
         ArrayList<ChessMove> moves = new ArrayList<>();
-
-        //ChessMove Test = new ChessMove(new ChessPosition(4,4), new ChessPosition(5,4), null);
-        //moves.add(Test);
 
         if (board.getPiece(myPosition).type == PieceType.PAWN) {
             PawnRules.moveCalc(board, myPosition, moves, pieceColor);

@@ -35,12 +35,6 @@ public class BishopRules {
                 }
             }
         }
-
-        //DownLeft(board, myPosition, myPosition, possibleMoves, myColor);
-        //DownRight(board, myPosition, myPosition, possibleMoves, myColor);
-        //UpLeft(board, myPosition, myPosition, possibleMoves, myColor);
-
-        //return possibleMoves;
     }
 
     public static void downLeft(ChessBoard board,
