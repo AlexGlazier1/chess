@@ -33,23 +33,9 @@ public class KnightRules {
                                         ArrayList<ChessMove> possibleMoves,
                                         ChessPosition dl,
                                         ChessPosition dr) {
-        if (edgeChecker(board, dl)){
-            if(board.getPiece(dl) == null){
-                possibleMoves.add(new ChessMove(moveFrom, dl, null));
+        KingRules.kingEdgeChecker(board, moveFrom, possibleMoves, dl);
 
-            }else if(board.getPiece(dl).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, dl, null));
-            }
-        }
-
-        if (edgeChecker(board, dr)){
-            if(board.getPiece(dr) == null){
-                possibleMoves.add(new ChessMove(moveFrom, dr, null));
-
-            }else if(board.getPiece(dr).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, dr, null));
-            }
-        }
+        KingRules.kingEdgeChecker(board, moveFrom, possibleMoves, dr);
     }
 
     public static void down(ChessBoard board,

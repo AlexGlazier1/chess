@@ -23,13 +23,9 @@ public class MemoryUserDAO implements UserDAO {
                 return false;
         }
 
-        // Uncomment this when if you need to: public void updateUser(UserData user){
-        // Uncomment this when if you need to:         memoryUserMap.put(user.username(), user);
-        // Uncomment this when if you need to: }
+        // Uncomment this when if you need to: public void updateUser(UserData user){memoryUserMap.put(user.username(), user);}
 
-        // Uncomment this when if you need to: public void deleteUser(UserData user){
-        // Uncomment this when if you need to:         memoryUserMap.remove(user.username());
-        // Uncomment this when if you need to: }
+        // Uncomment this when if you need to: public void deleteUser(UserData user){memoryUserMap.remove(user.username());}
 
         public Map<String, UserData> getMemoryUserMap(){
                 return memoryUserMap;
