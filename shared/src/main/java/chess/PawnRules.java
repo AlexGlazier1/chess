@@ -68,22 +68,23 @@ public class PawnRules {
     private static void pawnHelper(ChessPosition moveFrom, ArrayList<ChessMove> possibleMoves, ChessGame.TeamColor myColor, ChessPosition f) {
         if (f.getRow() == 8 && myColor == ChessGame.TeamColor.WHITE) {
             //possibleMoves.add(new ChessMove(moveFrom, F, null));
-            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
-            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
-            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
-            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
+            pawnMoveAdder(moveFrom, possibleMoves, f);
 
         } else {
             if (f.getRow() == 1 && myColor == ChessGame.TeamColor.BLACK) {
                 //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
-                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
-                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
-                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
+                pawnMoveAdder(moveFrom, possibleMoves, f);
 
             } else {
                 possibleMoves.add(new ChessMove(moveFrom, f, null));
             }
         }
+    }
+
+    private static void pawnMoveAdder(ChessPosition moveFrom, ArrayList<ChessMove> possibleMoves, ChessPosition f) {
+        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
+        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
+        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
+        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
     }
 }

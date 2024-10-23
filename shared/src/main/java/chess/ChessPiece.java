@@ -286,4 +286,25 @@ public class ChessPiece {
             }
         }
     }
+
+    static Collection<ChessMove> diagonalMoveAdder(ChessBoard board, ChessPosition myPosition, ArrayList<ChessMove> possibleMoves, ChessGame.TeamColor myColor) {
+        try{
+            upRight(board, myPosition, myPosition, possibleMoves, myColor);
+        }finally {
+            try {
+                downLeft(board, myPosition, myPosition, possibleMoves, myColor);
+            } finally {
+                try {
+                    downRight(board, myPosition, myPosition, possibleMoves, myColor);
+                } finally {
+                    try {
+                        upLeft(board, myPosition, myPosition, possibleMoves, myColor);
+                    } finally {
+                        return possibleMoves;
+
+                    }
+                }
+            }
+        }
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 import static chess.ChessPiece.*;
 
 
+
 public class QueenRules {
     public static Collection<ChessMove> moveCalc(ChessBoard board,
                                                  ChessPosition myPosition,
@@ -18,24 +19,7 @@ public class QueenRules {
         right(board, myPosition, myPosition, possibleMoves, myColor);
         left(board, myPosition, myPosition, possibleMoves, myColor);
 
-        try{
-            upRight(board, myPosition, myPosition, possibleMoves, myColor);
-        }finally {
-            try {
-                downLeft(board, myPosition, myPosition, possibleMoves, myColor);
-            } finally {
-                try {
-                    downRight(board, myPosition, myPosition, possibleMoves, myColor);
-                } finally {
-                    try {
-                        upLeft(board, myPosition, myPosition, possibleMoves, myColor);
-                    } finally {
-                        return possibleMoves;
-
-                    }
-                }
-            }
-        }
+        return diagonalMoveAdder(board, myPosition, possibleMoves, myColor);
 
 
     }

@@ -22,9 +22,14 @@ public class UserService {
     public AuthData registerService(UserData user) throws DataAccessException, SQLException {
         if(userDAO.readUser(user.username())){
             throw new DataAccessException("Error: already taken");
-        }else if(user.username() == null || user.username().isEmpty() || user.password() == null || user.password().isEmpty() || user.email() == null || user.email().isEmpty()){
+        }else if(user.username() == null || user.username().isEmpty()){
             throw new DataAccessException("Error: bad request");
-        }else{
+        }else if(user.password() == null || user.password().isEmpty()){
+            throw new DataAccessException("Error: bad request");
+        } else if(user.email() == null || user.email().isEmpty()){
+            throw new DataAccessException("Error: bad request");
+        }
+        else{
             userDAO.createUser(user);
             AuthData userAuth = new AuthData(makeString(8), user.username());
             authDAO.createAuth(userAuth);

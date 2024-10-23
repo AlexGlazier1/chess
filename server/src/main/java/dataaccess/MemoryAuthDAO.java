@@ -23,7 +23,7 @@ public class MemoryAuthDAO implements AuthDAO {
         //returns true if the auth toekn exists in the userbase
     }
 
-    // Uncomment this when if you need to: public void updateAuth(AuthData auth) throws DataAccessException{memoryAuthMap.put(auth.authToken(), auth);}
+    //Uncomment this if you need to: public void updateAuth(AuthData auth) throws DataAccessException{memoryAuthMap.put(auth.authToken(), auth);}
 
     public String getUsername(String authToken) throws DataAccessException{
         return memoryAuthMap.get(authToken).username();
