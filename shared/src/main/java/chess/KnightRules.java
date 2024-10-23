@@ -36,6 +36,12 @@ public class KnightRules {
         ChessPosition dr = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()+1);
 
 
+        KnightEdgeCheck(board, moveFrom, possibleMoves, dl, dr);
+
+
+    }
+
+    private static void KnightEdgeCheck(ChessBoard board, ChessPosition moveFrom, ArrayList<ChessMove> possibleMoves, ChessPosition dl, ChessPosition dr) {
         if (edgeChecker(board, dl)){
             if(board.getPiece(dl) == null){
                 possibleMoves.add(new ChessMove(moveFrom, dl, null));
@@ -53,8 +59,6 @@ public class KnightRules {
                 possibleMoves.add(new ChessMove(moveFrom, dr, null));
             }
         }
-
-
     }
 
     public static void right(ChessBoard board,
@@ -67,23 +71,7 @@ public class KnightRules {
         ChessPosition rd = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()+2);
 
 
-        if (edgeChecker(board, ru)){
-            if(board.getPiece(ru) == null){
-                possibleMoves.add(new ChessMove(moveFrom, ru, null));
-
-            }else if(board.getPiece(ru).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, ru, null));
-            }
-        }
-
-        if (edgeChecker(board, rd)){
-            if(board.getPiece(rd) == null){
-                possibleMoves.add(new ChessMove(moveFrom, rd, null));
-
-            }else if(board.getPiece(rd).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, rd, null));
-            }
-        }
+        KnightEdgeCheck(board, moveFrom, possibleMoves, ru, rd);
 
 
     }
@@ -98,23 +86,7 @@ public class KnightRules {
         ChessPosition ld = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()-2);
 
 
-        if (edgeChecker(board, lu)){
-            if(board.getPiece(lu) == null){
-                possibleMoves.add(new ChessMove(moveFrom, lu, null));
-
-            }else if(board.getPiece(lu).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, lu, null));
-            }
-        }
-
-        if (edgeChecker(board, ld)){
-            if(board.getPiece(ld) == null){
-                possibleMoves.add(new ChessMove(moveFrom, ld, null));
-
-            }else if(board.getPiece(ld).getTeamColor() != board.getPiece(moveFrom).getTeamColor()){
-                possibleMoves.add(new ChessMove(moveFrom, ld, null));
-            }
-        }
+        KnightEdgeCheck(board, moveFrom, possibleMoves, lu, ld);
 
 
     }
@@ -129,23 +101,7 @@ public class KnightRules {
         ChessPosition ur = new ChessPosition((tempPosition.getRow() + 2), tempPosition.getColumn() + 1);
 
 
-        if (edgeChecker(board, ul)) {
-            if (board.getPiece(ul) == null) {
-                possibleMoves.add(new ChessMove(moveFrom, ul, null));
-
-            } else if (board.getPiece(ul).getTeamColor() != board.getPiece(moveFrom).getTeamColor()) {
-                possibleMoves.add(new ChessMove(moveFrom, ul, null));
-            }
-        }
-
-        if (edgeChecker(board, ur)) {
-            if (board.getPiece(ur) == null) {
-                possibleMoves.add(new ChessMove(moveFrom, ur, null));
-
-            } else if (board.getPiece(ur).getTeamColor() != board.getPiece(moveFrom).getTeamColor()) {
-                possibleMoves.add(new ChessMove(moveFrom, ur, null));
-            }
-        }
+        KnightEdgeCheck(board, moveFrom, possibleMoves, ul, ur);
 
     }
 }
