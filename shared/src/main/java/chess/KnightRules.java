@@ -26,22 +26,13 @@ public class KnightRules {
         return possibleMoves;
     }
 
-    public static void down(ChessBoard board,
-                            ChessPosition moveFrom,
-                            ChessPosition tempPosition,
-                            ArrayList<ChessMove> possibleMoves,
-                            ChessGame.TeamColor myColor){
-
-        ChessPosition dl = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()-1);
-        ChessPosition dr = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()+1);
 
 
-        KnightEdgeCheck(board, moveFrom, possibleMoves, dl, dr);
-
-
-    }
-
-    private static void KnightEdgeCheck(ChessBoard board, ChessPosition moveFrom, ArrayList<ChessMove> possibleMoves, ChessPosition dl, ChessPosition dr) {
+    private static void KnightEdgeCheck(ChessBoard board,
+                                        ChessPosition moveFrom,
+                                        ArrayList<ChessMove> possibleMoves,
+                                        ChessPosition dl,
+                                        ChessPosition dr) {
         if (edgeChecker(board, dl)){
             if(board.getPiece(dl) == null){
                 possibleMoves.add(new ChessMove(moveFrom, dl, null));
@@ -59,6 +50,21 @@ public class KnightRules {
                 possibleMoves.add(new ChessMove(moveFrom, dr, null));
             }
         }
+    }
+
+    public static void down(ChessBoard board,
+                            ChessPosition moveFrom,
+                            ChessPosition tempPosition,
+                            ArrayList<ChessMove> possibleMoves,
+                            ChessGame.TeamColor myColor){
+
+        ChessPosition dl = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()-1);
+        ChessPosition dr = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()+1);
+
+
+        KnightEdgeCheck(board, moveFrom, possibleMoves, dl, dr);
+
+
     }
 
     public static void right(ChessBoard board,

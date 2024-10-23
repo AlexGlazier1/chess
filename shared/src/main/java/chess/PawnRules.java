@@ -37,25 +37,7 @@ public class PawnRules {
         //Forward once and twice
         if (edgeChecker(board, f)) {
             if (board.getPiece(f) == null) {
-                if (f.getRow() == 8 && myColor == ChessGame.TeamColor.WHITE) {
-                    //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                    possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
-                    possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
-                    possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
-                    possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
-
-                } else {
-                    if (f.getRow() == 1 && myColor == ChessGame.TeamColor.BLACK) {
-                        //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
-                        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
-                        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
-                        possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
-
-                    } else {
-                        possibleMoves.add(new ChessMove(moveFrom, f, null));
-                    }
-                }
+                pawnHelper(moveFrom, possibleMoves, myColor, f);
 
                 ChessPosition fPlus = new ChessPosition(moveFrom.getRow() + (direction * 2), moveFrom.getColumn());
                 if (moveFrom.getRow() == 2 && myColor == ChessGame.TeamColor.WHITE && board.getPiece(fPlus) == null) {
@@ -69,53 +51,39 @@ public class PawnRules {
         //Capture Right
         if(edgeChecker(board, fr)){
             if(board.getPiece(fr) != null && board.getPiece(fr).getTeamColor() != myColor){
-                if(fr.getRow() == 8 && myColor == ChessGame.TeamColor.WHITE){
-                    //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                    possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.QUEEN));
-                    possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.KNIGHT));
-                    possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.ROOK));
-                    possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.BISHOP));
-
-                }else{
-                    if(fr.getRow() == 1 && myColor == ChessGame.TeamColor.BLACK){
-                        //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                        possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.QUEEN));
-                        possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.KNIGHT));
-                        possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.ROOK));
-                        possibleMoves.add(new ChessMove(moveFrom, fr, ChessPiece.PieceType.BISHOP));
-
-                    }else {
-                        possibleMoves.add(new ChessMove(moveFrom, fr, null));
-                    }
-                }
+                pawnHelper(moveFrom, possibleMoves, myColor, fr);
             }
         }
         //Capture Left
         if(edgeChecker(board, fl)){
             if(board.getPiece(fl) != null && board.getPiece(fl).getTeamColor() != myColor){
                 if(board.getPiece(fl) != null && board.getPiece(fl).getTeamColor() != myColor){
-                    if(fl.getRow() == 8 && myColor == ChessGame.TeamColor.WHITE){
-                        //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                        possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.QUEEN));
-                        possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.KNIGHT));
-                        possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.ROOK));
-                        possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.BISHOP));
-
-                    }else{
-                        if(fl.getRow() == 1 && myColor == ChessGame.TeamColor.BLACK){
-                            //possibleMoves.add(new ChessMove(moveFrom, F, null));
-                            possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.QUEEN));
-                            possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.KNIGHT));
-                            possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.ROOK));
-                            possibleMoves.add(new ChessMove(moveFrom, fl, ChessPiece.PieceType.BISHOP));
-
-                        }else {
-                            possibleMoves.add(new ChessMove(moveFrom, fl, null));
-                        }
-                    }
+                    pawnHelper(moveFrom, possibleMoves, myColor, fl);
                 }
             }
         }
 
+    }
+
+    private static void pawnHelper(ChessPosition moveFrom, ArrayList<ChessMove> possibleMoves, ChessGame.TeamColor myColor, ChessPosition f) {
+        if (f.getRow() == 8 && myColor == ChessGame.TeamColor.WHITE) {
+            //possibleMoves.add(new ChessMove(moveFrom, F, null));
+            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
+            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
+            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
+            possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
+
+        } else {
+            if (f.getRow() == 1 && myColor == ChessGame.TeamColor.BLACK) {
+                //possibleMoves.add(new ChessMove(moveFrom, F, null));
+                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.QUEEN));
+                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.KNIGHT));
+                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.ROOK));
+                possibleMoves.add(new ChessMove(moveFrom, f, ChessPiece.PieceType.BISHOP));
+
+            } else {
+                possibleMoves.add(new ChessMove(moveFrom, f, null));
+            }
+        }
     }
 }

@@ -271,19 +271,6 @@ public class ChessGame {
         return null;
     }
 
-    //Takes list of moves, type of piece, and team color and sees if player's king is being checked by piece
-    public boolean isPieceTypeChecking(ArrayList<ChessMove> moves, ChessPiece.PieceType pieceType, TeamColor teamColor){
-        for(ChessMove move: moves){
-            if(board.getPiece(move.getEndPosition()) == null) {
-                continue;
-            }
-            if(board.getPiece(move.getEndPosition()).getPieceType() == pieceType && board.getPiece(move.getEndPosition()).getTeamColor() != teamColor){
-                return true;
-            }
-        }
-        return false;
-    }
-
     //takes team color and a board and returns all moves a team can make with available pieces
     // even if they leave them in check/checkmate
     public Collection<ChessMove> getAllMoves(TeamColor teamColor, ChessBoard board) {
@@ -308,8 +295,9 @@ public class ChessGame {
     public TeamColor getOppositeTeamColor(TeamColor teamColor) {
         if (teamColor == TeamColor.WHITE) {
             return TeamColor.BLACK;
-        }else
+        }else {
             return TeamColor.WHITE;
+        }
     }
 }
 
