@@ -202,16 +202,16 @@ public class ServiceTests {
         UserData testUser1 = new UserData("user1", "pass1", "email1");
         AuthData testAuth1 = userService.registerService(testUser1);
 
-        GameData gameData1 = new GameData(1234, null, null, "testGame1", new ChessGame());
+        GameData gameData1 = new GameData(5678, null, null, "testGame1", new ChessGame());
         gameService.createGame(testAuth1.authToken(), gameData1);
 
-        GameData gameData2 = new GameData(5678, null, null, "testGame2", new ChessGame());
+        GameData gameData2 = new GameData(1234, null, null, "testGame2", new ChessGame());
         gameService.createGame(testAuth1.authToken(), gameData2);
 
-        GameData gameData3 = new GameData(0001, null, null, "testGame3", new ChessGame());
+        GameData gameData3 = new GameData(1000, null, null, "testGame3", new ChessGame());
         gameService.createGame(testAuth1.authToken(), gameData3);
 
-        GameData gameData4 = new GameData(1000, null, null, "testGame4", new ChessGame());
+        GameData gameData4 = new GameData(0001, null, null, "testGame4", new ChessGame());
         gameService.createGame(testAuth1.authToken(), gameData4);
 
 
