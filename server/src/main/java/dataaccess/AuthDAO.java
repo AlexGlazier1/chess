@@ -11,7 +11,7 @@ public interface AuthDAO {
 
     public boolean readAuth(String authToken);
 
-    public void updateAuth(AuthData auth) throws DataAccessException;
+    // Uncomment this when if you need to: public void updateAuth(AuthData auth) throws DataAccessException;
 
     public String getUsername(String authToken) throws DataAccessException;
 

@@ -9,9 +9,9 @@ public interface UserDAO {
 
     public boolean readUser(String username);
 
-    public void updateUser(UserData user);
+    // Uncomment this when if you need to: public void updateUser(UserData user);
 
-    public void deleteUser(UserData user);
+    // Uncomment this when if you need to: public void deleteUser(UserData user);
 
     public Map<String, UserData> getMemoryUserMap();
 

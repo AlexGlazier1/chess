@@ -30,9 +30,9 @@ public class MemoryGameDAO implements GameDAO {
         memoryGameMap.put(game.gameID(), game);
     }
 
-    public void deleteGame(GameData game){
-        memoryGameMap.remove(game.gameID());
-    }
+    // Uncomment this when if you need to: public void deleteGame(GameData game){
+    // Uncomment this when if you need to:     memoryGameMap.remove(game.gameID());
+    // Uncomment this when if you need to: }
 
     public GameData getGame(int gameID){
         return memoryGameMap.get(gameID);

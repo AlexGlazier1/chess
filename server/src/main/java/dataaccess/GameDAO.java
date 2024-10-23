@@ -15,7 +15,7 @@ public interface GameDAO {
 
     public void updateGame(GameData game);
 
-    public void deleteGame(GameData game);
+    // Uncomment this when if you need to: public void deleteGame(GameData game);
 
     public GameData getGame(int gameID);
 

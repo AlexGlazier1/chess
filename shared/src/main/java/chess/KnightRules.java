@@ -28,7 +28,7 @@ public class KnightRules {
 
 
 
-    private static void KnightEdgeCheck(ChessBoard board,
+    private static void knightEdgeCheck(ChessBoard board,
                                         ChessPosition moveFrom,
                                         ArrayList<ChessMove> possibleMoves,
                                         ChessPosition dl,
@@ -62,7 +62,7 @@ public class KnightRules {
         ChessPosition dr = new ChessPosition((tempPosition.getRow()-2), tempPosition.getColumn()+1);
 
 
-        KnightEdgeCheck(board, moveFrom, possibleMoves, dl, dr);
+        knightEdgeCheck(board, moveFrom, possibleMoves, dl, dr);
 
 
     }
@@ -77,7 +77,7 @@ public class KnightRules {
         ChessPosition rd = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()+2);
 
 
-        KnightEdgeCheck(board, moveFrom, possibleMoves, ru, rd);
+        knightEdgeCheck(board, moveFrom, possibleMoves, ru, rd);
 
 
     }
@@ -92,7 +92,7 @@ public class KnightRules {
         ChessPosition ld = new ChessPosition((tempPosition.getRow()-1), tempPosition.getColumn()-2);
 
 
-        KnightEdgeCheck(board, moveFrom, possibleMoves, lu, ld);
+        knightEdgeCheck(board, moveFrom, possibleMoves, lu, ld);
 
 
     }
@@ -107,7 +107,7 @@ public class KnightRules {
         ChessPosition ur = new ChessPosition((tempPosition.getRow() + 2), tempPosition.getColumn() + 1);
 
 
-        KnightEdgeCheck(board, moveFrom, possibleMoves, ul, ur);
+        knightEdgeCheck(board, moveFrom, possibleMoves, ul, ur);
 
     }
 }
