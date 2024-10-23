@@ -287,7 +287,10 @@ public class ChessPiece {
         }
     }
 
-    static Collection<ChessMove> diagonalMoveAdder(ChessBoard board, ChessPosition myPosition, ArrayList<ChessMove> possibleMoves, ChessGame.TeamColor myColor) {
+    static Collection<ChessMove> diagonalMoveAdder(ChessBoard board,
+                                                   ChessPosition myPosition,
+                                                   ArrayList<ChessMove> possibleMoves,
+                                                   ChessGame.TeamColor myColor) {
         try{
             upRight(board, myPosition, myPosition, possibleMoves, myColor);
         }finally {

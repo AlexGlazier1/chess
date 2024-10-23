@@ -136,15 +136,7 @@ public class ChessGame {
         //Acquires square team's king is on in current board
         //Gets list of all the opponent's available moves
         //If any end on current team's square they are in check and true is returned
-        ChessPosition kingSquare = getKingPosition(teamColor, board);
-        Collection<ChessMove> oppositeTeamMoves = getAllMoves(getOppositeTeamColor(teamColor), board);
-
-        for (ChessMove move : oppositeTeamMoves) {
-            if(move.getEndPosition().equals(kingSquare)){
-                return true;
-            }
-        }
-        return false;
+        return checkFinder(teamColor, board);
 
 
         //throw new RuntimeException("Not implemented");
@@ -154,6 +146,13 @@ public class ChessGame {
         //Acquires square team's king is on in a specified board
         //Gets list of all the opponent's available moves
         //If any end on current team's square they are in check and true is returned
+        return checkFinder(teamColor, board);
+
+
+        //throw new RuntimeException("Not implemented");
+    }
+
+    private boolean checkFinder(TeamColor teamColor, ChessBoard board) {
         ChessPosition kingSquare = getKingPosition(teamColor, board);
         Collection<ChessMove> oppositeTeamMoves = getAllMoves(getOppositeTeamColor(teamColor), board);
 
@@ -163,9 +162,6 @@ public class ChessGame {
             }
         }
         return false;
-
-
-        //throw new RuntimeException("Not implemented");
     }
 
     /**
