@@ -11,12 +11,12 @@ public class SQLGameDAO implements GameDAO {
     public void createGame(GameData Game) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game
+        //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO AuthData (authToken, username) VALUES(?, ?)")) {
-            preparedStatement.setString(1, auth.authToken());
-            preparedStatement.setString(2, auth.username());
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData (gameID, game) VALUES(?, ?)")) {
+            preparedStatement.setInt(1, Game.gameID());
+            preparedStatement.setObject(2, Game.game());
 
             preparedStatement.executeUpdate();
 
@@ -29,8 +29,10 @@ public class SQLGameDAO implements GameDAO {
     }
 
     public boolean readGame(GameData Game){
+        return true;
     }
     public Map<Integer, GameData> listGames(){
+        return null;
     }
 
     public void updateGame(GameData Game){
@@ -40,6 +42,7 @@ public class SQLGameDAO implements GameDAO {
     }
 
     public GameData getGame(int GameID){
+        return null;
     }
 
     public void clearAllGames(){

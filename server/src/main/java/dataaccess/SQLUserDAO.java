@@ -11,6 +11,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public boolean readUser(String username){
+        return true;
     }
 
     public void updateUser(UserData user){
@@ -20,6 +21,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public Map<String, UserData> getMemoryUserMap(){
+        return null;
     }
 
     public void clearAllUsers(){

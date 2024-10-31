@@ -26,16 +26,18 @@ public class SQLAuthDAO implements AuthDAO {
     }
 
     public boolean readAuth(String authToken) {
-
+        return true;
     }
 
     public void updateAuth(AuthData auth) throws DataAccessException{
     }
 
     public String getUsername(String authToken) throws DataAccessException{
+        return null;
     }
 
     public AuthData getAuth(String authToken) throws DataAccessException{
+        return null;
     }
 
     public void deleteAuth(AuthData auth) throws DataAccessException {
