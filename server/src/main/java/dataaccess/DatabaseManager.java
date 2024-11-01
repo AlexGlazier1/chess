@@ -38,7 +38,7 @@ public class DatabaseManager {
     /**
      * Creates the database if it does not already exist.
      */
-    static void createDatabase() throws DataAccessException {
+    public static void createDatabase() throws DataAccessException {
         try {
             var statement = "CREATE DATABASE IF NOT EXISTS " + DATABASE_NAME;
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
@@ -84,7 +84,7 @@ public class DatabaseManager {
             CREATE TABLE IF NOT EXISTS AuthData (
             authToken VARCHAR (255) NOT NULL,
             username VARCHAR (255) NOT NULL,
-            PRIMARY KEY (id))""";
+            PRIMARY KEY (authToken))""";
 
         var createGameTable = """
             CREATE TABLE IF NOT EXISTS GameData (
@@ -94,15 +94,15 @@ public class DatabaseManager {
             gameName VARCHAR (255) NOT NULL,
             game longtext NOT NULL,
             
-            PRIMARY KEY (id))""";
+            PRIMARY KEY (gameID))""";
 
         var createUserTable = """
-            CREATE TABLE IF NOT EXISTS GameData (
+            CREATE TABLE IF NOT EXISTS UserData (
             username VARCHAR (255) NOT NULL,
             password VARCHAR (255) NOT NULL,
             email VARCHAR (255) NOT NULL,
             
-            PRIMARY KEY (id))""";
+            PRIMARY KEY (username))""";
 
         try (var preparedStatement = conn.prepareStatement(createAuthTable)) {
             preparedStatement.executeUpdate();

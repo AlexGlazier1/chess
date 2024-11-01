@@ -1,6 +1,9 @@
 package dataaccess;
 
 import model.GameData;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +19,8 @@ public class SQLGameDAO implements GameDAO {
 
         try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData (gameID, game) VALUES(?, ?)")) {
             preparedStatement.setInt(1, Game.gameID());
-            preparedStatement.setObject(2, Game.game());
+            var gameJson = new Gson().toJson(Game.game());
+            preparedStatement.setString(2, gameJson);
 
             preparedStatement.executeUpdate();
 

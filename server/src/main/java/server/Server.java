@@ -3,9 +3,7 @@ package server;
 import java.util.Map;
 
 import com.google.gson.Gson;
-import dataaccess.MemoryAuthDAO;
-import dataaccess.MemoryGameDAO;
-import dataaccess.MemoryUserDAO;
+import dataaccess.*;
 import handler.*;
 import spark.*;
 
@@ -18,6 +16,11 @@ public class Server {
         Spark.port(desiredPort);
 
         Spark.staticFiles.location("web");
+        try {
+            DatabaseManager.createDatabase();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
+        }
 
         // Register your endpoints and handle exceptions here.
 
