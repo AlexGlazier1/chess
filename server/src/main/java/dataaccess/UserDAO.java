@@ -2,10 +2,11 @@ package dataaccess;
 
 import model.UserData;
 
+import java.sql.SQLException;
 import java.util.Map;
 public interface UserDAO {
 
-    public void createUser(UserData user);
+    public void createUser(UserData user) throws SQLException, DataAccessException;
 
     public boolean readUser(String username);
 
@@ -15,6 +16,6 @@ public interface UserDAO {
 
     public Map<String, UserData> getMemoryUserMap();
 
-    public void clearAllUsers();
+    public void clearAllUsers() throws SQLException, DataAccessException;
 }
 

@@ -13,7 +13,7 @@ public interface GameDAO {
 
     public Map<Integer, GameData> listGames();
 
-    public void updateGame(GameData game);
+    public void updateGame(GameData game) throws SQLException, DataAccessException;
 
     // Uncomment this when if you need to: public void deleteGame(GameData game);
 

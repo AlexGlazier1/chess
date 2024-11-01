@@ -12,6 +12,10 @@ public class Server {
     public MemoryGameDAO memoryGameDAO = new MemoryGameDAO();
     public MemoryUserDAO memoryUserDAO = new MemoryUserDAO();
 
+    public SQLAuthDAO sqlAuthDAO = new SQLAuthDAO();
+    public SQLGameDAO sqlGameDAO = new SQLGameDAO();
+    public SQLUserDAO sqlUserDAO = new SQLUserDAO();
+
     public int run(int desiredPort) {
         Spark.port(desiredPort);
 
@@ -24,27 +28,7 @@ public class Server {
 
         // Register your endpoints and handle exceptions here.
 
-
-        ClearHandler clearHandler = new ClearHandler(memoryGameDAO, memoryAuthDAO, memoryUserDAO);
-        Spark.delete("/db", clearHandler::clearDAOS);
-
-        RegisterHandler registerHandler = new RegisterHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.post("/user", registerHandler::register);
-
-        LoginHandler loginHandler = new LoginHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.post("/session", loginHandler::login);
-
-        LogoutHandler logoutHandler = new LogoutHandler(memoryUserDAO, memoryAuthDAO);
-        Spark.delete("/session", logoutHandler::logout);
-
-        CreateGameHandler creategame = new CreateGameHandler(memoryGameDAO, memoryAuthDAO);
-        Spark.post("/game", creategame::createGame);
-
-        ListGamesHandler listgamesHandler = new ListGamesHandler(memoryGameDAO, memoryAuthDAO);
-        Spark.get("/game", listgamesHandler::listGames);
-
-        JoinGameHandler joinGameHandler = new JoinGameHandler(memoryAuthDAO, memoryGameDAO);
-        Spark.put("/game", joinGameHandler::joinGame);
+        handlerMaker(sqlGameDAO, sqlAuthDAO, sqlUserDAO);
 
         Spark.exception(Exception.class, (exception, req, res) -> {
             res.body(new Gson().toJson(Map.of("message", "Error: " + exception.getMessage())));
@@ -74,6 +58,29 @@ public class Server {
 
         Spark.awaitInitialization();
         return Spark.port();
+    }
+
+    public void handlerMaker(GameDAO myGame, AuthDAO myAuth, UserDAO myUser) {
+        ClearHandler clearHandler = new ClearHandler(myGame, myAuth, myUser);
+        Spark.delete("/db", clearHandler::clearDAOS);
+
+        RegisterHandler registerHandler = new RegisterHandler(myUser, myAuth);
+        Spark.post("/user", registerHandler::register);
+
+        LoginHandler loginHandler = new LoginHandler(myUser, myAuth);
+        Spark.post("/session", loginHandler::login);
+
+        LogoutHandler logoutHandler = new LogoutHandler(myUser, myAuth);
+        Spark.delete("/session", logoutHandler::logout);
+
+        CreateGameHandler creategame = new CreateGameHandler(myGame, myAuth);
+        Spark.post("/game", creategame::createGame);
+
+        ListGamesHandler listgamesHandler = new ListGamesHandler(myGame, myAuth);
+        Spark.get("/game", listgamesHandler::listGames);
+
+        JoinGameHandler joinGameHandler = new JoinGameHandler(myAuth, myGame);
+        Spark.put("/game", joinGameHandler::joinGame);
     }
 
     public void stop() {
