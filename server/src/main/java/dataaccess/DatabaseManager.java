@@ -81,13 +81,13 @@ public class DatabaseManager {
 
 
         var createAuthTable = """
-            CREATE TABLE IF NOT EXISTS AuthData (
+            CREATE TABLE IF NOT EXISTS authData (
             authToken VARCHAR (255) NOT NULL,
             username VARCHAR (255) NOT NULL,
             PRIMARY KEY (authToken))""";
 
         var createGameTable = """
-            CREATE TABLE IF NOT EXISTS GameData (
+            CREATE TABLE IF NOT EXISTS gameData (
             gameID INT NOT NULL AUTO_INCREMENT,
             whiteUsername VARCHAR (255) NOT NULL,
             blackUsername VARCHAR (255) NOT NULL,
@@ -97,7 +97,7 @@ public class DatabaseManager {
             PRIMARY KEY (gameID))""";
 
         var createUserTable = """
-            CREATE TABLE IF NOT EXISTS UserData (
+            CREATE TABLE IF NOT EXISTS userData (
             username VARCHAR (255) NOT NULL,
             password VARCHAR (255) NOT NULL,
             email VARCHAR (255) NOT NULL,

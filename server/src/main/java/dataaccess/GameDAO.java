@@ -19,5 +19,5 @@ public interface GameDAO {
 
     public GameData getGame(int gameID);
 
-    public void clearAllGames();
+    public void clearAllGames() throws SQLException, DataAccessException;
 }

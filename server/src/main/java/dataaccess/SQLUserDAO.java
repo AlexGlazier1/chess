@@ -13,7 +13,7 @@ public class SQLUserDAO implements UserDAO {
     public void createUser(UserData user)throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO UserData (username, password, email) VALUES(?, ?)")) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO userData (username, password, email) VALUES(?, ?)")) {
             preparedStatement.setString(1, user.username());
             preparedStatement.setString(2, user.password());
             preparedStatement.setString(3, user.email());
@@ -45,7 +45,7 @@ public class SQLUserDAO implements UserDAO {
 
     public void clearAllUsers()throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
-        try (var preparedStatement = conn.prepareStatement("TRUNCATE userdata")) {
+        try (var preparedStatement = conn.prepareStatement("TRUNCATE userData")) {
             preparedStatement.executeUpdate();
         }
     }

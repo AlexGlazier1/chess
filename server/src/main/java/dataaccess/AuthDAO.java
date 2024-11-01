@@ -13,11 +13,11 @@ public interface AuthDAO {
 
     // Uncomment this when if you need to: public void updateAuth(AuthData auth) throws DataAccessException;
 
-    public String getUsername(String authToken) throws DataAccessException;
+    public String getUsername(String authToken) throws DataAccessException, SQLException;
 
     public AuthData getAuth(String authToken) throws DataAccessException;
 
-    public void deleteAuth(AuthData auth) throws DataAccessException;
+    public void deleteAuth(AuthData auth) throws DataAccessException, SQLException;
 
-    public void clearAllAuth();
+    public void clearAllAuth() throws SQLException, DataAccessException;
 }

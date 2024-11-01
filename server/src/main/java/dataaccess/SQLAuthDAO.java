@@ -10,7 +10,7 @@ public class SQLAuthDAO implements AuthDAO {
     public void createAuth(AuthData auth) throws SQLException, DataAccessException {
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO AuthData (authToken, username) VALUES(?, ?)")) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)")) {
             preparedStatement.setString(1, auth.authToken());
             preparedStatement.setString(2, auth.username());
 
@@ -32,7 +32,19 @@ public class SQLAuthDAO implements AuthDAO {
     public void updateAuth(AuthData auth) throws DataAccessException{
     }
 
-    public String getUsername(String authToken) throws DataAccessException{
+    public String getUsername(String authToken) throws SQLException, DataAccessException{
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT id, name, type FROM authData WHERE authToken=?")) {
+            preparedStatement.setString(1, authToken);
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    var username = rs.getString("username");
+
+                    return username;
+                }
+            }
+        }
         return null;
     }
 
@@ -40,10 +52,19 @@ public class SQLAuthDAO implements AuthDAO {
         return null;
     }
 
-    public void deleteAuth(AuthData auth) throws DataAccessException {
+    public void deleteAuth(AuthData auth) throws SQLException, DataAccessException {
+        Connection conn = DatabaseManager.getConnection();
+        try (var preparedStatement = conn.prepareStatement("DELETE FROM authData WHERE id=?")) {
+            preparedStatement.setString(1, auth.authToken());
+            preparedStatement.executeUpdate();
+        }
     }
 
-    public void clearAllAuth(){
+    public void clearAllAuth() throws SQLException, DataAccessException {
+        Connection conn = DatabaseManager.getConnection();
+        try (var preparedStatement = conn.prepareStatement("TRUNCATE authData")) {
+            preparedStatement.executeUpdate();
+        }
     }
 }
 

@@ -42,12 +42,15 @@ public class SQLGameDAO implements GameDAO {
         return null;
     }
 
-    public void updateGame(GameData Game) throws SQLException, DataAccessException{
+    public void updateGame(GameData game) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("UPDATE Gamedata SET gameID=? WHERE id=?")) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, petID);
+        try (var preparedStatement = conn.prepareStatement("UPDATE gameData SET whiteUsername=?, blackUsername=?, game=?,  WHERE gameID=?")) {
+            preparedStatement.setString(1, game.whiteUsername());
+            preparedStatement.setString(2, game.blackUsername());
+            var gameJson = new Gson().toJson(game.game());
+            preparedStatement.setString(3, gameJson);
+            preparedStatement.setInt(4, game.gameID());
 
             preparedStatement.executeUpdate();
         }
@@ -60,7 +63,11 @@ public class SQLGameDAO implements GameDAO {
         return null;
     }
 
-    public void clearAllGames(){
+    public void clearAllGames() throws SQLException, DataAccessException {
+        Connection conn = DatabaseManager.getConnection();
+        try (var preparedStatement = conn.prepareStatement("TRUNCATE gameData")) {
+            preparedStatement.executeUpdate();
+        }
     }
 }
 
