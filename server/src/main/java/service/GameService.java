@@ -20,7 +20,7 @@ public class GameService {
     }
 
 
-    public void joinGame(String authtoken, String playerColor, int gameID) throws DataAccessException {
+    public void joinGame(String authtoken, String playerColor, int gameID) throws SQLException, DataAccessException {
 
         GameData oldGame = gameDAO.getGame(gameID);
         String username = authDAO.getUsername(authtoken);
@@ -71,7 +71,7 @@ public class GameService {
 
     }
     /////////MAKE SURE IT IS RECIEVING THE ACTUAL AUTHTOKEN STRING AND LOSE THE TRY CATCH BLOCK
-    public ArrayList<GameData> listGames(String authtoken) throws DataAccessException {
+    public ArrayList<GameData> listGames(String authtoken) throws SQLException, DataAccessException {
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");
         }else if(authtoken == null) {

@@ -9,6 +9,8 @@ import service.GameService;
 import spark.Request;
 import spark.Response;
 
+import java.sql.SQLException;
+
 public class JoinGameHandler {
 
     AuthDAO authDAO;
@@ -19,7 +21,7 @@ public class JoinGameHandler {
         this.gameDAO = gameDAO;
     }
 
-    public Object joinGame(Request req, Response res) throws DataAccessException {
+    public Object joinGame(Request req, Response res) throws SQLException, DataAccessException {
         String authtoken = req.headers("authorization");
 
         JsonObject jsonObject = JsonParser.parseString(req.body()).getAsJsonObject();

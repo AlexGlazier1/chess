@@ -49,7 +49,7 @@ public class UserService {
         }
     }
 
-    public void logoutService(String authtoken) throws DataAccessException {
+    public void logoutService(String authtoken) throws SQLException, DataAccessException {
 
         if(!authDAO.readAuth(authtoken)){
             throw new DataAccessException("Error: unauthorized");

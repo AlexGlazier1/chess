@@ -28,8 +28,14 @@ public class SQLAuthDAO implements AuthDAO {
     public boolean readAuth(String authToken) throws SQLException, DataAccessException {
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("FROM authData WHERE EXISTS (SELECT * FROM authdata WHERE authToken =?);")) {
+        try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM authData WHERE authToken = ? LIMIT 1;")) {
             preparedStatement.setString(1, authToken);
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    return true;
+                }
+                return false;
+            }
 
 
         }
@@ -61,7 +67,7 @@ public class SQLAuthDAO implements AuthDAO {
             preparedStatement.setString(1, authToken);
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    var myAuthToken = rs.getString("username");
+                    var myAuthToken = rs.getString("authToken");
                     var myUsername = rs.getString("username");
 
 

@@ -1,10 +1,12 @@
 package dataaccess;
 
 import com.google.gson.Gson;
+import model.AuthData;
 import model.UserData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -29,8 +31,20 @@ public class SQLUserDAO implements UserDAO {
 
     }
 
-    public boolean readUser(String username){
-        return true;
+    public boolean readUser(String username)throws SQLException, DataAccessException{
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM userData WHERE username = ? LIMIT 1;")) {
+            preparedStatement.setString(1, username);
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    return true;
+                }
+                return false;
+            }
+
+
+        }
     }
 
     public void updateUser(UserData user){
@@ -39,8 +53,25 @@ public class SQLUserDAO implements UserDAO {
     public void deleteUser(UserData user){
     }
 
-    public Map<String, UserData> getMemoryUserMap(){
-        return null;
+    public Map<String, UserData> getMemoryUserMap()throws SQLException, DataAccessException{
+        Map<String, UserData> memoryUserMap = new HashMap<>();
+
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT * FROM authData")) {
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    var myUsername = rs.getString("username");
+                    var myPassword = rs.getString("password");
+                    var myEmail = rs.getString("email");
+
+
+                    UserData user = new UserData(myUsername, myPassword, myEmail);
+                    memoryUserMap.put(user.username(), user);
+                }
+            }
+        }
+        return memoryUserMap;
     }
 
     public void clearAllUsers()throws SQLException, DataAccessException{

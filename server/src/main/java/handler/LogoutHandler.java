@@ -6,6 +6,7 @@ import dataaccess.UserDAO;
 import service.UserService;
 import spark.Request;
 import spark.Response;
+import java.sql.SQLException;
 
 public class LogoutHandler {
 
@@ -18,7 +19,7 @@ public class LogoutHandler {
         this.authDAO = authDAO;
     }
 
-    public String logout(Request req, Response res) throws DataAccessException {
+    public String logout(Request req, Response res) throws SQLException, DataAccessException {
         String authtoken = req.headers("authorization");
 
         UserService logout = new UserService(userDAO, authDAO);

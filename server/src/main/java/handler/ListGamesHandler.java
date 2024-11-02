@@ -12,6 +12,7 @@ import service.GameService;
 import spark.Request;
 import spark.Response;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -26,7 +27,7 @@ public class ListGamesHandler {
     }
 
 
-    public Object listGames(Request req, Response res) throws DataAccessException {
+    public Object listGames(Request req, Response res) throws SQLException, DataAccessException {
 
         String authtoken = req.headers("authorization");
         GameService listGames = new GameService(authDAO, gameDAO);
