@@ -11,7 +11,7 @@ public interface GameDAO {
 
     public boolean readGame(GameData game);
 
-    public Map<Integer, GameData> listGames();
+    public Map<Integer, GameData> listGames() throws SQLException, DataAccessException;
 
     public void updateGame(GameData game) throws SQLException, DataAccessException;
 

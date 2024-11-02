@@ -54,7 +54,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public Map<String, UserData> getMemoryUserMap()throws SQLException, DataAccessException{
-        Map<String, UserData> memoryUserMap = new HashMap<>();
+        Map<String, UserData> SQLUserMap = new HashMap<>();
 
         Connection conn = DatabaseManager.getConnection();
 
@@ -67,11 +67,11 @@ public class SQLUserDAO implements UserDAO {
 
 
                     UserData user = new UserData(myUsername, myPassword, myEmail);
-                    memoryUserMap.put(user.username(), user);
+                    SQLUserMap.put(user.username(), user);
                 }
             }
         }
-        return memoryUserMap;
+        return SQLUserMap;
     }
 
     public void clearAllUsers()throws SQLException, DataAccessException{

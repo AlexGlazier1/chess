@@ -4,9 +4,13 @@ import model.GameData;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import model.UserData;
+import chess.ChessGame;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -38,8 +42,27 @@ public class SQLGameDAO implements GameDAO {
     public boolean readGame(GameData Game){
         return true;
     }
-    public Map<Integer, GameData> listGames(){
-        return null;
+    public Map<Integer, GameData> listGames() throws SQLException, DataAccessException{
+        Map<Integer, GameData> SQLGameMap = new HashMap<>();
+
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT * FROM authData")) {
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    var myGameID = rs.getInt("gameID");
+                    var myWhiteUsername = rs.getString("whiteUsername");
+                    var myBlackUsername = rs.getString("blackUsername");
+                    var myGameName = rs.getString("gameName");
+                    var myGameJson = rs.getString("game");
+                    var myGame = new Gson().fromJson(myGameJson, ChessGame.class);
+
+                    GameData game = new GameData(myGameID,myWhiteUsername, myBlackUsername, myGameName, myGame);
+                    SQLGameMap.put(game.gameID(), game);
+                }
+            }
+        }
+        return SQLGameMap;
     }
 
     public void updateGame(GameData game) throws SQLException, DataAccessException{
