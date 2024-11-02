@@ -25,8 +25,14 @@ public class SQLAuthDAO implements AuthDAO {
         //DatabaseManager.getConnection();
     }
 
-    public boolean readAuth(String authToken) {
-        return true;
+    public boolean readAuth(String authToken) throws SQLException, DataAccessException {
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("FROM authData WHERE EXISTS (SELECT * FROM authdata WHERE authToken =?);")) {
+            preparedStatement.setString(1, authToken);
+
+
+        }
     }
 
     public void updateAuth(AuthData auth) throws DataAccessException{
@@ -35,7 +41,7 @@ public class SQLAuthDAO implements AuthDAO {
     public String getUsername(String authToken) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("SELECT id, name, type FROM authData WHERE authToken=?")) {
+        try (var preparedStatement = conn.prepareStatement("SELECT username FROM authData WHERE authToken=?")) {
             preparedStatement.setString(1, authToken);
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
@@ -48,7 +54,21 @@ public class SQLAuthDAO implements AuthDAO {
         return null;
     }
 
-    public AuthData getAuth(String authToken) throws DataAccessException{
+    public AuthData getAuth(String authToken) throws SQLException, DataAccessException{
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT authToken, username FROM authData WHERE authToken=?")) {
+            preparedStatement.setString(1, authToken);
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    var myAuthToken = rs.getString("username");
+                    var myUsername = rs.getString("username");
+
+
+                    return new AuthData(myAuthToken, myUsername);
+                }
+            }
+        }
         return null;
     }
 
