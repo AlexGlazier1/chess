@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import model.AuthData;
 import model.UserData;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class SQLUserDAO implements UserDAO {
     public void createUser(UserData user)throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO userData (username, password, email) VALUES(?, ?)")) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO userData (username, password, email) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.username());
             preparedStatement.setString(2, user.password());
             preparedStatement.setString(3, user.email());
@@ -42,8 +43,6 @@ public class SQLUserDAO implements UserDAO {
                 }
                 return false;
             }
-
-
         }
     }
 
@@ -58,7 +57,7 @@ public class SQLUserDAO implements UserDAO {
 
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("SELECT * FROM authData")) {
+        try (var preparedStatement = conn.prepareStatement("SELECT * FROM userData")) {
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     var myUsername = rs.getString("username");

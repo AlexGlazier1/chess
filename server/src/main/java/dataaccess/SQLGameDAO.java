@@ -1,5 +1,6 @@
 package dataaccess;
 
+import model.AuthData;
 import model.GameData;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -10,6 +11,7 @@ import chess.ChessGame;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,7 @@ public class SQLGameDAO implements GameDAO {
         //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)")){
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setInt(1, game.gameID());
             preparedStatement.setString(2, game.whiteUsername());
             preparedStatement.setString(3, game.blackUsername());
@@ -39,15 +41,29 @@ public class SQLGameDAO implements GameDAO {
         }
     }
 
-    public boolean readGame(GameData Game){
-        return true;
+    public boolean readGame(GameData Game) throws SQLException, DataAccessException{
+
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM gameData WHERE gameID = ? LIMIT 1;")) {
+            preparedStatement.setInt(1, Game.gameID());
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    return true;
+                }
+                return false;
+            }
+
+
+        }
     }
+
     public Map<Integer, GameData> listGames() throws SQLException, DataAccessException{
         Map<Integer, GameData> SQLGameMap = new HashMap<>();
 
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("SELECT * FROM authData")) {
+        try (var preparedStatement = conn.prepareStatement("SELECT * FROM gameData")) {
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     var myGameID = rs.getInt("gameID");
@@ -68,7 +84,7 @@ public class SQLGameDAO implements GameDAO {
     public void updateGame(GameData game) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("UPDATE gameData SET whiteUsername=?, blackUsername=?, game=?,  WHERE gameID=?")) {
+        try (var preparedStatement = conn.prepareStatement("UPDATE gameData SET whiteUsername=?, blackUsername=?, game=?  WHERE gameID=?")) {
             preparedStatement.setString(1, game.whiteUsername());
             preparedStatement.setString(2, game.blackUsername());
             var gameJson = new Gson().toJson(game.game());
@@ -82,7 +98,25 @@ public class SQLGameDAO implements GameDAO {
     public void deleteGame(GameData Game){
     }
 
-    public GameData getGame(int GameID){
+    public GameData getGame(int GameID) throws SQLException, DataAccessException{
+        Connection conn = DatabaseManager.getConnection();
+
+        try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game FROM gameData WHERE gameID=?")){
+            preparedStatement.setInt(1, GameID);
+            try (var rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    var getGameID = rs.getInt("gameID");
+                    var getWhiteUsername = rs.getString("whiteUsername");
+                    var getBlackUsername = rs.getString("blackUsername");
+                    var getGameName = rs.getString("gameName");
+                    var getGameJson = rs.getString("game");
+                    var getGame = new Gson().fromJson(getGameJson, ChessGame.class);
+
+                    GameData game = new GameData(getGameID,getWhiteUsername, getBlackUsername, getGameName, getGame);
+                    return game;
+                }
+            }
+        }
         return null;
     }
 

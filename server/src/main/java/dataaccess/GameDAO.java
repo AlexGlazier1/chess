@@ -9,7 +9,7 @@ public interface GameDAO {
 
     public void createGame(GameData game) throws SQLException, DataAccessException;
 
-    public boolean readGame(GameData game);
+    public boolean readGame(GameData game) throws SQLException, DataAccessException;
 
     public Map<Integer, GameData> listGames() throws SQLException, DataAccessException;
 
@@ -17,7 +17,7 @@ public interface GameDAO {
 
     // Uncomment this when if you need to: public void deleteGame(GameData game);
 
-    public GameData getGame(int gameID);
+    public GameData getGame(int gameID) throws SQLException, DataAccessException;
 
     public void clearAllGames() throws SQLException, DataAccessException;
 }

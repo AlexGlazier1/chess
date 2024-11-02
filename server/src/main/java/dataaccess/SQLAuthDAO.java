@@ -4,13 +4,14 @@ import model.AuthData;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SQLAuthDAO implements AuthDAO {
 
     public void createAuth(AuthData auth) throws SQLException, DataAccessException {
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)")) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, auth.authToken());
             preparedStatement.setString(2, auth.username());
 
@@ -80,7 +81,7 @@ public class SQLAuthDAO implements AuthDAO {
 
     public void deleteAuth(AuthData auth) throws SQLException, DataAccessException {
         Connection conn = DatabaseManager.getConnection();
-        try (var preparedStatement = conn.prepareStatement("DELETE FROM authData WHERE id=?")) {
+        try (var preparedStatement = conn.prepareStatement("DELETE FROM authData WHERE authToken=?")) {
             preparedStatement.setString(1, auth.authToken());
             preparedStatement.executeUpdate();
         }
