@@ -1,6 +1,8 @@
 package dataaccess;
 
 import model.UserData;
+import org.eclipse.jetty.server.Authentication;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +14,9 @@ public class MemoryUserDAO implements UserDAO {
 
 
         public void createUser(UserData user){
-                memoryUserMap.put(user.username(), user);
+                String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
+                UserData hashedUser = new UserData(user.username(), hashedPassword, user.email());
+                memoryUserMap.put(user.username(), hashedUser);
         }
 
         public boolean readUser(String username){
