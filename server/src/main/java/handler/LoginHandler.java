@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import dataaccess.AuthDAO;
 import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
+import org.mindrot.jbcrypt.BCrypt;
 import service.UserService;
 import spark.Request;
 import spark.Response;
@@ -39,6 +40,8 @@ public class LoginHandler {
         //var userData = new Gson().fromJson(req.body(), UserData.class);
         // might need to individually extract data here
         UserService login = new UserService(userDAO, authDAO);
+
+
 
         return new Gson().toJson(login.loginService(username, password));
 

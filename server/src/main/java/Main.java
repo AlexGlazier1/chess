@@ -1,4 +1,5 @@
 import chess.*;
+import org.mindrot.jbcrypt.BCrypt;
 import server.Server;
 
 public class Main {
@@ -8,5 +9,11 @@ public class Main {
 
         Server test = new Server();
         test.run(8080);
+
+        //String hashedPassword = BCrypt.hashpw("password", BCrypt.gensalt());
+
+
+        //System.out.println(hashedPassword);
+        //System.out.println(BCrypt.checkpw("password", hashedPassword));
     }
 }

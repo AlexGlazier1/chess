@@ -5,6 +5,7 @@ import dataaccess.DataAccessException;
 import dataaccess.UserDAO;
 import model.AuthData;
 import model.UserData;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 
@@ -38,9 +39,10 @@ public class UserService {
         }
     }
     public AuthData loginService(String username, String password) throws DataAccessException, SQLException {
+        //String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-
-        if(userDAO.getMemoryUserMap().containsKey(username) && userDAO.getMemoryUserMap().get(username).password().equals(password)   ){
+        //BCrypt.checkpw("password", userDAO.getMemoryUserMap().get(username).password())
+        if(userDAO.getMemoryUserMap().containsKey(username) && BCrypt.checkpw(password, userDAO.getMemoryUserMap().get(username).password())){
             AuthData userAuth = new AuthData(makeString(8), username);
             authDAO.createAuth(userAuth);
             return userAuth;
