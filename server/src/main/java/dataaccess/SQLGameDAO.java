@@ -23,7 +23,8 @@ public class SQLGameDAO implements GameDAO {
         //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)){
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)",
+                                                                Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setInt(1, game.gameID());
             preparedStatement.setString(2, game.whiteUsername());
             preparedStatement.setString(3, game.blackUsername());
@@ -34,19 +35,19 @@ public class SQLGameDAO implements GameDAO {
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
-            var ID = 0;
+            var id = 0;
             if (resultSet.next()) {
-                ID = resultSet.getInt(1);
+                id = resultSet.getInt(1);
             }
         }
     }
 
-    public boolean readGame(GameData Game) throws SQLException, DataAccessException{
+    public boolean readGame(GameData game) throws SQLException, DataAccessException{
 
         Connection conn = DatabaseManager.getConnection();
 
         try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM gameData WHERE gameID = ? LIMIT 1;")) {
-            preparedStatement.setInt(1, Game.gameID());
+            preparedStatement.setInt(1, game.gameID());
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     return true;
@@ -59,7 +60,7 @@ public class SQLGameDAO implements GameDAO {
     }
 
     public Map<Integer, GameData> listGames() throws SQLException, DataAccessException{
-        Map<Integer, GameData> SQLGameMap = new HashMap<>();
+        Map<Integer, GameData> sqlGameMap = new HashMap<>();
 
         Connection conn = DatabaseManager.getConnection();
 
@@ -74,11 +75,11 @@ public class SQLGameDAO implements GameDAO {
                     var myGame = new Gson().fromJson(myGameJson, ChessGame.class);
 
                     GameData game = new GameData(myGameID,myWhiteUsername, myBlackUsername, myGameName, myGame);
-                    SQLGameMap.put(game.gameID(), game);
+                    sqlGameMap.put(game.gameID(), game);
                 }
             }
         }
-        return SQLGameMap;
+        return sqlGameMap;
     }
 
     public void updateGame(GameData game) throws SQLException, DataAccessException{
@@ -98,11 +99,11 @@ public class SQLGameDAO implements GameDAO {
     public void deleteGame(GameData Game){
     }
 
-    public GameData getGame(int GameID) throws SQLException, DataAccessException{
+    public GameData getGame(int gameID) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
         try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game FROM gameData WHERE gameID=?")){
-            preparedStatement.setInt(1, GameID);
+            preparedStatement.setInt(1, gameID);
             try (var rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     var getGameID = rs.getInt("gameID");

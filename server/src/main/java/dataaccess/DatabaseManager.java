@@ -1,6 +1,5 @@
 package dataaccess;
 
-import chess.ChessGame;
 import java.sql.DriverManager;
 import java.sql.*;
 import java.util.Properties;
@@ -44,7 +43,7 @@ public class DatabaseManager {
             var conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
             try (var preparedStatement = conn.prepareStatement(statement)) {
                 preparedStatement.executeUpdate();
-                CreateTables(conn);
+                createTables(conn);
             }
 
 
@@ -75,7 +74,7 @@ public class DatabaseManager {
         }
     }
 
-    static void CreateTables(Connection conn) throws SQLException {
+    static void createTables(Connection conn) throws SQLException {
 
         conn.setCatalog(DATABASE_NAME);//check that set catalog is used for setting database and not table
 

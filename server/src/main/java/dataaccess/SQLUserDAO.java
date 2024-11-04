@@ -17,7 +17,8 @@ public class SQLUserDAO implements UserDAO {
     public void createUser(UserData user)throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO userData (username, password, email) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO userData (username, password, email) VALUES(?, ?, ?)",
+                                                                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.username());
             String hashedPassword = BCrypt.hashpw(user.password(), BCrypt.gensalt());
             preparedStatement.setString(2, hashedPassword);
@@ -26,9 +27,9 @@ public class SQLUserDAO implements UserDAO {
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
-            var ID = 0;
+            var id = 0;
             if (resultSet.next()) {
-                ID = resultSet.getInt(1);
+                id = resultSet.getInt(1);
             }
         }
 
@@ -55,7 +56,7 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public Map<String, UserData> getMemoryUserMap()throws SQLException, DataAccessException{
-        Map<String, UserData> SQLUserMap = new HashMap<>();
+        Map<String, UserData> sqlUserMap = new HashMap<>();
 
         Connection conn = DatabaseManager.getConnection();
 
@@ -68,11 +69,11 @@ public class SQLUserDAO implements UserDAO {
 
 
                     UserData user = new UserData(myUsername, myPassword, myEmail);
-                    SQLUserMap.put(user.username(), user);
+                    sqlUserMap.put(user.username(), user);
                 }
             }
         }
-        return SQLUserMap;
+        return sqlUserMap;
     }
 
     public void clearAllUsers()throws SQLException, DataAccessException{

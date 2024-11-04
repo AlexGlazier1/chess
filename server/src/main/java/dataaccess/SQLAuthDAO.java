@@ -11,16 +11,17 @@ public class SQLAuthDAO implements AuthDAO {
     public void createAuth(AuthData auth) throws SQLException, DataAccessException {
         Connection conn = DatabaseManager.getConnection();
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+        try (var preparedStatement = conn.prepareStatement("INSERT INTO authData (authToken, username) VALUES(?, ?)",
+                                                                Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, auth.authToken());
             preparedStatement.setString(2, auth.username());
 
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
-            var ID = 0;
+            var id = 0;
             if (resultSet.next()) {
-                ID = resultSet.getInt(1);
+                id = resultSet.getInt(1);
             }
         }
         //DatabaseManager.getConnection();
