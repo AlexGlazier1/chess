@@ -96,8 +96,8 @@ public class SQLGameDAO implements GameDAO {
         }
     }
 
-    public void deleteGame(GameData Game){
-    }
+    //He isn't used in the DAOs:public void deleteGame(GameData game){
+    //}
 
     public GameData getGame(int gameID) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();

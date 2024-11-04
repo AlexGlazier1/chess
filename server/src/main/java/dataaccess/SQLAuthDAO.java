@@ -43,8 +43,8 @@ public class SQLAuthDAO implements AuthDAO {
         }
     }
 
-    public void updateAuth(AuthData auth) throws DataAccessException{
-    }
+    //Don't need this, might delete out of all the DAOs: public void updateAuth(AuthData auth) throws DataAccessException{
+    //}
 
     public String getUsername(String authToken) throws SQLException, DataAccessException{
         Connection conn = DatabaseManager.getConnection();
