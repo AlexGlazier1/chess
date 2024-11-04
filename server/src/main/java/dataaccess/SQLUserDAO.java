@@ -49,11 +49,9 @@ public class SQLUserDAO implements UserDAO {
         }
     }
 
-    //Turns out I don't need these either: public void updateUser(UserData user){
-    //}
+    //Turns out I don't need these either: public void updateUser(UserData user){}
 
-    //This guy isn't used as well: public void deleteUser(UserData user){
-    //}
+    //This guy isn't used as well: public void deleteUser(UserData user){}
 
     public Map<String, UserData> getMemoryUserMap()throws SQLException, DataAccessException{
         Map<String, UserData> sqlUserMap = new HashMap<>();
