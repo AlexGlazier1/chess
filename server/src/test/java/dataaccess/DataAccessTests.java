@@ -1,6 +1,6 @@
 package dataaccess;
 
-import chess.ChessGame;
+import chess.*;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
@@ -10,6 +10,7 @@ import server.Server;
 import service.ClearService;
 import service.GameService;
 import service.UserService;
+import dataaccess.SQLGameDAO;
 import service.ServiceTests;
 import org.junit.jupiter.api.Test;
 
@@ -242,6 +243,72 @@ public class DataAccessTests {
         assertEquals(testserver.sqlGameDAO.listGames().size(), 4);
 
 
+    }
+
+    @Test
+    void goodUpdateGame() throws DataAccessException, SQLException, InvalidMoveException {
+        clearService.clearService();
+
+        UserData testUser1 = new UserData("user1", "pass1", "email1");
+        UserData testUser2 = new UserData("user2", "pass2", "email2");
+        AuthData testAuth1 = userService.registerService(testUser1);
+        AuthData testAuth2 = userService.registerService(testUser2);
+
+        ChessGame chess = new ChessGame();
+        chess.getBoard().resetBoard();
+        chess.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+        GameData gameData1 = new GameData(1234, null, null, "testGame", chess);
+        gameService.createGame(testAuth1.authToken(), gameData1);
+
+        gameService.joinGame(testAuth1.authToken(),"WHITE", 1234);
+        gameService.joinGame(testAuth2.authToken(),"BLACK", 1234);
+
+        ChessMove move = new ChessMove(new ChessPosition(2,1), new ChessPosition(4, 1), null);
+        chess.makeMove(move);
+        GameData gameData2 = new GameData(1234, "user1", "user2", "testGame", chess);
+
+
+        SQLGameDAO updating = new SQLGameDAO();
+        updating.updateGame(gameData2);
+
+        ChessGame updatedGame = updating.getGame(1234).game();
+        assertTrue(updatedGame.getBoard().getPiece(new ChessPosition(4, 1)).getPieceType().equals(ChessPiece.PieceType.PAWN));
+
+    }
+
+    @Test
+    void badUpdateGame() throws DataAccessException, SQLException, InvalidMoveException {
+    clearService.clearService();
+
+    UserData testUser1 = new UserData("user1", "pass1", "email1");
+    UserData testUser2 = new UserData("user2", "pass2", "email2");
+    AuthData testAuth1 = userService.registerService(testUser1);
+    AuthData testAuth2 = userService.registerService(testUser2);
+
+    ChessGame chess = new ChessGame();
+        chess.getBoard().resetBoard();
+        chess.setTeamTurn(ChessGame.TeamColor.WHITE);
+
+    GameData gameData1 = new GameData(1234, null, null, "testGame", chess);
+        gameService.createGame(testAuth1.authToken(), gameData1);
+
+        gameService.joinGame(testAuth1.authToken(),"WHITE", 1234);
+        gameService.joinGame(testAuth2.authToken(),"BLACK", 1234);
+
+    ChessMove move = new ChessMove(new ChessPosition(2,1), new ChessPosition(4, 1), null);
+    //chess.makeMove(move);
+    GameData gameData2 = new GameData(1234, "user1", "user2", "testGame", chess);
+
+
+    SQLGameDAO updating = new SQLGameDAO();
+        updating.updateGame(gameData2);
+
+    ChessGame updatedGame = updating.getGame(1234).game();
+
+    assertThrows(NullPointerException.class, ()->{
+        assertTrue(updatedGame.getBoard().getPiece(new ChessPosition(4, 1)).getPieceType().equals(null));
+    });
     }
 
     @Test

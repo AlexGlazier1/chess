@@ -44,6 +44,12 @@ public class ChessPiece {
         //throw new RuntimeException("Not implemented");
     }
 
+    @Override
+    public String toString() {
+        return "pieceColor=" + pieceColor +
+                ", type=" + type;
+    }
+
     /**
      * @return which type of chess piece this piece is
      */

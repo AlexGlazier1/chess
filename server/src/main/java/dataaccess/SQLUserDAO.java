@@ -36,15 +36,16 @@ public class SQLUserDAO implements UserDAO {
     }
 
     public boolean readUser(String username)throws SQLException, DataAccessException{
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM userData WHERE username = ? LIMIT 1;")) {
-            preparedStatement.setString(1, username);
-            try (var rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    return true;
+            try (var preparedStatement = conn.prepareStatement("SELECT 1 FROM userData WHERE username = ? LIMIT 1;")) {
+                preparedStatement.setString(1, username);
+                try (var rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
             }
         }
     }
@@ -56,28 +57,30 @@ public class SQLUserDAO implements UserDAO {
     public Map<String, UserData> getMemoryUserMap()throws SQLException, DataAccessException{
         Map<String, UserData> sqlUserMap = new HashMap<>();
 
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        try (var preparedStatement = conn.prepareStatement("SELECT * FROM userData")) {
-            try (var rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    var myUsername = rs.getString("username");
-                    var myPassword = rs.getString("password");
-                    var myEmail = rs.getString("email");
+            try (var preparedStatement = conn.prepareStatement("SELECT * FROM userData")) {
+                try (var rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        var myUsername = rs.getString("username");
+                        var myPassword = rs.getString("password");
+                        var myEmail = rs.getString("email");
 
 
-                    UserData user = new UserData(myUsername, myPassword, myEmail);
-                    sqlUserMap.put(user.username(), user);
+                        UserData user = new UserData(myUsername, myPassword, myEmail);
+                        sqlUserMap.put(user.username(), user);
+                    }
                 }
             }
         }
         return sqlUserMap;
     }
 
-    public void clearAllUsers()throws SQLException, DataAccessException{
-        Connection conn = DatabaseManager.getConnection();
-        try (var preparedStatement = conn.prepareStatement("TRUNCATE userData")) {
-            preparedStatement.executeUpdate();
+    public void clearAllUsers()throws SQLException, DataAccessException {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("TRUNCATE userData")) {
+                preparedStatement.executeUpdate();
+            }
         }
     }
 }

@@ -18,26 +18,27 @@ import java.util.Map;
 
 public class SQLGameDAO implements GameDAO {
     public void createGame(GameData game) throws SQLException, DataAccessException{
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
+            //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-        try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)",
-                                                                Statement.RETURN_GENERATED_KEYS)){
-            preparedStatement.setInt(1, game.gameID());
-            preparedStatement.setString(2, game.whiteUsername());
-            preparedStatement.setString(3, game.blackUsername());
-            preparedStatement.setString(4, game.gameName());
-            var gameJson = new Gson().toJson(game.game());
-            preparedStatement.setString(5, gameJson);
+            try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setInt(1, game.gameID());
+                preparedStatement.setString(2, game.whiteUsername());
+                preparedStatement.setString(3, game.blackUsername());
+                preparedStatement.setString(4, game.gameName());
+                var gameJson = new Gson().toJson(game.game());
+                preparedStatement.setString(5, gameJson);
 
-            preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
 
-            var resultSet = preparedStatement.getGeneratedKeys();
-            var id = 0;
-            if (resultSet.next()) {
-                id = resultSet.getInt(1);
+                var resultSet = preparedStatement.getGeneratedKeys();
+                var id = 0;
+                if (resultSet.next()) {
+                    id = resultSet.getInt(1);
+                }
             }
         }
     }
@@ -62,20 +63,21 @@ public class SQLGameDAO implements GameDAO {
     public Map<Integer, GameData> listGames() throws SQLException, DataAccessException{
         Map<Integer, GameData> sqlGameMap = new HashMap<>();
 
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        try (var preparedStatement = conn.prepareStatement("SELECT * FROM gameData")) {
-            try (var rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    var myGameID = rs.getInt("gameID");
-                    var myWhiteUsername = rs.getString("whiteUsername");
-                    var myBlackUsername = rs.getString("blackUsername");
-                    var myGameName = rs.getString("gameName");
-                    var myGameJson = rs.getString("game");
-                    var myGame = new Gson().fromJson(myGameJson, ChessGame.class);
+            try (var preparedStatement = conn.prepareStatement("SELECT * FROM gameData")) {
+                try (var rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        var myGameID = rs.getInt("gameID");
+                        var myWhiteUsername = rs.getString("whiteUsername");
+                        var myBlackUsername = rs.getString("blackUsername");
+                        var myGameName = rs.getString("gameName");
+                        var myGameJson = rs.getString("game");
+                        var myGame = new Gson().fromJson(myGameJson, ChessGame.class);
 
-                    GameData game = new GameData(myGameID,myWhiteUsername, myBlackUsername, myGameName, myGame);
-                    sqlGameMap.put(game.gameID(), game);
+                        GameData game = new GameData(myGameID, myWhiteUsername, myBlackUsername, myGameName, myGame);
+                        sqlGameMap.put(game.gameID(), game);
+                    }
                 }
             }
         }
@@ -83,16 +85,17 @@ public class SQLGameDAO implements GameDAO {
     }
 
     public void updateGame(GameData game) throws SQLException, DataAccessException{
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        try (var preparedStatement = conn.prepareStatement("UPDATE gameData SET whiteUsername=?, blackUsername=?, game=?  WHERE gameID=?")) {
-            preparedStatement.setString(1, game.whiteUsername());
-            preparedStatement.setString(2, game.blackUsername());
-            var gameJson = new Gson().toJson(game.game());
-            preparedStatement.setString(3, gameJson);
-            preparedStatement.setInt(4, game.gameID());
+            try (var preparedStatement = conn.prepareStatement("UPDATE gameData SET whiteUsername=?, blackUsername=?, game=?  WHERE gameID=?")) {
+                preparedStatement.setString(1, game.whiteUsername());
+                preparedStatement.setString(2, game.blackUsername());
+                var gameJson = new Gson().toJson(game.game());
+                preparedStatement.setString(3, gameJson);
+                preparedStatement.setInt(4, game.gameID());
 
-            preparedStatement.executeUpdate();
+                preparedStatement.executeUpdate();
+            }
         }
     }
 
@@ -100,21 +103,22 @@ public class SQLGameDAO implements GameDAO {
     //}
 
     public GameData getGame(int gameID) throws SQLException, DataAccessException{
-        Connection conn = DatabaseManager.getConnection();
+        try(Connection conn = DatabaseManager.getConnection()) {
 
-        try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game FROM gameData WHERE gameID=?")){
-            preparedStatement.setInt(1, gameID);
-            try (var rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    var getGameID = rs.getInt("gameID");
-                    var getWhiteUsername = rs.getString("whiteUsername");
-                    var getBlackUsername = rs.getString("blackUsername");
-                    var getGameName = rs.getString("gameName");
-                    var getGameJson = rs.getString("game");
-                    var getGame = new Gson().fromJson(getGameJson, ChessGame.class);
+            try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game FROM gameData WHERE gameID=?")) {
+                preparedStatement.setInt(1, gameID);
+                try (var rs = preparedStatement.executeQuery()) {
+                    while (rs.next()) {
+                        var getGameID = rs.getInt("gameID");
+                        var getWhiteUsername = rs.getString("whiteUsername");
+                        var getBlackUsername = rs.getString("blackUsername");
+                        var getGameName = rs.getString("gameName");
+                        var getGameJson = rs.getString("game");
+                        var getGame = new Gson().fromJson(getGameJson, ChessGame.class);
 
-                    GameData game = new GameData(getGameID,getWhiteUsername, getBlackUsername, getGameName, getGame);
-                    return game;
+                        GameData game = new GameData(getGameID, getWhiteUsername, getBlackUsername, getGameName, getGame);
+                        return game;
+                    }
                 }
             }
         }
@@ -122,9 +126,10 @@ public class SQLGameDAO implements GameDAO {
     }
 
     public void clearAllGames() throws SQLException, DataAccessException {
-        Connection conn = DatabaseManager.getConnection();
-        try (var preparedStatement = conn.prepareStatement("TRUNCATE gameData")) {
-            preparedStatement.executeUpdate();
+        try(Connection conn = DatabaseManager.getConnection()) {
+            try (var preparedStatement = conn.prepareStatement("TRUNCATE gameData")) {
+                preparedStatement.executeUpdate();
+            }
         }
     }
 }
