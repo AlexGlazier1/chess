@@ -23,7 +23,7 @@ public class SQLGameDAO implements GameDAO {
             //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-            try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) " +
+            try (var preparedStatement = conn.prepareStatement("INSERT INTO gameData(gameID,whiteUsername,blackUsername,gameName,game) " +
                                                                     "VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setInt(1, game.gameID());
                 preparedStatement.setString(2, game.whiteUsername());
