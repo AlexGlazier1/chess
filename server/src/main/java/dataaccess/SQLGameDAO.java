@@ -23,8 +23,8 @@ public class SQLGameDAO implements GameDAO {
             //int gameID, String whiteUsername, String blackUsername, String gameName, ChessGame game;
 
 
-            try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) VALUES(?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS)) {
+            try (var preparedStatement = conn.prepareStatement("INSERT INTO GameData(gameID,whiteUsername,blackUsername,gameName,game) " +
+                                                                    "VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setInt(1, game.gameID());
                 preparedStatement.setString(2, game.whiteUsername());
                 preparedStatement.setString(3, game.blackUsername());
@@ -105,7 +105,8 @@ public class SQLGameDAO implements GameDAO {
     public GameData getGame(int gameID) throws SQLException, DataAccessException{
         try(Connection conn = DatabaseManager.getConnection()) {
 
-            try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game FROM gameData WHERE gameID=?")) {
+            try (var preparedStatement = conn.prepareStatement("SELECT gameID,whiteUsername,blackUsername,gameName,game " +
+                                                                    "FROM gameData WHERE gameID=?")) {
                 preparedStatement.setInt(1, gameID);
                 try (var rs = preparedStatement.executeQuery()) {
                     while (rs.next()) {
