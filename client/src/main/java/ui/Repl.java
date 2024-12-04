@@ -12,7 +12,7 @@ public class Repl {
 
 
     public void run() {
-        System.out.println("\uD83D\uDC36 Welcome to the pet store. Sign in to start.");
+        System.out.println("\uD83D\uDC51 Welcome to 240 Chess. Type Help to get started");
         //System.out.print(client.help());
 
         Scanner scanner = new Scanner(System.in);

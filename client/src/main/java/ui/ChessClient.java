@@ -26,12 +26,8 @@ public class ChessClient {
             var params = Arrays.copyOfRange(tokens, 1, tokens.length);
             return switch (cmd) {
 
-                case "signin" -> signIn(params);
-                //case "rescue" -> rescuePet(params);
-                //case "list" -> listPets();
-                //case "signout" -> signOut();
-                //case "adopt" -> adoptPet(params);
-                //case "adoptall" -> adoptAllPets();
+                case "login" -> logIn(params);
+                //case "register" -> register(params);
                 case "quit" -> "quit";
                 default -> help();
             };
@@ -40,7 +36,7 @@ public class ChessClient {
             }
         }
 
-    public String signIn(String... params) throws ResponseException {
+    public String logIn(String... params) throws ResponseException {
         if (params.length >= 1) {
             state = State.SIGNEDIN;
             visitorName = String.join("-", params);
@@ -122,8 +118,10 @@ public class ChessClient {
         public String help() {
             if (state == State.SIGNEDOUT) {
                 return """
-                        - signIn <yourname>
-                        - quit
+                        - register <USERNAME> <PASSWORD> <EMAIL> - to create an account
+                        - login <USERNAME> <PASSWORD> - to play chess
+                        - quit - playing chess
+                        - help - with possible commands
                         """;
             }
             return """
