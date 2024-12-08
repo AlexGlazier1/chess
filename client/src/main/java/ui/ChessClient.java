@@ -3,18 +3,19 @@ package ui;
 import com.google.gson.Gson;
 import java.util.Arrays;
 import ui.ResponseException;
+import ui.ServerFacade;
 
 public class ChessClient {
 
     private String visitorName = null;
-    //private final ServerFacade server;
+    private final ServerFacade server;
     private final String serverUrl;
     //private final NotificationHandler notificationHandler;
     //private WebSocketFacade ws;
     private State state = State.SIGNEDOUT;
 
     public ChessClient(String serverUrl) {//NotificationHandler notificationHandler) {
-        //server = new ServerFacade(serverUrl);
+        server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
         //this.notificationHandler = notificationHandler;
     }
@@ -27,7 +28,7 @@ public class ChessClient {
             return switch (cmd) {
 
                 case "login" -> logIn(params);
-                //case "register" -> register(params);
+                case "register" -> register(params);
                 case "quit" -> "quit";
                 default -> help();
             };
@@ -37,14 +38,25 @@ public class ChessClient {
         }
 
     public String logIn(String... params) throws ResponseException {
-        if (params.length >= 1) {
+        if (params.length >= 2) {
             state = State.SIGNEDIN;
             visitorName = String.join("-", params);
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
         }
-        throw new ResponseException(400, "Expected: <yourname>");
+        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>");
+    }
+
+    public String register(String... params) throws ResponseException {
+        if (params.length >= 3) {
+            state = State.SIGNEDIN;
+            visitorName = String.join("-", params);
+            //ws = new WebSocketFacade(serverUrl, notificationHandler);
+            //ws.enterPetShop(visitorName);
+            return String.format("You signed in as %s.", visitorName);
+        }
+        throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
     }
     /*
 
@@ -125,12 +137,13 @@ public class ChessClient {
                         """;
             }
             return """
-                    - list
-                    - adopt <pet id>
-                    - rescue <name> <CAT|DOG|FROG|FISH>
-                    - adoptAll
-                    - signOut
-                    - quit
+                    - create <NAME> - a game
+                    - list - games
+                    - join <ID> [WHITE/BLACK] - a game
+                    - observe <ID> - a game
+                    - logout - when you are done
+                    - quit - playing chess
+                    - help - with possible commands
                     """;
         }
     /*
