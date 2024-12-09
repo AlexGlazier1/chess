@@ -22,14 +22,15 @@ public class ServerFacade {
 
     public UserData login(UserData userData) throws ResponseException {
         var path = "/session";
-        return this.makeRequest("POSt", path, userData, UserData.class);
+        return this.makeRequest("POST", path, userData, UserData.class);
     }
 
-    public GameData createGame() throws ResponseException {
-
+    public void createGame(GameData gameData) throws ResponseException {
+        var path = "/game";
+        this.makeRequest("POST", path, gameData, GameData.class);
     }
 
-    public
+    //public
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
         try {

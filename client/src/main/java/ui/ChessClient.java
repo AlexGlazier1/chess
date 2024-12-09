@@ -23,28 +23,55 @@ public class ChessClient {
     }
 
     public String eval(String input) {
-        try {
-            var tokens = input.toLowerCase().split(" ");
-            var cmd = (tokens.length > 0) ? tokens[0] : "help";
-            var params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            return switch (cmd) {
+        if (state == State.SIGNEDOUT) {
+            try {
+                var tokens = input.toLowerCase().split(" ");
+                var cmd = (tokens.length > 0) ? tokens[0] : "help";
+                var params = Arrays.copyOfRange(tokens, 1, tokens.length);
+                return switch (cmd) {
 
-                case "login" -> logIn(params);
-                case "register" -> register(params);
-                case "quit" -> "quit";
-                default -> help();
-            };
-        } catch (ResponseException ex) {
-            return ex.getMessage();
+                    case "login" -> logIn(params);
+                    case "register" -> register(params);
+                    case "quit" -> "quit";
+                    default -> help();
+                };
+            } catch (ResponseException ex) {
+                return ex.getMessage();
+            }
+        } else {
+            try {
+                var tokens = input.toLowerCase().split(" ");
+                var cmd = (tokens.length > 0) ? tokens[0] : "help";
+                var params = Arrays.copyOfRange(tokens, 1, tokens.length);
+                return switch (cmd) {
+
+                    case "login" -> logIn(params);
+                    case "create" -> createGame(params)
+                    case "list" -> listGame(params);
+                    case "join" -> joinGame(params);
+                    case "observe" -> observeGame(params);
+                    case "logout" -> logout(params);
+                    case "quit" -> "quit";
+                    default -> help();
+                };
+            } catch (ResponseException ex) {
+                return ex.getMessage();
             }
         }
+    }
 
     public String logIn(String... params) throws ResponseException {
         if (params.length >= 2) {
-            state = State.SIGNEDIN;
             visitorName = String.join("-", params);
-            var userData = new UserData();
-            server.login(userData);
+            var userData = new UserData(params[0],params[1],"null");
+            try{
+                server.login(userData);
+                state = State.SIGNEDIN;
+            }catch(Exception e) {
+                throw new ResponseException(400, "This user is not registered");
+            }
+
+
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
@@ -54,10 +81,14 @@ public class ChessClient {
 
     public String register(String... params) throws ResponseException {
         if (params.length >= 3) {
-            state = State.SIGNEDIN;
             visitorName = String.join("-", params);
-            var userData = new UserData();
-            server.register(userData);
+            var userData = new UserData(params[0],params[1],params[2]);
+            try{
+                server.register(userData);
+                state = State.SIGNEDIN;
+            }catch(Exception e) {
+            throw new ResponseException(400, "This user is already registered>");
+            }
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
@@ -152,13 +183,13 @@ public class ChessClient {
                     - help - with possible commands
                     """;
         }
-    /*
+
     private void assertSignedIn() throws ResponseException {
         if (state == State.SIGNEDOUT) {
             throw new ResponseException(400, "You must sign in");
         }
     }
 
-     */
+
 
 }
