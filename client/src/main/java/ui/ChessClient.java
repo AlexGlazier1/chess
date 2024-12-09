@@ -2,6 +2,8 @@ package ui;
 
 import com.google.gson.Gson;
 import java.util.Arrays;
+
+import model.UserData;
 import ui.ResponseException;
 import ui.ServerFacade;
 
@@ -41,6 +43,8 @@ public class ChessClient {
         if (params.length >= 2) {
             state = State.SIGNEDIN;
             visitorName = String.join("-", params);
+            var userData = new UserData();
+            server.login(userData);
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
@@ -52,6 +56,8 @@ public class ChessClient {
         if (params.length >= 3) {
             state = State.SIGNEDIN;
             visitorName = String.join("-", params);
+            var userData = new UserData();
+            server.register(userData);
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);

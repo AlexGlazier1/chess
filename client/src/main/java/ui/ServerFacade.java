@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import com.google.gson.Gson;
 import model.AuthData;
+import model.GameData;
+import model.UserData;
 
 
 public class ServerFacade {
@@ -13,10 +15,21 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public AuthData register(AuthData authData) throws ResponseException {
+    public UserData register(UserData userData) throws ResponseException {
         var path = "/user";
-        return this.makeRequest("POST", path, authData, AuthData.class);
+        return this.makeRequest("POST", path, userData, UserData.class);
     }
+
+    public UserData login(UserData userData) throws ResponseException {
+        var path = "/session";
+        return this.makeRequest("POSt", path, userData, UserData.class);
+    }
+
+    public GameData createGame() throws ResponseException {
+
+    }
+
+    public
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
         try {
