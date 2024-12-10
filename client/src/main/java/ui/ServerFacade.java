@@ -25,9 +25,17 @@ public class ServerFacade {
         return this.makeRequest("POST", path, userData, UserData.class);
     }
 
-    public void createGame(GameData gameData) throws ResponseException {
+    public GameData createGame(String name) throws ResponseException {
         var path = "/game";
-        this.makeRequest("POST", path, gameData, GameData.class);
+        return this.makeRequest("POST", path, name, GameData.class);
+    }
+
+    public GameData[] listGames() throws ResponseException {
+        var path = "/game";
+        record listGamesResponse(GameData[] games) {
+        }
+        var response = this.makeRequest("GET", path, null, listGamesResponse.class);
+        return response.games();
     }
 
     //public

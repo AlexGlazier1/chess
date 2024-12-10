@@ -3,6 +3,7 @@ package ui;
 import com.google.gson.Gson;
 import java.util.Arrays;
 
+import model.GameData;
 import model.UserData;
 import ui.ResponseException;
 import ui.ServerFacade;
@@ -46,11 +47,11 @@ public class ChessClient {
                 return switch (cmd) {
 
                     case "login" -> logIn(params);
-                    case "create" -> createGame(params)
+                    case "create" -> createGame();
                     case "list" -> listGame(params);
-                    case "join" -> joinGame(params);
-                    case "observe" -> observeGame(params);
-                    case "logout" -> logout(params);
+                    //case "join" -> joinGame(params);
+                    //case "observe" -> observeGame(params);
+                    //case "logout" -> logout(params);
                     case "quit" -> "quit";
                     default -> help();
                 };
@@ -92,8 +93,35 @@ public class ChessClient {
             //ws = new WebSocketFacade(serverUrl, notificationHandler);
             //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
-        }
+        }else{
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
+        }
+    }
+
+    public String listGame(String...params) throws ResponseException {
+        if (params.length == 1) {
+            try {
+                GameData[] games = server.listGames();
+                return String.format("You signed in as %s.", visitorName);
+            } catch (Exception e) {
+                throw new ResponseException(400, "This user is already registered>");
+            }
+        } else {
+            throw new ResponseException(400, "Expected: No other parameters");
+        }
+    }
+
+    public String createGame(String...params) throws ResponseException {
+        if (params.length >= 2){
+            try{
+                server.createGame(params[0]);
+                return String.format("You signed in as %s.", visitorName);
+            }catch(Exception e) {
+                throw new ResponseException(400, "This user is already registered>");
+            }
+        }else{
+            throw new ResponseException(400, "Expected: No other parameters");
+        }
     }
     /*
 
