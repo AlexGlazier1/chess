@@ -25,9 +25,12 @@ public class ServerFacade {
         return this.makeRequest("POST", path, userData, UserData.class);
     }
 
-    public GameData createGame(String name) throws ResponseException {
+    record CreateGameRequest(String gameName) {}
+
+    public void createGame(String name) throws ResponseException {
         var path = "/game";
-        return this.makeRequest("POST", path, name, GameData.class);
+        System.out.println("Request Payload: " + new Gson().toJson(new CreateGameRequest(name)));
+        this.makeRequest("POST", path, new CreateGameRequest(name), null);
     }
 
     public GameData[] listGames() throws ResponseException {

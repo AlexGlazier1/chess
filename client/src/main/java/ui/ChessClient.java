@@ -2,6 +2,8 @@ package ui;
 
 import com.google.gson.Gson;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import model.GameData;
 import model.UserData;
@@ -13,6 +15,7 @@ public class ChessClient {
     private String visitorName = null;
     private final ServerFacade server;
     private final String serverUrl;
+    Map<Integer, Integer> gameMap = new HashMap<>();
     //private final NotificationHandler notificationHandler;
     //private WebSocketFacade ws;
     private State state = State.SIGNEDOUT;
@@ -47,7 +50,7 @@ public class ChessClient {
                 return switch (cmd) {
 
                     case "login" -> logIn(params);
-                    case "create" -> createGame();
+                    case "create" -> createGame(params);
                     case "list" -> listGame(params);
                     //case "join" -> joinGame(params);
                     //case "observe" -> observeGame(params);
@@ -99,28 +102,44 @@ public class ChessClient {
     }
 
     public String listGame(String...params) throws ResponseException {
-        if (params.length == 1) {
-            try {
+        if (params.length == 0) {
+            //try {
                 GameData[] games = server.listGames();
-                return String.format("You signed in as %s.", visitorName);
-            } catch (Exception e) {
-                throw new ResponseException(400, "This user is already registered>");
-            }
+                //return String.format("You signed in as %s.", visitorName);
+                System.out.println("Game Number: Game Name, GameID, White, Black");
+                int loopInt = 1;
+                for (GameData g: games) {
+                    System.out.print(loopInt + ":" + g.gameName() + ", "+ g.gameID() + ", "+ g.whiteUsername() + ", "+ g.blackUsername());
+                    loopInt++;
+                    gameMap.put(loopInt,g.gameID());
+                }
+                return "end of list";
+
+            //} catch (Exception e) {
+            //    throw new ResponseException(400, "This user is already registered>");
+            //}
         } else {
             throw new ResponseException(400, "Expected: No other parameters");
         }
     }
 
     public String createGame(String...params) throws ResponseException {
-        if (params.length >= 2){
-            try{
-                server.createGame(params[0]);
-                return String.format("You signed in as %s.", visitorName);
-            }catch(Exception e) {
-                throw new ResponseException(400, "This user is already registered>");
-            }
+        if (params.length >= 0){
+            //GameData gameData = new GameData()
+            server.createGame(params[0]);
+            return String.format("Chess game ", params[0]," created.");
+            //try{
+            //    server.createGame(params[0]);
+            //    return String.format("Chess game ", params[0]," created.");
+            //}catch(Exception e) {
+            //    throw new ResponseException(400, "This user is already registered>");
+            //}
+        //}else{
+        //    System.out.println(params.length);
+        //    throw new ResponseException(400, "Expected: No other parameters");
+
         }else{
-            throw new ResponseException(400, "Expected: No other parameters");
+            return "uggh";
         }
     }
     /*
