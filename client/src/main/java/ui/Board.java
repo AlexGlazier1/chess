@@ -51,7 +51,7 @@ import static ui.EscapeSequences.*;
             String[] numbers = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 "};
             ChessBoard boardBuffer = new ChessBoard();
 
-            if(playerColor == "black"){
+            if(playerColor.equals("black")){
                 List<String> tempList = Arrays.asList(numbers);
                 Collections.reverse(tempList);
                 numbers = tempList.toArray(new String[0]);

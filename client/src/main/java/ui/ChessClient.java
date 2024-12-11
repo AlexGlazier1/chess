@@ -69,7 +69,7 @@ public class ChessClient {
     }
 
     public String logIn(String... params) throws ResponseException {
-        if (params.length >= 2) {
+        if (params.length == 2) {
             visitorName = params[0];
             var userData = new UserData(params[0],params[1],"null");
             try{
@@ -85,7 +85,7 @@ public class ChessClient {
     }
 
     public String register(String... params) throws ResponseException {
-        if (params.length >= 3) {
+        if (params.length == 3) {
             visitorName = params[0];
             var userData = new UserData(params[0],params[1],params[2]);
             try{
@@ -136,11 +136,20 @@ public class ChessClient {
 
     public String joinGame(String...params) throws ResponseException {
         if (params.length >= 1) {
+
             String gameName = "";
             int num = Integer.parseInt(params[0]);
-            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-            ChessBoard board = gameMap.get(num).game().getBoard();
 
+            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+
+            if(num > gameMap.size() || num <= 0){
+                return "Enter a valid game number";
+            }
+            if(params[1].toLowerCase().equals("white") == false && params[1].toLowerCase().equals("black") == false){
+                return "Enter a valid color";
+            }
+
+            ChessBoard board = gameMap.get(num).game().getBoard();
             if (gameMap.get(num).blackUsername() != null && gameMap.get(num).blackUsername().equals(visitorName) ){
                 new Board(board, "black").drawBoard(out);
                 return String.format("You joined %s.", gameMap.get(num).gameName());
