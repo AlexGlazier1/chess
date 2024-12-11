@@ -150,26 +150,26 @@ import static ui.EscapeSequences.*;
         }
 
         private static void printSquaresText(PrintStream out, ChessPiece piece, String bgcolor) {
-            String Piece = "   ";
+            String printPiece = "   ";
             String textColor = SET_TEXT_COLOR_BLACK;
             if(piece != null) {
                 if (piece.getPieceType() == ChessPiece.PieceType.PAWN) {
-                    Piece = " P ";
+                    printPiece = " P ";
                 }
                 if (piece.getPieceType() == ChessPiece.PieceType.BISHOP) {
-                    Piece = " B ";
+                    printPiece = " B ";
                 }
                 if (piece.getPieceType() == ChessPiece.PieceType.KNIGHT) {
-                    Piece = " N ";
+                    printPiece = " N ";
                 }
                 if (piece.getPieceType() == ChessPiece.PieceType.ROOK) {
-                    Piece = " R ";
+                    printPiece = " R ";
                 }
                 if (piece.getPieceType() == ChessPiece.PieceType.QUEEN) {
-                    Piece = " Q ";
+                    printPiece = " Q ";
                 }
                 if (piece.getPieceType() == ChessPiece.PieceType.KING) {
-                    Piece = " K ";
+                    printPiece = " K ";
                 }
                 if(piece.getTeamColor() == ChessGame.TeamColor.WHITE){
                     textColor = SET_TEXT_COLOR_RED;
@@ -182,7 +182,7 @@ import static ui.EscapeSequences.*;
 
             out.print(textColor);
 
-            out.print(Piece);
+            out.print(printPiece);
 
             setBlack(out);
         }
