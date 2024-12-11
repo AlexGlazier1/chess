@@ -47,6 +47,12 @@ public class ServerFacade {
         return response;
     }
 
+    public GameData observeGame(int GameID, AuthData authData) throws ResponseException {
+        var path = "/game";
+        var response = this.makeRequest("GET", path, GameID, GameData.class, authData);
+        return response;
+    }
+
     //public
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, AuthData authData) throws ResponseException {

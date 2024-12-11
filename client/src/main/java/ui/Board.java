@@ -49,7 +49,7 @@ import static ui.EscapeSequences.*;
             //out.print(SET_TEXT_COLOR_WHITE);
         }
 
-        private static void drawBoard(PrintStream out){
+        public static void drawBoard(PrintStream out){
             ChessBoard board = new ChessBoard();
             board.resetBoard();
             String[] letters = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h ", "   " };
@@ -80,6 +80,10 @@ import static ui.EscapeSequences.*;
             drawSquares(out, numbers,3, boardBuffer.squares[5]);
             drawSquares(out, numbers,2, boardBuffer.squares[6]);
             drawSquares(out, numbers,1, boardBuffer.squares[7]);
+
+
+
+            setDefault();
         }
 
         private static void drawHeaders(PrintStream out, String[] headers, String color) {
@@ -204,6 +208,10 @@ import static ui.EscapeSequences.*;
         }
 
 
+        private static void setDefault() {
+            String RESET = "\u001B[0m";
+            System.out.println(RESET);
+        }
 
         private static void setWhite(PrintStream out) {
             out.print(SET_BG_COLOR_WHITE);

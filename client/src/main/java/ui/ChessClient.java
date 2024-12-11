@@ -1,6 +1,10 @@
 package ui;
 
+import chess.ChessBoard;
 import com.google.gson.Gson;
+
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +19,7 @@ public class ChessClient {
     private String visitorName = null;
     private final ServerFacade server;
     private final String serverUrl;
-    Map<Integer, Integer> gameMap = new HashMap<>();
+    Map<Integer, GameData> gameMap = new HashMap<>();
     //private final NotificationHandler notificationHandler;
     private State state = State.SIGNEDOUT;
     private AuthData authData;
@@ -52,8 +56,8 @@ public class ChessClient {
                     case "login" -> logIn(params);
                     case "create" -> createGame(params);
                     case "list" -> listGame(params);
-                    case "join" -> joinGame(params);
-                    //case "observe" -> observeGame(params);
+                    //case "join" -> joinGame(params);
+                    case "observe" -> observeGame(params);
                     //case "logout" -> logout(params);
                     case "quit" -> "quit";
                     default -> help();
@@ -106,15 +110,11 @@ public class ChessClient {
                 int loopInt = 1;
                 for (GameData g: games) {
                     System.out.println(loopInt + ":" + g.gameName() + ", "+ g.whiteUsername() + ", "+ g.blackUsername());
+                    gameMap.put(loopInt,g);
                     loopInt++;
-                    gameMap.put(loopInt,g.gameID());
 
                 }
                 return "end of list";
-
-            //} catch (Exception e) {
-            //    throw new ResponseException(400, "This user is already registered>");
-            //}
         } else {
             throw new ResponseException(400, "Expected: No other parameters");
         }
@@ -147,8 +147,25 @@ public class ChessClient {
             return String.format("You joined %s.", gameName);
         }else{
             throw new ResponseException(400, "Expected: <ID> [WHITE/BLACK]");
+        }
     }
+
+
+    public String observeGame(String...params) throws ResponseException {
+        if (params.length <= 1) {
+            int num = Integer.parseInt(params[0]);
+            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+            ChessBoard board = gameMap.get(num).game().getBoard();
+            new Board(board,"White").drawBoard(out);
+            return String.format("You viewed %s.", gameMap.get(num).gameName());
+
+        } else {
+            throw new ResponseException(400, "Provide game number");
+        }
     }
+
+
+
 
         public String help() {
             if (state == State.SIGNEDOUT) {
