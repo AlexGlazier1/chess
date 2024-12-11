@@ -1,5 +1,6 @@
 package client;
 
+import chess.ChessBoard;
 import dataaccess.DataAccessException;
 import model.AuthData;
 import model.GameData;
@@ -24,7 +25,7 @@ public class ServerFacadeTests {
     @BeforeAll
     public static void init() {
         server = new Server();
-        server.run(0);
+        server.run(8080);
         var serverUrl = "http://localhost:8080";
         System.out.println("Started test HTTP server on " + serverUrl);
         facade = new ServerFacade(serverUrl);
@@ -142,13 +143,37 @@ public class ServerFacadeTests {
         facade.createGame("test", authData);
         GameData[] list = facade.listGames(authData);
         int id = list[0].gameID();
-        facade.joinGame(id, "WHITE", authData);
-        list = facade.listGames(authData);
-        Assertions.assertTrue(list[0].whiteUsername().equals("Alex"));
+        assertThrows(ResponseException.class, ()->{
+            facade.joinGame(id, "WHITE", null);
+        });
+
     }
 
+    @Test
+    void GoodObserveGame() throws Exception {
+        UserData user = new UserData("Alex", "1234", "alex@gmail.com");
+        facade.register(user);
+        var authData = facade.login(user);
+        facade.createGame("test", authData);
+        GameData[] list = facade.listGames(authData);
+        int id = list[0].gameID();
+        ChessBoard board = facade.observeGame(id, authData);
+        Assertions.assertTrue(facade.observeGame(id, authData) != null);
 
 
+    }
+    @Test
+    void BadObserveGame() throws Exception {
+        UserData user = new UserData("Alex", "1234", "alex@gmail.com");
+        facade.register(user);
+        var authData = facade.login(user);
+        facade.createGame("test", authData);
+        GameData[] list = facade.listGames(authData);
+        int id = list[0].gameID();
+        assertThrows(ResponseException.class, ()->{
+            facade.observeGame(id, null);
+        });
 
+    }
 
 }
