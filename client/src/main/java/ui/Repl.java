@@ -13,7 +13,6 @@ public class Repl {
 
     public void run() {
         System.out.println("\uD83D\uDC51 Welcome to 240 Chess. Type Help to get started");
-        //System.out.print(client.help());
 
         Scanner scanner = new Scanner(System.in);
         var result = "";
@@ -31,11 +30,7 @@ public class Repl {
         }
         System.out.println();
     }
-
-    //public void notify(Notification notification) {
-    //    System.out.println(RED + notification.message());
-    //    printPrompt();
-    //}
+    
 
     private void printPrompt() {
         System.out.print("\n" + ">>> ");

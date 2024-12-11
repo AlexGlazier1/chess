@@ -26,7 +26,4 @@ public class ResponseException extends Exception {
         return new ResponseException(statusCode, message);
     }
 
-    public int StatusCode() {
-        return statusCode;
-    }
 }

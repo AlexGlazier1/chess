@@ -100,12 +100,12 @@ import static ui.EscapeSequences.*;
             out.println();
         }
 
-        private static void drawHeader(PrintStream out, String headerText, String Color) {
+        private static void drawHeader(PrintStream out, String headerText, String color) {
             int prefixLength = SQUARE_SIZE_IN_PADDED_CHARS / 2;
             int suffixLength = SQUARE_SIZE_IN_PADDED_CHARS - prefixLength - 1;
 
             out.print(EMPTY.repeat(prefixLength));
-            printHeaderText(out, headerText, Color);
+            printHeaderText(out, headerText, color);
             out.print(EMPTY.repeat(suffixLength));
         }
 
@@ -203,18 +203,8 @@ import static ui.EscapeSequences.*;
 
 
         private static void setDefault() {
-            String RESET = "\u001B[0m";
-            System.out.println(RESET);
-        }
-
-        private static void setWhite(PrintStream out) {
-            out.print(SET_BG_COLOR_WHITE);
-            out.print(SET_TEXT_COLOR_WHITE);
-        }
-
-        private static void setLightGrey(PrintStream out) {
-            out.print(SET_BG_COLOR_LIGHT_GREY);
-            out.print(SET_TEXT_COLOR_LIGHT_GREY);
+            String reset = "\u001B[0m";
+            System.out.println(reset);
         }
 
         private static void setBlack(PrintStream out) {
@@ -222,17 +212,5 @@ import static ui.EscapeSequences.*;
             out.print(SET_TEXT_COLOR_BLACK);
         }
 
-        private static void printPlayer(PrintStream out, String player, int val) {
-            if (val == 1) {
-                out.print(SET_BG_COLOR_BLACK);
-                out.print(SET_TEXT_COLOR_WHITE);
 
-                out.print(player);
-
-                setBlack(out);
-            } else {
-                out.print(SET_BG_COLOR_WHITE);
-                out.print(SET_TEXT_COLOR_BLACK);
-            }
-        }
     }
