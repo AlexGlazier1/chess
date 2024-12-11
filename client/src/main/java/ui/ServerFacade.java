@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import chess.ChessBoard;
 import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
@@ -54,10 +55,18 @@ public class ServerFacade {
         return response;
     }
 
-    public GameData observeGame(int gameID, AuthData authData) throws ResponseException {
+    public ChessBoard observeGame(int gameID, AuthData authData) throws ResponseException {
         var path = "/game";
-        var response = this.makeRequest("GET", path, gameID, GameData.class, authData);
-        return response;
+        record ListGamesResponse(GameData[] games) {
+        }
+        var response = this.makeRequest("GET", path, null, ListGamesResponse.class, authData);
+        GameData[] games = response.games();
+        for (GameData g: games) {
+            if (g.gameID() == gameID){
+                return g.game().getBoard();
+            }
+        }
+        return null;
     }
 
 

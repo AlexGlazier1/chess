@@ -165,7 +165,9 @@ public class ChessClient {
         if (params.length <= 1) {
             int num = Integer.parseInt(params[0]);
             var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-            ChessBoard board = gameMap.get(num).game().getBoard();
+            int id = gameMap.get(num).gameID();
+            ChessBoard board = server.observeGame(id, authData);
+
             new Board(board,"White").drawBoard(out);
             return String.format("You viewed %s.", gameMap.get(num).gameName());
 
