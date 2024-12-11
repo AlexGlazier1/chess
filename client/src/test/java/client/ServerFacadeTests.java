@@ -150,7 +150,7 @@ public class ServerFacadeTests {
     }
 
     @Test
-    void GoodObserveGame() throws Exception {
+    void goodObserveGame() throws Exception {
         UserData user = new UserData("Alex", "1234", "alex@gmail.com");
         facade.register(user);
         var authData = facade.login(user);
@@ -163,7 +163,7 @@ public class ServerFacadeTests {
 
     }
     @Test
-    void BadObserveGame() throws Exception {
+    void badObserveGame() throws Exception {
         UserData user = new UserData("Alex", "1234", "alex@gmail.com");
         facade.register(user);
         var authData = facade.login(user);
