@@ -15,41 +15,49 @@ public class ServerFacade {
         serverUrl = url;
     }
 
-    public UserData register(UserData userData) throws ResponseException {
+    public AuthData register(UserData userData) throws ResponseException {
         var path = "/user";
-        return this.makeRequest("POST", path, userData, UserData.class);
+        return this.makeRequest("POST", path, userData, AuthData.class, null);
     }
 
-    public UserData login(UserData userData) throws ResponseException {
+    public AuthData login(UserData userData) throws ResponseException {
         var path = "/session";
-        return this.makeRequest("POST", path, userData, UserData.class);
+        return this.makeRequest("POST", path, userData, AuthData.class, null);
     }
 
     record CreateGameRequest(String gameName) {}
 
-    public void createGame(String name) throws ResponseException {
+    public void createGame(String name, AuthData authData) throws ResponseException {
         var path = "/game";
-        System.out.println("Request Payload: " + new Gson().toJson(new CreateGameRequest(name)));
-        this.makeRequest("POST", path, new CreateGameRequest(name), null);
+        //System.out.println("Request Payload: " + new Gson().toJson(new CreateGameRequest(name)));
+        this.makeRequest("POST", path, new CreateGameRequest(name), null, authData);
     }
 
-    public GameData[] listGames() throws ResponseException {
+    public GameData[] listGames(AuthData authData) throws ResponseException {
         var path = "/game";
         record listGamesResponse(GameData[] games) {
         }
-        var response = this.makeRequest("GET", path, null, listGamesResponse.class);
+        var response = this.makeRequest("GET", path, null, listGamesResponse.class, authData);
         return response.games();
+    }
+
+    public GameData joinGame(int GameID, String teamColor, AuthData authData) throws ResponseException {
+        var path = "/game";
+        var response = this.makeRequest("PUT", path, GameID, GameData.class, authData);
+        return response;
     }
 
     //public
 
-    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass) throws ResponseException {
+    private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, AuthData authData) throws ResponseException {
         try {
             URL url = (new URI(serverUrl + path)).toURL();
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
             http.setDoOutput(true);
-
+            if(authData != null){
+                http.addRequestProperty("Authorization", authData.authToken());
+            }
             writeBody(request, http);
             http.connect();
             throwIfNotSuccessful(http);
@@ -76,7 +84,7 @@ public class ServerFacade {
         if (!isSuccessful(status)) {
             try (InputStream respErr = http.getErrorStream()) {
                 if (respErr != null) {
-                    throw ResponseException.fromJson(respErr);
+                    throw ResponseException.fromJson(respErr, status);
                 }
             }
 

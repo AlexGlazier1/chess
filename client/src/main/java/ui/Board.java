@@ -37,9 +37,19 @@ import static ui.EscapeSequences.*;
 
         public static void main(String[] args) {
             var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-
             out.print(ERASE_SCREEN);
 
+            drawBoard(out);
+
+            //drawTicTacToeBoard(out);
+
+
+
+
+            //out.print(SET_TEXT_COLOR_WHITE);
+        }
+
+        private static void drawBoard(PrintStream out){
             ChessBoard board = new ChessBoard();
             board.resetBoard();
             String[] letters = { " a ", " b ", " c ", " d ", " e ", " f ", " g ", " h ", "   " };
@@ -70,13 +80,6 @@ import static ui.EscapeSequences.*;
             drawSquares(out, numbers,3, boardBuffer.squares[5]);
             drawSquares(out, numbers,2, boardBuffer.squares[6]);
             drawSquares(out, numbers,1, boardBuffer.squares[7]);
-
-            //drawTicTacToeBoard(out);
-
-
-
-
-            //out.print(SET_TEXT_COLOR_WHITE);
         }
 
         private static void drawHeaders(PrintStream out, String[] headers, String color) {

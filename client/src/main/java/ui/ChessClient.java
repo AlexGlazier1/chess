@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.AuthData;
 import model.GameData;
 import model.UserData;
-import ui.ResponseException;
-import ui.ServerFacade;
+
 
 public class ChessClient {
 
@@ -17,10 +17,10 @@ public class ChessClient {
     private final String serverUrl;
     Map<Integer, Integer> gameMap = new HashMap<>();
     //private final NotificationHandler notificationHandler;
-    //private WebSocketFacade ws;
     private State state = State.SIGNEDOUT;
+    private AuthData authData;
 
-    public ChessClient(String serverUrl) {//NotificationHandler notificationHandler) {
+    public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
         this.serverUrl = serverUrl;
         //this.notificationHandler = notificationHandler;
@@ -52,7 +52,7 @@ public class ChessClient {
                     case "login" -> logIn(params);
                     case "create" -> createGame(params);
                     case "list" -> listGame(params);
-                    //case "join" -> joinGame(params);
+                    case "join" -> joinGame(params);
                     //case "observe" -> observeGame(params);
                     //case "logout" -> logout(params);
                     case "quit" -> "quit";
@@ -66,18 +66,15 @@ public class ChessClient {
 
     public String logIn(String... params) throws ResponseException {
         if (params.length >= 2) {
-            visitorName = String.join("-", params);
+            visitorName = params[0];
             var userData = new UserData(params[0],params[1],"null");
             try{
-                server.login(userData);
+                authData = server.login(userData);
                 state = State.SIGNEDIN;
             }catch(Exception e) {
                 throw new ResponseException(400, "This user is not registered");
             }
 
-
-            //ws = new WebSocketFacade(serverUrl, notificationHandler);
-            //ws.enterPetShop(visitorName);
             return String.format("You signed in as %s.", visitorName);
         }
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD>");
@@ -85,16 +82,15 @@ public class ChessClient {
 
     public String register(String... params) throws ResponseException {
         if (params.length >= 3) {
-            visitorName = String.join("-", params);
+            visitorName = params[0];
             var userData = new UserData(params[0],params[1],params[2]);
             try{
-                server.register(userData);
+                authData = server.register(userData);
                 state = State.SIGNEDIN;
             }catch(Exception e) {
             throw new ResponseException(400, "This user is already registered>");
             }
-            //ws = new WebSocketFacade(serverUrl, notificationHandler);
-            //ws.enterPetShop(visitorName);
+
             return String.format("You signed in as %s.", visitorName);
         }else{
         throw new ResponseException(400, "Expected: <USERNAME> <PASSWORD> <EMAIL>");
@@ -104,14 +100,15 @@ public class ChessClient {
     public String listGame(String...params) throws ResponseException {
         if (params.length == 0) {
             //try {
-                GameData[] games = server.listGames();
+                GameData[] games = server.listGames(authData);
                 //return String.format("You signed in as %s.", visitorName);
-                System.out.println("Game Number: Game Name, GameID, White, Black");
+                System.out.println("Game Number: Game Name, White, Black");
                 int loopInt = 1;
                 for (GameData g: games) {
-                    System.out.print(loopInt + ":" + g.gameName() + ", "+ g.gameID() + ", "+ g.whiteUsername() + ", "+ g.blackUsername());
+                    System.out.println(loopInt + ":" + g.gameName() + ", "+ g.whiteUsername() + ", "+ g.blackUsername());
                     loopInt++;
                     gameMap.put(loopInt,g.gameID());
+
                 }
                 return "end of list";
 
@@ -124,93 +121,35 @@ public class ChessClient {
     }
 
     public String createGame(String...params) throws ResponseException {
-        if (params.length >= 0){
-            //GameData gameData = new GameData()
-            server.createGame(params[0]);
-            return String.format("Chess game ", params[0]," created.");
-            //try{
-            //    server.createGame(params[0]);
-            //    return String.format("Chess game ", params[0]," created.");
-            //}catch(Exception e) {
-            //    throw new ResponseException(400, "This user is already registered>");
-            //}
-        //}else{
-        //    System.out.println(params.length);
-        //    throw new ResponseException(400, "Expected: No other parameters");
+        if (params.length == 0){
+            try{
+                server.createGame(params[0], authData);
+                return String.format("Chess game ", params[0]," created.");
+            }catch(Exception e) {
+                throw new ResponseException(400, "This game already exists>");
+            }
+        } else {
+            throw new ResponseException(400, "Expected: No other parameters");
 
+        }
+    }
+
+    public String joinGame(String...params) throws ResponseException {
+        if (params.length >= 1) {
+            String gameName = "";
+            try{
+                GameData gameToJoin = server.joinGame(gameMap.get(params[1]),params[2], authData);
+                gameName = gameToJoin.gameName();
+            }catch(Exception e) {
+                throw new ResponseException(400, "This user is already registered>");
+            }
+
+            return String.format("You joined %s.", gameName);
         }else{
-            return "uggh";
-        }
+            throw new ResponseException(400, "Expected: <ID> [WHITE/BLACK]");
     }
-    /*
-
-    public String rescuePet(String... params) throws ResponseException {
-        assertSignedIn();
-        if (params.length >= 2) {
-            var name = params[0];
-            var type = PetType.valueOf(params[1].toUpperCase());
-            var pet = new Pet(0, name, type);
-            pet = server.addPet(pet);
-            return String.format("You rescued %s. Assigned ID: %d", pet.name(), pet.id());
-        }
-        throw new ResponseException(400, "Expected: <name> <CAT|DOG|FROG>");
     }
 
-    public String listPets() throws ResponseException {
-        assertSignedIn();
-        var pets = server.listPets();
-        var result = new StringBuilder();
-        var gson = new Gson();
-        for (var pet : pets) {
-            result.append(gson.toJson(pet)).append('\n');
-        }
-        return result.toString();
-    }
-
-    public String adoptPet(String... params) throws ResponseException {
-        assertSignedIn();
-        if (params.length == 1) {
-            try {
-                var id = Integer.parseInt(params[0]);
-                var pet = getPet(id);
-                if (pet != null) {
-                    server.deletePet(id);
-                    return String.format("%s says %s", pet.name(), pet.sound());
-                }
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        throw new ResponseException(400, "Expected: <pet id>");
-    }
-
-    public String adoptAllPets() throws ResponseException {
-        assertSignedIn();
-        var buffer = new StringBuilder();
-        for (var pet : server.listPets()) {
-            buffer.append(String.format("%s says %s%n", pet.name(), pet.sound()));
-        }
-
-        server.deleteAllPets();
-        return buffer.toString();
-    }
-
-    public String signOut() throws ResponseException {
-        assertSignedIn();
-        ws.leavePetShop(visitorName);
-        ws = null;
-        state = State.SIGNEDOUT;
-        return String.format("%s left the shop", visitorName);
-    }
-
-    private Pet getPet(int id) throws ResponseException {
-        for (var pet : server.listPets()) {
-            if (pet.id() == id) {
-                return pet;
-            }
-        }
-        return null;
-    }
-    */
         public String help() {
             if (state == State.SIGNEDOUT) {
                 return """
