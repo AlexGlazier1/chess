@@ -14,7 +14,7 @@ import static ui.EscapeSequences.*;
     public class Board {
 
         private final ChessBoard board;
-        private static String playerColor = "White";
+        private static String playerColor;
 
         public Board(ChessBoard board, String playerColor) {
             this.board = board;
@@ -41,12 +41,6 @@ import static ui.EscapeSequences.*;
 
             drawBoard(out);
 
-            //drawTicTacToeBoard(out);
-
-
-
-
-            //out.print(SET_TEXT_COLOR_WHITE);
         }
 
         public static void drawBoard(PrintStream out){
@@ -57,7 +51,7 @@ import static ui.EscapeSequences.*;
             String[] numbers = { " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 "};
             ChessBoard boardBuffer = new ChessBoard();
 
-            if(playerColor == "Black"){
+            if(playerColor == "black"){
                 List<String> tempList = Arrays.asList(numbers);
                 Collections.reverse(tempList);
                 numbers = tempList.toArray(new String[0]);

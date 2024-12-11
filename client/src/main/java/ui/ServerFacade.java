@@ -2,6 +2,9 @@ package ui;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import model.AuthData;
 import model.GameData;
@@ -41,9 +44,13 @@ public class ServerFacade {
         return response.games();
     }
 
-    public GameData joinGame(int GameID, String teamColor, AuthData authData) throws ResponseException {
+    public GameData joinGame(int gameID, String teamColor, AuthData authData) throws ResponseException {
         var path = "/game";
-        var response = this.makeRequest("PUT", path, GameID, GameData.class, authData);
+        Map<String, Object> requestData = new HashMap<>();
+        requestData.put("gameID", gameID);
+        requestData.put("playerColor", teamColor.toUpperCase());
+
+        var response = this.makeRequest("PUT", path, requestData, GameData.class, authData);
         return response;
     }
 
@@ -53,7 +60,6 @@ public class ServerFacade {
         return response;
     }
 
-    //public
 
     private <T> T makeRequest(String method, String path, Object request, Class<T> responseClass, AuthData authData) throws ResponseException {
         try {

@@ -56,9 +56,9 @@ public class ChessClient {
                     case "login" -> logIn(params);
                     case "create" -> createGame(params);
                     case "list" -> listGame(params);
-                    //case "join" -> joinGame(params);
+                    case "join" -> joinGame(params);
                     case "observe" -> observeGame(params);
-                    //case "logout" -> logout(params);
+                    case "logout" -> logout();
                     case "quit" -> "quit";
                     default -> help();
                 };
@@ -121,7 +121,7 @@ public class ChessClient {
     }
 
     public String createGame(String...params) throws ResponseException {
-        if (params.length == 0){
+        if (params.length == 1){
             try{
                 server.createGame(params[0], authData);
                 return String.format("Chess game ", params[0]," created.");
@@ -137,14 +137,24 @@ public class ChessClient {
     public String joinGame(String...params) throws ResponseException {
         if (params.length >= 1) {
             String gameName = "";
-            try{
-                GameData gameToJoin = server.joinGame(gameMap.get(params[1]),params[2], authData);
-                gameName = gameToJoin.gameName();
-            }catch(Exception e) {
-                throw new ResponseException(400, "This user is already registered>");
-            }
+            int num = Integer.parseInt(params[0]);
+            var out = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+            ChessBoard board = gameMap.get(num).game().getBoard();
 
-            return String.format("You joined %s.", gameName);
+            if (gameMap.get(num).blackUsername() != null && gameMap.get(num).blackUsername().equals(visitorName) ){
+                new Board(board, "black").drawBoard(out);
+                return String.format("You joined %s.", gameMap.get(num).gameName());
+            }else if(gameMap.get(num).whiteUsername() != null && gameMap.get(num).whiteUsername().equals(visitorName)){
+                new Board(board, "white").drawBoard(out);
+                return String.format("You joined %s.", gameMap.get(num).gameName());
+            }else {
+
+
+                server.joinGame(num, params[1], authData);
+                new Board(board, params[1]).drawBoard(out);
+                return String.format("You joined %s.", gameMap.get(num).gameName());
+
+            }
         }else{
             throw new ResponseException(400, "Expected: <ID> [WHITE/BLACK]");
         }
@@ -162,6 +172,12 @@ public class ChessClient {
         } else {
             throw new ResponseException(400, "Provide game number");
         }
+    }
+
+    public String logout(){
+        authData = null;
+        state = State.SIGNEDOUT;
+        return "You have been logged out";
     }
 
 
